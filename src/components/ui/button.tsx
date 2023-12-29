@@ -44,11 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(
-          "relative active:scale-[0.98]",
-          buttonVariants({ variant, size, className }),
-          "transition-all",
-        )}
+        className={cn("relative", buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />

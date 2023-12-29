@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 
-import CartSheet from "./CartSheet";
+import CartSheet from "./cart/CartSheet";
 
 export default function Navigation() {
   return (

@@ -7,7 +7,11 @@ import { useShoppingCart } from "@/state/useShoppingCart";
 
 export default async function Home() {
   const response: any = await fetch("https://fakestoreapi.com/products");
-  const demoProducts = await response.json();
+  const demoProducts = (await response.json()).map((item: any) => {
+    const newItem = item;
+    newItem.count = 0;
+    return newItem;
+  });
 
   return (
     <div className=" mx-auto flex max-w-4xl flex-wrap gap-4 p-8">
