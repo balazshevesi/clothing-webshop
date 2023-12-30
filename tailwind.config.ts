@@ -14,6 +14,7 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+        short: { raw: "(max-height: 800px)" },
       },
     },
     extend: {
@@ -70,6 +71,9 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        nice: ['"asap"', "var(--font-playfair_Display)"], // Ensure fonts with spaces have " " surrounding it.
       },
     },
   },

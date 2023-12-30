@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import React, { KeyboardEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +13,7 @@ export default function Counter({ item }: { item: any }) {
   const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
     .count;
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current!.value = itemCount;
@@ -33,8 +34,11 @@ export default function Counter({ item }: { item: any }) {
         ref={inputRef}
         type="number"
         onBlur={(e) => updateCount(item, e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") updateCount(item, e.target.value);
+        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (e.key === "Enter") {
+            const target = e.target as HTMLInputElement;
+            updateCount(item, target.value);
+          }
         }}
         className="w-14 text-center"
       />

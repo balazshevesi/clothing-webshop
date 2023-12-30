@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 
-import Navigation from "@/components/navigation/Navigation";
+import Footer from "@/components/layout/Footer";
+import Navigation from "@/components/layout/Navigation";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 import "./global.css";
 import { GeistSans } from "geist/font/sans";
 
-const inter = Inter({ subsets: ["latin"] });
+//* define fonts
+export const playfair_Display = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair_Display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,11 +27,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={GeistSans.className}>
-        <div className="h-screen overflow-auto bg-slate-200 selection:bg-slate-200">
-          <Navigation />
-          {children}
-        </div>
+      <body
+        className={`${GeistSans.className} ${playfair_Display.variable} relative selection:bg-slate-200/50`}
+      >
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          <div className="h-screen overflow-auto bg-black">
+            <Navigation />
+            {children}
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

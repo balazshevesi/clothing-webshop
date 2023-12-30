@@ -19,7 +19,7 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
-import { Button } from "../../ui/button";
+import { Button } from "../../../ui/button";
 import CartCount from "./CartCount";
 import Counter from "./Counter";
 import { useShoppingCart } from "@/state/useShoppingCart";
@@ -37,7 +37,7 @@ function CartItem({ item }: { item: any }) {
   return (
     <div
       key={JSON.stringify(item)}
-      className=" relative flex items-center gap-2 rounded bg-white p-5 shadow"
+      className=" relative flex items-center gap-2 rounded bg-black p-5 shadow"
     >
       <Button
         size={"icon"}
@@ -96,9 +96,9 @@ export default function CartSheet() {
         <CartCount />
       </Button>
       <Sheet open={isOpen} onOpenChange={close}>
-        <SheetContent className="max-w-none bg-slate-200 p-0">
+        <SheetContent className="max-w-none border-none bg-slate-900 p-0">
           <div className=" relative flex h-full w-full flex-col">
-            <SheetHeader className=" bg-white p-4 shadow">
+            <SheetHeader className=" bg-black p-4 shadow">
               <SheetTitle className=" uppercase">
                 din kundvagn <span className=" opacity-75">({cartCount})</span>
               </SheetTitle>
@@ -111,7 +111,7 @@ export default function CartSheet() {
                 })}
               </div>
             </div>
-            <SheetFooter className="w-full gap-2 bg-white p-4">
+            <SheetFooter className="w-full gap-2 bg-black p-4">
               <div className="flex w-full flex-col justify-start gap-4">
                 <div className=" flex justify-between">
                   <div>Värde:</div>
