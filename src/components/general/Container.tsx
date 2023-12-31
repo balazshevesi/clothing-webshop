@@ -15,7 +15,7 @@ export default function Container({ className, id, children }: Section) {
     <section
       id={id}
       className={twMerge(
-        "relative mx-auto max-w-7xl scroll-mt-12 px-4 py-24",
+        "relative mx-auto max-w-7xl scroll-mt-12 px-8 py-24",
         className,
       )}
     >

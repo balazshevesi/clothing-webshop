@@ -12,7 +12,7 @@ interface useShoppingCart {
   close: Function;
 }
 
-export const useShoppingCart = create<useShoppingCart>()((set) => ({
+export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
   items: [],
   isOpen: false,
 
@@ -34,7 +34,6 @@ export const useShoppingCart = create<useShoppingCart>()((set) => ({
     //       error,
     //     );
     //   });
-
     return set((state: any) => {
       const itemAlredyExists = state.items.includes(item);
       if (itemAlredyExists) {

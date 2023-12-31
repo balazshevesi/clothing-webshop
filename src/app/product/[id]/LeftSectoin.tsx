@@ -21,7 +21,7 @@ export default function LeftSectoin({ product }: { product: any }) {
               height={1000}
               width={1000}
               src={image}
-              className=" aspect-square"
+              className=" aspect-square object-cover"
             />
           </CarouselItem>
         ))}

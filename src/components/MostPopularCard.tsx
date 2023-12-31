@@ -19,38 +19,35 @@ import {
 import { Button } from "@/components/ui/button";
 
 import Counter from "./layout/navigation/cart/Counter";
-import { useShoppingCart } from "@/state/useShoppingCart";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
-export default function Card({ item }: { item: any }) {
+export default function MostPopularCard({ item }: { item: any }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { items, addItem, open } = useShoppingCart();
-
+  const { items, addItem, open } = useShoppingCartSlice();
   const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
     ? items.filter((cartItem) => cartItem.id === item.id)[0]
     : 0;
 
   return (
-    <div className=" relative w-[24rem] min-w-[18rem] overflow-hidden whitespace-nowrap">
+    <div className=" relative w-[24rem] min-w-[18rem] overflow-hidden whitespace-nowrap rounded">
       <Image
-        className="absolute left-0 top-0 z-0 h-full w-full overflow-hidden rounded opacity-40 blur-xl"
+        className="absolute left-0 top-0 z-0 h-full w-full opacity-40 blur-xl"
         width={200}
         height={200}
         src={item.images[0]}
         alt=""
       />
-
       <div className="relative z-10 flex w-full flex-col">
-        <Link href={`/product/${item.id}`}>
-          <Image
-            className=" relative z-10 aspect-[1/1] w-full overflow-hidden rounded"
-            width={200}
-            height={200}
-            src={item.images[0]}
-            alt=""
-          />
-        </Link>
-
-        <div className="p-2">
+        <div className="p-4">
+          <Link href={`/product/${item.id}`}>
+            <Image
+              className=" relative z-10 aspect-[1/1] w-full overflow-hidden rounded"
+              width={200}
+              height={200}
+              src={item.images[0]}
+              alt=""
+            />
+          </Link>
           <div className="p-2">
             <div className="mb-4 mt-2 max-w-full overflow-auto">
               <strong>{item.title}</strong>

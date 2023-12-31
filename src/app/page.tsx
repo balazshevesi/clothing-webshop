@@ -2,8 +2,8 @@ import Image from "next/image";
 
 import { ReactElement } from "react";
 
-import Card from "@/components/Card";
 import MostPopular from "@/components/MostPopular";
+import MostPopularCard from "@/components/MostPopularCard";
 import Seperator from "@/components/general/Seperator";
 import { Button } from "@/components/ui/button";
 

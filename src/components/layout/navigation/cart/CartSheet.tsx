@@ -22,11 +22,15 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Button } from "../../../ui/button";
 import CartCount from "./CartCount";
 import Counter from "./Counter";
-import { useShoppingCart } from "@/state/useShoppingCart";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 function CartItem({ item }: { item: any }) {
-  const removeItem = useShoppingCart((state: any) => state.removeItem) as any;
-  const updateCount = useShoppingCart((state: any) => state.updateCount) as any;
+  const removeItem = useShoppingCartSlice(
+    (state: any) => state.removeItem,
+  ) as any;
+  const updateCount = useShoppingCartSlice(
+    (state: any) => state.updateCount,
+  ) as any;
   const [itemCount, setItemCount] = useState(item.count);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ function CartItem({ item }: { item: any }) {
         alt={`picture of ${item.title}`}
         width={50}
         height={50}
-        src={item.image}
+        src={item.images[0]}
         className=" aspect-square size-14"
       />
       <div className="flex grow flex-col overflow-auto whitespace-nowrap">
@@ -69,7 +73,7 @@ function CartItem({ item }: { item: any }) {
 }
 
 export default function CartSheet() {
-  const cart = useShoppingCart((state: any) => state.items) as any;
+  const cart = useShoppingCartSlice((state: any) => state.items) as any;
   const cartWorth = useMemo(() => {
     let worth = 0;
     cart.forEach((item: any) => {
@@ -85,9 +89,9 @@ export default function CartSheet() {
     return count;
   }, [cart]);
 
-  const isOpen = useShoppingCart((state: any) => state.isOpen);
-  const open = useShoppingCart((state: any) => state.open);
-  const close = useShoppingCart((state: any) => state.close);
+  const isOpen = useShoppingCartSlice((state: any) => state.isOpen);
+  const open = useShoppingCartSlice((state: any) => state.open);
+  const close = useShoppingCartSlice((state: any) => state.close);
 
   return (
     <div>

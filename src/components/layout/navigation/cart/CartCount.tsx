@@ -2,11 +2,11 @@
 
 import { useMemo } from "react";
 
-import { useShoppingCart } from "@/state/useShoppingCart";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { Scale } from "lucide-react";
 
 export default function CartCount() {
-  const cart = useShoppingCart((state: any) => state.items) as any;
+  const cart = useShoppingCartSlice((state: any) => state.items) as any;
   const cartCount = useMemo(() => {
     let count = 0;
     cart.forEach((item: any) => {

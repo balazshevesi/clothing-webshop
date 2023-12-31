@@ -6,10 +6,10 @@ import React, { KeyboardEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useShoppingCart } from "@/state/useShoppingCart";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 export default function Counter({ item }: { item: any }) {
-  const { items, updateCount, increment, decrement } = useShoppingCart();
+  const { items, updateCount, increment, decrement } = useShoppingCartSlice();
   const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
     .count;
 
