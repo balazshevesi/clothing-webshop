@@ -80,7 +80,7 @@ export default async function Product({ params }: { params: { id: string } }) {
       <Seperator />
       <Reviews />
       <Seperator />
-      <MostPopular products={demoProducts} /> <Seperator />
+      <MostPopular products={demoProducts} />
     </>
   );
 }

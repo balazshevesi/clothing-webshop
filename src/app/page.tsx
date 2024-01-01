@@ -46,7 +46,6 @@ export default async function Home() {
     <>
       <Header />
       <MostPopular products={demoProducts} />
-      <Seperator />
     </>
   );
 }
