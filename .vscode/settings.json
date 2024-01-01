@@ -1,0 +1,18 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "the-masculine-ideal-database.cboymmg2azrg.eu-north-1.rds.amazonaws.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "clothing-webshop",
+      "database": "defaultt",
+      "username": "admin",
+      "password": "dN#Fmv9qnW"
+    }
+  ]
+}
