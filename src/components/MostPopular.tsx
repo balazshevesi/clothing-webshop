@@ -1,10 +1,15 @@
-"use client";
-
 import MostPopularCard from "./MostPopularCard";
 import Container from "./general/Container";
 import Title2 from "./general/Title2";
 
-export default function MostPopular({ products }: { products: any }) {
+export default async function MostPopular() {
+  const response: any = await fetch(
+    `${process.env.HOST}/api/products/most-popular`,
+    { cache: "no-store" },
+  );
+
+  const products = (await response.json()).content;
+
   return (
     <div>
       <Container>

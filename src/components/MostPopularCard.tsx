@@ -34,7 +34,7 @@ export default function MostPopularCard({ item }: { item: any }) {
         className="absolute left-0 top-0 z-0 h-full w-full opacity-40 blur-xl"
         width={200}
         height={200}
-        src={item.images[0]}
+        src={item.image}
         alt=""
       />
       <div className="relative z-10 flex w-full flex-col">
@@ -44,7 +44,7 @@ export default function MostPopularCard({ item }: { item: any }) {
               className=" relative z-10 aspect-[1/1] w-full overflow-hidden rounded"
               width={200}
               height={200}
-              src={item.images[0]}
+              src={item.images}
               alt=""
             />
           </Link>

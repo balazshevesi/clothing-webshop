@@ -17,36 +17,35 @@ import { Button } from "@/components/ui/button";
 import AddToCartBtn from "./AddToCartBtn";
 import LeftSectoin from "./LeftSectoin";
 
-export default async function Product({ params }: { params: { id: string } }) {
-  const responsee: any = await fetch(
-    "https://api.escuelajs.co/api/v1/products",
-  );
-  const demoProducts = (await responsee.json()).map((item: any) => {
-    const newItem = item;
-    newItem.count = 0;
-    return newItem;
-  });
-
+export default async function Product({
+  params,
+}: {
+  params: { product_id: string };
+}) {
   const response: any = await fetch(
-    `https://api.escuelajs.co/api/v1/products/${params.id}`,
+    `${process.env.HOST}api/product/${params.product_id}`,
   );
-  const demoProduct = await response.json();
-  console.log("demoProduct", demoProduct);
+  const product = (await response.json()).content[0];
 
   return (
     <>
       <Container className="pt-14">
-        <div className="flex flex-col items-stretch gap-8 md:flex-row">
-          <div className="aspect-square w-full">
-            <LeftSectoin product={demoProduct} />
+        {/* <div className="flex items-stretch gap-8 bg-fuchsia-500 py-20 md:flex-row">
+          <div className=" flex aspect-square grow items-center justify-center bg-pink-400">
+            image
           </div>
-          <div className=" flex w-full flex-col md:w-1/2">
+          <div className=" w-[22rem] bg-pink-400">titleee</div>
+        </div> */}
+
+        <div className="flex flex-col items-stretch gap-8 lg:flex-row">
+          <LeftSectoin product={product} />
+          <div className="w-full shrink-0 lg:w-[22rem]">
             <div className=" mb-10">
-              <Title1>{demoProduct.title}</Title1>
-              <p>{demoProduct.description}</p>
+              <Title1>{product.title}</Title1>
+              <p>{product.description}</p>
             </div>
             <div className=" mb-10 w-full">
-              <AddToCartBtn item={demoProduct} />
+              <AddToCartBtn item={product} />
             </div>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
@@ -80,7 +79,7 @@ export default async function Product({ params }: { params: { id: string } }) {
       <Seperator />
       <Reviews />
       <Seperator />
-      <MostPopular products={demoProducts} />
+      <MostPopular />
     </>
   );
 }

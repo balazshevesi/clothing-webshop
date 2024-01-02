@@ -58,7 +58,7 @@ function CartItem({ item }: { item: any }) {
         alt={`picture of ${item.title}`}
         width={50}
         height={50}
-        src={item.images[0]}
+        src={item.image}
         className=" aspect-square size-14"
       />
       <div className="flex grow flex-col overflow-auto whitespace-nowrap">

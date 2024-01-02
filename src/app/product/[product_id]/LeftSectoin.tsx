@@ -12,9 +12,9 @@ import {
 
 export default function LeftSectoin({ product }: { product: any }) {
   return (
-    <Carousel className="relative w-full overflow-hidden rounded">
+    <Carousel className="relative grow overflow-hidden rounded">
       <CarouselContent>
-        {product.images.map((image: any, index: number) => (
+        {/* {product.images.map((image: any, index: number) => (
           <CarouselItem key={index} className=" px-0">
             <Image
               alt=""
@@ -24,7 +24,16 @@ export default function LeftSectoin({ product }: { product: any }) {
               className=" aspect-square object-cover"
             />
           </CarouselItem>
-        ))}
+        ))} */}
+        <CarouselItem className=" w-full px-0">
+          <Image
+            alt=""
+            height={1000}
+            width={1000}
+            src={product.image}
+            className=" aspect-square object-cover"
+          />
+        </CarouselItem>
       </CarouselContent>
       <CarouselPrevious className=" absolute left-2" />
       <CarouselNext className=" absolute right-2" />
