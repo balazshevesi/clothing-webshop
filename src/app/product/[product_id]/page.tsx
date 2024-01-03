@@ -23,7 +23,7 @@ export default async function Product({
   params: { product_id: string };
 }) {
   const response: any = await fetch(
-    `${process.env.HOST}api/product/${params.product_id}`,
+    `${process.env.HOST}/api/product/${params.product_id}`,
   );
   const product = (await response.json()).content[0];
 
