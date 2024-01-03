@@ -16,14 +16,16 @@ export default async function Caregory({
   params: { name: string };
 }) {
   const categoryName = params.name.replace("-", " ");
-  const responsee: any = await fetch(
-    "https://api.escuelajs.co/api/v1/products",
-  );
-  const demoProducts = (await responsee.json()).map((item: any) => {
-    const newItem = item;
-    newItem.count = 0;
-    return newItem;
+  const responsee: any = await fetch(`${process.env.HOST}/api/products`, {
+    method: "post",
+    body: JSON.stringify({
+      page: "1",
+      sort: "alphabetical",
+      priceRange: [0, 9999],
+      category: "",
+    }),
   });
+  const products = (await responsee.json()).content;
 
   return (
     <>
@@ -31,7 +33,7 @@ export default async function Caregory({
         <Title1>{categoryName}</Title1>
         <Filter />
         <div className="grid grid-cols-3">
-          {demoProducts.map((item: any) => {
+          {products.map((item: any) => {
             return (
               <ViewingAllItemsCard
                 key={item.id}
