@@ -6,8 +6,8 @@ import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 
 import Container from "../general/Container";
-import Login from "./navigation/Login";
 import CartSheet from "./navigation/cart/CartSheet";
+import Login from "./navigation/login/LoginButton";
 
 function Logo() {
   return (

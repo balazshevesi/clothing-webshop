@@ -10,7 +10,7 @@ interface useOverlays {
   closeSignup: Function;
 }
 
-export const useOverlaysSlice = create<useOverlays>()((set) => ({
+export const useAuthModalSlice = create<useOverlays>()((set) => ({
   loginIsOpen: false,
   openLogin: () =>
     set((state: any) => {
