@@ -17,7 +17,6 @@ export default function AddToCartBtn({ item }: { item: any }) {
 
   useEffect(() => {
     if (itemCount) {
-      console.log("itemCount", itemCount);
       inputRef.current!.value = itemCount;
     }
   }, [items]);

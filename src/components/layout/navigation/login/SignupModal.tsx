@@ -1,5 +1,6 @@
 "use client";
 
+//! TODO VALIDATE INPUT, BOTH CLIENT SIDE AND SERVER SIDE!!!
 import { collectAppConfig } from "next/dist/build/utils";
 
 import React, { useState } from "react";
@@ -30,6 +31,8 @@ export default function SignupModal() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
+  const [passwordIsWeak, setPasswordIsWeak] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [emailIsTaken, setEmailIsTaken] = useState(false);
 
@@ -44,14 +47,26 @@ export default function SignupModal() {
   const onSuccessfullSignup = (data: ResponseAuthSignup) => {
     document.cookie = `Authorization=${data.userIdJwt}`;
     document.cookie = `UserInfo=${JSON.stringify(data.userInfo)}`;
+
     closeSignup();
     setLoggedinTrue();
+
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setPassword("");
   };
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
+
+    if (password.length < 8) {
+      setPasswordIsWeak(true);
+      return;
+    } else setPasswordIsWeak(false);
+
     setIsLoading(true);
-    // TODO Add validation logic
 
     const userData = {
       firstName,
@@ -131,6 +146,10 @@ export default function SignupModal() {
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="password">Password</Label>
                   <Input
+                    warningText={
+                      !!passwordIsWeak &&
+                      "Please choose a stronger password, minimum 8 characters"
+                    }
                     className="max-w-full"
                     type="password"
                     id="password"

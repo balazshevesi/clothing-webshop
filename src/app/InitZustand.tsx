@@ -15,5 +15,5 @@ export default function InitZustand({ children }: { children: ReactNode }) {
 
   if (userInfo) setLoggedinTrue();
 
-  return <>{children}</>;
+  return children;
 }
