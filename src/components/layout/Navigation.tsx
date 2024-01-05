@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import { Bars3Icon } from "@heroicons/react/24/solid";
 
 import Container from "../general/Container";
 import CartSheet from "./navigation/cart/CartSheet";
-import Login from "./navigation/login/LoginButton";
+import LoginButton from "./navigation/login/LoginButton";
 
 function Logo() {
   return (
@@ -41,7 +42,7 @@ export default function Navigation() {
           </Link>
         </div>
         <div className="flex flex-1 justify-end gap-2">
-          <Login /> <CartSheet />
+          <LoginButton /> <CartSheet />
         </div>
       </Container>
       {/* mobile */}

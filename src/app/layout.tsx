@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
+import { cookies } from "next/headers";
 
 import Footer from "@/components/layout/Footer";
 import Navigation from "@/components/layout/Navigation";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
+import InitZustand from "./InitZustand";
 import "./global.css";
 import { GeistSans } from "geist/font/sans";
 
@@ -31,11 +33,13 @@ export default function RootLayout({
         className={`${GeistSans.className} ${playfair_Display.variable} relative selection:bg-slate-200/50`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <div className="h-screen overflow-auto bg-black">
-            <Navigation />
-            {children}
-            <Footer />
-          </div>
+          <InitZustand>
+            <div className="h-screen overflow-auto bg-black">
+              <Navigation />
+              {children}
+              <Footer />
+            </div>
+          </InitZustand>
         </ThemeProvider>
       </body>
     </html>

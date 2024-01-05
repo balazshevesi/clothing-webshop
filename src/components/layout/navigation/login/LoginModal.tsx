@@ -13,15 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useAuthModalSlice } from "@/state/useAuthModalSlice";
+import { useAuthSlice } from "@/state/useAuthSlice";
 
 export default function LoginModal() {
-  const loginIsOpen = useAuthModalSlice(
-    (state: any) => state.loginIsOpen,
-  ) as any;
-  const closeLogin = useAuthModalSlice((state: any) => state.closeLogin) as any;
-
-  const openSignup = useAuthModalSlice((state: any) => state.openSignup) as any;
+  const loginIsOpen = useAuthSlice((state: any) => state.loginIsOpen) as any;
+  const closeLogin = useAuthSlice((state: any) => state.closeLogin) as any;
+  const openSignup = useAuthSlice((state: any) => state.openSignup) as any;
 
   return (
     <AlertDialog open={loginIsOpen} onOpenChange={() => closeLogin()}>

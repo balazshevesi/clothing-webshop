@@ -2,7 +2,10 @@
 DROP PROCEDURE e_commerce.sign_up 
 
 -- @block
-CALL signup('Balazs','Hevesi','073','balazshevesi@gmail.com','123')
+CALL create_user('Balazs','Hevesi','073','balazshevesiii@gmail.com','123');
+
+-- @block
+CALL get_user_id_from_email('balazshevesiii@gmail.com')
 
 -- @block
 CALL get_user_info('balazshevesi@gmail.com')

@@ -19,7 +19,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useAuthModalSlice } from "@/state/useAuthModalSlice";
+import { ResponseAuthSignup } from "@/app/api/auth/signup/route";
+import { useAuthSlice } from "@/state/useAuthSlice";
 
 export default function SignupModal() {
   // State management for form fields
@@ -29,13 +30,29 @@ export default function SignupModal() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  const openLogin = useAuthModalSlice((state) => state.openLogin);
-  const signupIsOpen = useAuthModalSlice((state) => state.signupIsOpen);
-  const closeSignup = useAuthModalSlice((state) => state.closeSignup);
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailIsTaken, setEmailIsTaken] = useState(false);
+
+  const openLogin = useAuthSlice((state) => state.openLogin);
+  const signupIsOpen = useAuthSlice((state) => state.signupIsOpen);
+  const closeSignup = useAuthSlice((state) => state.closeSignup);
+
+  const isLoggedIn = useAuthSlice((state) => state.isLoggedIn);
+  const setLoggedinTrue = useAuthSlice((state) => state.setLoggedinTrue);
+  const setLogedginFalse = useAuthSlice((state) => state.setLogedginFalse);
+
+  const onSuccessfullSignup = (data: ResponseAuthSignup) => {
+    document.cookie = `Authorization=${data.userIdJwt}`;
+    document.cookie = `UserInfo=${JSON.stringify(data.userInfo)}`;
+    closeSignup();
+    setLoggedinTrue();
+  };
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
-    // Add validation logic here if needed
+    setIsLoading(true);
+    // TODO Add validation logic
+
     const userData = {
       firstName,
       lastName,
@@ -44,13 +61,16 @@ export default function SignupModal() {
       password,
     };
 
-    // TODO: Send userData to backend or API endpoint
-    console.log("Submitting user data:", userData);
-
-    const response = await fetch(`/api/auth/signup`, {
+    const response = await fetch("/api/auth/signup", {
       method: "post",
-      body: JSON.stringify({ userData }),
+      body: JSON.stringify(userData),
     });
+
+    const data = await response.json();
+    if (data.userIdJwt) onSuccessfullSignup(data);
+    if (data.errorMessage === "email is taken") setEmailIsTaken(true);
+    else setEmailIsTaken(false);
+    setIsLoading(false);
   };
 
   return (
@@ -86,6 +106,9 @@ export default function SignupModal() {
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="email">Email</Label>
                   <Input
+                    warningText={
+                      !!emailIsTaken && "This email is alredy in use"
+                    }
                     className="w-full"
                     type="email"
                     id="email"
@@ -132,7 +155,9 @@ export default function SignupModal() {
             <Button onClick={() => closeSignup()} variant="outline">
               Cancel
             </Button>
-            <Button type="submit">Signup</Button>
+            <Button type="submit" isLoading={isLoading} disabled={isLoading}>
+              Signup
+            </Button>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>
