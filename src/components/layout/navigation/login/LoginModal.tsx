@@ -37,7 +37,7 @@ export default function LoginModal() {
       body: JSON.stringify(formData),
     });
 
-    if (!response.ok) {
+    if (response.status === 500) {
       setServerError(true);
       setIsLoading(false);
     } else {

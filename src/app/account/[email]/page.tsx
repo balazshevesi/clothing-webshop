@@ -30,7 +30,7 @@ export default async function Page({
       {JSON.stringify(data)}
       <div className=" flex gap-2">
         <SignOut />
-        {!!data.userInfo && !!data.userInfo.is_admin && (
+        {!!data.userInfo && !!data.userInfo.isAdmin && (
           <Link
             href={"/admin"}
             className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"

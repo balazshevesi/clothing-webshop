@@ -44,7 +44,7 @@ export default function SignupModal() {
       method: "post",
       body: JSON.stringify(formData),
     });
-    if (!response.ok) {
+    if (response.status === 500) {
       setServerError(true);
       setIsLoading(false);
     } else {
@@ -53,6 +53,7 @@ export default function SignupModal() {
     }
 
     const data = await response.json();
+    console.log("data", data);
     //on sucess
     if (data.userIdJwt) {
       document.cookie = `Authorization=${data.userIdJwt}`;

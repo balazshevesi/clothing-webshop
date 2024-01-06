@@ -38,7 +38,7 @@ async function connectToDb(): Promise<mysql.Connection | null> {
 }
 
 // Export a function to get the database connection
-export default async function getDb() {
+export default async function getDatabase() {
   if (!databaseConnection) await connectToDb();
   if (!databaseConnection) throw new Error("check database connection");
 
