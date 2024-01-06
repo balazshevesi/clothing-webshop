@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   warningText?: string | null | undefined | false;
+  novalidate?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

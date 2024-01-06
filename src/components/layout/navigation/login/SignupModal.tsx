@@ -16,15 +16,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import {
+  EmailSchema,
+  FirstNameSchema,
+  LastNameSchema,
+  PasswordSchema,
+  PhoneSchema,
+} from "@/inputValidation/schema";
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { parse, flatten, safeParse } from "valibot";
 
 export default function SignupModal() {
   const [isLoading, setIsLoading] = useState(false);
   const [emailIsTaken, setEmailIsTaken] = useState(false);
-  const [passwordIsWeak, setPasswordIsWeak] = useState(false);
   const [serverError, setServerError] = useState(false);
 
   const { register, handleSubmit, reset } = useForm();
+
+  const [firstNameValidationMsg, setFirstNameValidationMsg] = useState("");
+  const [lastNameValidationMsg, setLastNameValidationMsg] = useState("");
+  const [emailValidationMsg, setEmailValidationMsg] = useState("");
+  const [phoneValidationMsg, setPhoneValidationMsg] = useState("");
+  const [passwordValidationMsg, setPasswordValidationMsg] = useState("");
 
   const openLogin = useAuthSlice((state) => state.openLogin);
   const signupIsOpen = useAuthSlice((state) => state.signupIsOpen);
@@ -32,14 +45,40 @@ export default function SignupModal() {
   const setLoggedinTrue = useAuthSlice((state) => state.setLoggedinTrue);
 
   const handleSignup = async (formData: any) => {
-    console.log("handleSignup was called");
-    if (formData.password.length < 8) {
-      setPasswordIsWeak(true);
-      return;
-    } else {
-      setPasswordIsWeak(false);
-    }
+    let validInput = true;
+    const fnameValStatus = safeParse(FirstNameSchema, formData.firstName);
+    if (!fnameValStatus.success) {
+      setFirstNameValidationMsg(fnameValStatus.issues[0].message);
+      validInput = false;
+    } else setFirstNameValidationMsg("");
+
+    const lastNameValStatus = safeParse(LastNameSchema, formData.lastName);
+    if (!lastNameValStatus.success) {
+      setLastNameValidationMsg(lastNameValStatus.issues[0].message);
+      validInput = false;
+    } else setLastNameValidationMsg("");
+
+    const emailValStatus = safeParse(EmailSchema, formData.email);
+    if (!emailValStatus.success) {
+      setEmailValidationMsg(emailValStatus.issues[0].message);
+      validInput = false;
+    } else setEmailValidationMsg("");
+
+    const phoneValStatus = safeParse(PhoneSchema, formData.phone);
+    if (!phoneValStatus.success) {
+      setPhoneValidationMsg(phoneValStatus.issues[0].message);
+      validInput = false;
+    } else setPhoneValidationMsg("");
+
+    const passwordValStatus = safeParse(PasswordSchema, formData.password);
+    if (!passwordValStatus.success) {
+      setPasswordValidationMsg(passwordValStatus.issues[0].message);
+      validInput = false;
+    } else setPasswordValidationMsg("");
+    if (!validInput) return;
+
     setIsLoading(true);
+
     const response = await fetch("/api/auth/signup", {
       method: "post",
       body: JSON.stringify(formData),
@@ -53,7 +92,6 @@ export default function SignupModal() {
     }
 
     const data = await response.json();
-    console.log("data", data);
     //on sucess
     if (data.userIdJwt) {
       document.cookie = `Authorization=${data.userIdJwt}`;
@@ -80,6 +118,8 @@ export default function SignupModal() {
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="fname">First Name</Label>
                     <Input
+                      warningText={firstNameValidationMsg}
+                      novalidate={true}
                       type="text"
                       id="fname"
                       placeholder="First Name"
@@ -89,6 +129,8 @@ export default function SignupModal() {
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="lname">Last Name</Label>
                     <Input
+                      warningText={lastNameValidationMsg}
+                      novalidate={true}
                       type="text"
                       id="lname"
                       placeholder="Last Name"
@@ -99,7 +141,11 @@ export default function SignupModal() {
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="email">Email</Label>
                   <Input
-                    warningText={emailIsTaken && "This email is already in use"}
+                    novalidate={true}
+                    warningText={
+                      emailValidationMsg ||
+                      (emailIsTaken && "This email is already in use")
+                    }
                     className="w-full"
                     type="email"
                     id="email"
@@ -110,6 +156,8 @@ export default function SignupModal() {
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="tel">Phone</Label>
                   <Input
+                    novalidate={true}
+                    warningText={phoneValidationMsg}
                     className="max-w-full"
                     type="tel"
                     id="tel"
@@ -120,10 +168,8 @@ export default function SignupModal() {
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="password">Password</Label>
                   <Input
-                    warningText={
-                      passwordIsWeak &&
-                      "Please choose a stronger password, minimum 8 characters"
-                    }
+                    novalidate={true}
+                    warningText={passwordValidationMsg}
                     className="max-w-full"
                     type="password"
                     id="password"
@@ -139,7 +185,7 @@ export default function SignupModal() {
               We're having difficulties reaching our server, try again later
             </div>
           )}
-          <AlertDialogFooter>
+          <AlertDialogFooter className="pt-6">
             <Button
               type="button"
               variant="link"

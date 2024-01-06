@@ -16,13 +16,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { EmailSchema, PasswordSchema } from "@/inputValidation/schema";
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { parse, flatten, safeParse } from "valibot";
 
 export default function LoginModal() {
   const loginIsOpen = useAuthSlice((state) => state.loginIsOpen);
   const closeLogin = useAuthSlice((state) => state.closeLogin);
   const openSignup = useAuthSlice((state) => state.openSignup);
   const setLoggedinTrue = useAuthSlice((state) => state.setLoggedinTrue);
+
+  const [passwordValidationMsg, setPasswordValidationMsg] = useState("");
+  const [emailValidationMsg, setEmailValidationMsg] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
@@ -31,6 +36,21 @@ export default function LoginModal() {
   const { register, handleSubmit, reset } = useForm();
 
   const handleSignup = async (formData: any) => {
+    let validInput = true;
+    const emailValStatus = safeParse(EmailSchema, formData.email);
+    if (!emailValStatus.success) {
+      setEmailValidationMsg(emailValStatus.issues[0].message);
+      validInput = false;
+    } else setEmailValidationMsg("");
+
+    const passwordValStatus = safeParse(PasswordSchema, formData.password);
+    if (!passwordValStatus.success) {
+      setPasswordValidationMsg(passwordValStatus.issues[0].message);
+      validInput = false;
+    } else setPasswordValidationMsg("");
+
+    if (!validInput) return;
+
     setIsLoading(true);
     const response = await fetch("/api/auth/login", {
       method: "post",
@@ -66,25 +86,29 @@ export default function LoginModal() {
           <AlertDialogHeader>
             <AlertDialogTitle>Login</AlertDialogTitle>
             <AlertDialogDescription>
-              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  className="w-full"
-                  type="email"
-                  id="email"
-                  placeholder="Email"
-                  {...register("email")}
-                />
-              </div>
-              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  className="max-w-full"
-                  type="password"
-                  id="password"
-                  placeholder="Password"
-                  {...register("password")}
-                />
+              <div className="space-y-6">
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    warningText={emailValidationMsg}
+                    className="w-full"
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    {...register("email")}
+                  />
+                </div>
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    warningText={passwordValidationMsg}
+                    className="max-w-full"
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    {...register("password")}
+                  />
+                </div>
               </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -98,7 +122,7 @@ export default function LoginModal() {
               We're having difficulties reaching our server, try again later
             </div>
           )}
-          <AlertDialogFooter>
+          <AlertDialogFooter className="pt-6">
             <Button
               type="button"
               onClick={() => {
