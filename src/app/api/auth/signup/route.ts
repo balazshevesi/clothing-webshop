@@ -2,9 +2,17 @@ import { NextResponse } from "next/server";
 
 import { users, carts } from "../../../../../drizzle/schema";
 import getDatabase from "../../utils/getDatabase";
+import {
+  EmailSchema,
+  FirstNameSchema,
+  LastNameSchema,
+  PasswordSchema,
+  PhoneSchema,
+} from "@/inputValidation/schema";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
+import { parse } from "valibot";
 
 interface Body {
   firstName: string;
@@ -27,12 +35,18 @@ export interface ResponseAuthSignup {
 }
 
 export async function POST(request: Request) {
+  const { firstName, lastName, email, phone, password }: Body =
+    await request.json();
+  parse(FirstNameSchema, firstName);
+  parse(LastNameSchema, lastName);
+  parse(EmailSchema, email);
+  parse(PhoneSchema, phone);
+  parse(PasswordSchema, password);
+
   const db = await getDatabase();
-  const body: Body = await request.json();
 
   const emailIsTaken =
-    (await db.select().from(users).where(eq(users.email, body.email))).length >
-    0;
+    (await db.select().from(users).where(eq(users.email, email))).length > 0;
 
   if (emailIsTaken)
     return NextResponse.json(
@@ -40,14 +54,14 @@ export async function POST(request: Request) {
       { status: 200 },
     );
 
-  console.log("body.passworwerwer", body.password);
-  const hashedPassword = await bcrypt.hash(body.password, 10);
+  console.log("body.passworwerwer", password);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const [insertUser] = await db.insert(users).values({
-    firstName: body.firstName,
-    lastName: body.lastName,
-    phoneNumber: body.phone,
-    email: body.email,
+    firstName: firstName,
+    lastName: lastName,
+    phoneNumber: phone,
+    email: email,
     password: hashedPassword,
     createdAt: new Date().toISOString(),
     loggedInAt: new Date().toISOString(),

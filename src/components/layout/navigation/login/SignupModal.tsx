@@ -107,7 +107,13 @@ export default function SignupModal() {
   };
 
   return (
-    <AlertDialog open={signupIsOpen} onOpenChange={() => closeSignup()}>
+    <AlertDialog
+      open={signupIsOpen}
+      onOpenChange={() => {
+        closeSignup();
+        reset();
+      }}
+    >
       <AlertDialogContent>
         <form onSubmit={handleSubmit(handleSignup)}>
           <AlertDialogHeader>
@@ -191,6 +197,7 @@ export default function SignupModal() {
               variant="link"
               onClick={() => {
                 closeSignup();
+                reset();
                 openLogin();
               }}
             >
@@ -198,7 +205,10 @@ export default function SignupModal() {
             </Button>
             <Button
               type="button"
-              onClick={() => closeSignup()}
+              onClick={() => {
+                closeSignup();
+                reset();
+              }}
               variant="outline"
             >
               Cancel

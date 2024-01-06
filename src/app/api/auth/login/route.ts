@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 
 import { users, carts } from "../../../../../drizzle/schema";
 import getDatabase from "../../utils/getDatabase";
+import { EmailSchema, PasswordSchema } from "@/inputValidation/schema";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
+import { parse } from "valibot";
 
 interface Body {
   email: string;
@@ -17,18 +19,20 @@ export interface ResponseAuthLogin {
 }
 
 export async function POST(request: Request) {
-  console.log("loginnn calleddd");
+  const { email, password }: Body = await request.json();
+  parse(EmailSchema, email);
+  parse(PasswordSchema, password);
+
   const db = await getDatabase();
-  const body: Body = await request.json();
 
   const userPassword = (
     await db
       .select({ password: users.password })
       .from(users)
-      .where(eq(users.email, body.email))
+      .where(eq(users.email, email))
   )[0].password;
 
-  const passwordIsCorrect = await bcrypt.compare(body.password, userPassword);
+  const passwordIsCorrect = await bcrypt.compare(password, userPassword);
   if (!passwordIsCorrect)
     return NextResponse.json({ errorMessage: "unauthorized" }, { status: 401 });
 
@@ -41,7 +45,7 @@ export async function POST(request: Request) {
       phoneNumber: users.phoneNumber,
     })
     .from(users)
-    .where(eq(users.email, body.email));
+    .where(eq(users.email, email));
 
   const userIdJwt = jwt.sign(
     { userId: userInfo.id },

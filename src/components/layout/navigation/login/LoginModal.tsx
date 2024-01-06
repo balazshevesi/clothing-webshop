@@ -80,7 +80,13 @@ export default function LoginModal() {
   };
 
   return (
-    <AlertDialog open={loginIsOpen} onOpenChange={() => closeLogin()}>
+    <AlertDialog
+      open={loginIsOpen}
+      onOpenChange={() => {
+        closeLogin();
+        reset();
+      }}
+    >
       <AlertDialogContent>
         <form onSubmit={handleSubmit(handleSignup)}>
           <AlertDialogHeader>
@@ -127,6 +133,7 @@ export default function LoginModal() {
               type="button"
               onClick={() => {
                 closeLogin();
+                reset();
                 openSignup();
               }}
               variant="link"
@@ -135,7 +142,10 @@ export default function LoginModal() {
             </Button>
             <Button
               type="button"
-              onClick={() => closeLogin()}
+              onClick={() => {
+                closeLogin();
+                reset();
+              }}
               variant="outline"
             >
               Cancel
