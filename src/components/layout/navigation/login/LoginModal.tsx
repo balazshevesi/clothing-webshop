@@ -1,14 +1,15 @@
+"use client";
+
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -18,63 +19,61 @@ import { Label } from "@/components/ui/label";
 import { useAuthSlice } from "@/state/useAuthSlice";
 
 export default function LoginModal() {
-  const loginIsOpen = useAuthSlice((state: any) => state.loginIsOpen) as any;
-  const closeLogin = useAuthSlice((state: any) => state.closeLogin) as any;
-  const openSignup = useAuthSlice((state: any) => state.openSignup) as any;
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [isIncorrect, setIsIncorrect] = useState(false);
-
+  const loginIsOpen = useAuthSlice((state) => state.loginIsOpen);
+  const closeLogin = useAuthSlice((state) => state.closeLogin);
+  const openSignup = useAuthSlice((state) => state.openSignup);
   const setLoggedinTrue = useAuthSlice((state) => state.setLoggedinTrue);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState(false);
+  const [isIncorrect, setIsIncorrect] = useState(false);
 
-  const onSuccessfullLogin = (data: any) => {
-    document.cookie = `Authorization=${data.userIdJwt}`;
-    document.cookie = `UserInfo=${JSON.stringify(data.userInfo)}`;
+  const { register, handleSubmit, reset } = useForm();
 
-    setEmail("");
-    setPassword("");
-
-    setLoggedinTrue();
-    setIsIncorrect(false);
-
-    closeLogin();
-  };
-
-  const handleSignup = async (e: any) => {
-    e.preventDefault();
+  const handleSignup = async (formData: any) => {
     setIsLoading(true);
     const response = await fetch("/api/auth/login", {
       method: "post",
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify(formData),
     });
 
+    if (!response.ok) {
+      setServerError(true);
+      setIsLoading(false);
+    } else {
+      setServerError(false);
+      setIsLoading(false);
+    }
+
     const data = await response.json();
-    if (data.userIdJwt) onSuccessfullLogin(data);
-    if (data.errorMessage === "unauthorized") setIsIncorrect(true);
-    else setIsIncorrect(false);
+    //on success
+    if (data.userIdJwt) {
+      document.cookie = `Authorization=${data.userIdJwt}`;
+      document.cookie = `UserInfo=${JSON.stringify(data.userInfo)}`;
+      setLoggedinTrue();
+      setIsIncorrect(false);
+      closeLogin();
+      reset();
+    } else setIsIncorrect(true);
+
     setIsLoading(false);
   };
 
   return (
     <AlertDialog open={loginIsOpen} onOpenChange={() => closeLogin()}>
       <AlertDialogContent>
-        <form onSubmit={handleSignup}>
+        <form onSubmit={handleSubmit(handleSignup)}>
           <AlertDialogHeader>
             <AlertDialogTitle>Login</AlertDialogTitle>
             <AlertDialogDescription>
-              <div className="flex gap-4"></div>
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  className=" w-full"
+                  className="w-full"
                   type="email"
                   id="email"
                   placeholder="Email"
-                  value={email}
-                  onChange={(e: any) => setEmail(e.target.value)}
+                  {...register("email")}
                 />
               </div>
               <div className="grid w-full items-center gap-1.5">
@@ -83,9 +82,8 @@ export default function LoginModal() {
                   className="max-w-full"
                   type="password"
                   id="password"
-                  placeholder="password"
-                  value={password}
-                  onChange={(e: any) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  {...register("password")}
                 />
               </div>
             </AlertDialogDescription>
@@ -95,17 +93,27 @@ export default function LoginModal() {
               Incorrect login information, try again
             </div>
           )}
+          {!!serverError && (
+            <div className="py-2 font-medium text-red-500">
+              We're having difficulties reaching our server, try again later
+            </div>
+          )}
           <AlertDialogFooter>
             <Button
+              type="button"
               onClick={() => {
                 closeLogin();
                 openSignup();
               }}
               variant="link"
             >
-              Don&apos;t have an account?
+              Don't have an account?
             </Button>
-            <Button onClick={() => closeLogin()} variant="outline">
+            <Button
+              type="button"
+              onClick={() => closeLogin()}
+              variant="outline"
+            >
               Cancel
             </Button>
             <Button type="submit" isLoading={isLoading} disabled={isLoading}>

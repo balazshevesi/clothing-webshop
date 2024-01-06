@@ -27,6 +27,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+  const guestUserId = cookieStore.get("guestUserId");
+  if (!guestUserId) 
+
   return (
     <html lang="en">
       <body
