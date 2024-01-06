@@ -54,7 +54,6 @@ export async function POST(request: Request) {
       { status: 200 },
     );
 
-  console.log("body.passworwerwer", password);
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const [insertUser] = await db.insert(users).values({

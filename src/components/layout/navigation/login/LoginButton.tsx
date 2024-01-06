@@ -18,7 +18,7 @@ export default function LoginButton() {
   const isLoggedIn = useAuthSlice((state) => state.isLoggedIn);
   const router = useRouter();
 
-  const userInfoString = getCookie("UserInfo");
+  const userInfoString = getCookie("userInfo");
   const userInfoJson = userInfoString ? JSON.parse(userInfoString) : "";
 
   return (

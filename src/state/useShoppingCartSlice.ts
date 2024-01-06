@@ -17,23 +17,6 @@ export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
   isOpen: false,
 
   addItem: (item: any) => {
-    // const delay = fetch("https://fakestoreapi.com/products")
-    //   .then((response) => {
-    //     // Check if the response is OK (status code 200-299)
-    //     if (!response.ok) {
-    //       throw new Error("Network response was not ok");
-    //     }
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("data", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(
-    //       "There has been a problem with your fetch operation:",
-    //       error,
-    //     );
-    //   });
     return set((state: any) => {
       const itemAlredyExists = state.items.includes(item);
       if (itemAlredyExists) {
