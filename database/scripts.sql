@@ -32,3 +32,5 @@ INSERT INTO guest_users (created_at, logged_in_at) VALUES (NOW(), NOW());
 SELECT LAST_INSERT_ID();
 
 
+-- @block
+SET time_zone = '+01:00'; -- For UTC

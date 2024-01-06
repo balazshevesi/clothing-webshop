@@ -1,7 +1,7 @@
 import { cookies, headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
-import getDatabaseConnection from "../../utils/getDatabaseConnection";
+import getDb from "../../utils/getDb";
 import getUserInfoByEmail from "../../utils/getUserInfoByEmail";
 import jwt from "jsonwebtoken";
 
@@ -9,7 +9,7 @@ export async function GET(
   request: Request,
   { params }: { params: { ["email"]: string; action: string } },
 ) {
-  const databaseConnection = await getDatabaseConnection();
+  const databaseConnection = await getDb();
   if (!databaseConnection) return NextResponse.json({}, { status: 500 });
 
   const headersList = headers();

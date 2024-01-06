@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import getDatabaseConnection from "../../utils/getDatabaseConnection";
+import getDb from "../../utils/getDb";
 import getEmailIsTaken from "../../utils/getEmailIsTaken";
 import getPasswordByEmail from "../../utils/getPasswordByEmail";
 import getUserInfoByEmail from "../../utils/getUserInfoByEmail";
@@ -18,7 +18,7 @@ export interface ResponseAuthLogin {
 }
 
 export async function POST(request: Request) {
-  const databaseConnection = await getDatabaseConnection();
+  const databaseConnection = await getDb();
   if (!databaseConnection) return NextResponse.json({}, { status: 500 });
 
   const body: Body = await request.json();

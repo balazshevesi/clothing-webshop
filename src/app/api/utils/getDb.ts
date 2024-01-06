@@ -1,3 +1,4 @@
+import { drizzle } from "drizzle-orm/mysql2";
 import mysql, { Connection } from "mysql2/promise";
 
 let databaseConnection: mysql.Connection | null = null;
@@ -9,7 +10,7 @@ const databaseConfig = {
   database: process.env.DATABASE_DATABASE,
 };
 
-async function connectToDatabase(): Promise<mysql.Connection | null> {
+async function connectToDb(): Promise<mysql.Connection | null> {
   if (databaseConnection) return databaseConnection;
 
   //* Check config
@@ -37,9 +38,10 @@ async function connectToDatabase(): Promise<mysql.Connection | null> {
 }
 
 // Export a function to get the database connection
-export default async function getDatabaseConnection() {
-  if (!databaseConnection) {
-    await connectToDatabase();
-  }
-  return databaseConnection;
+export default async function getDb() {
+  if (!databaseConnection) await connectToDb();
+  if (!databaseConnection) throw new Error("check database connection");
+
+  const db = drizzle(databaseConnection);
+  return db;
 }

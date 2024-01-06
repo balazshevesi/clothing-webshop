@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import getDatabaseConnection from "../../utils/getDatabaseConnection";
-import createGuest from "./createGuest";
+import { guestUsers } from "../../../../../drizzle/schema";
+import getDb from "../../utils/getDb";
 
 export interface ResponseAuthLogin {
   userIdJwt: string;
@@ -9,11 +9,18 @@ export interface ResponseAuthLogin {
 }
 
 export async function POST(request: Request) {
-  const databaseConnection = await getDatabaseConnection();
-  if (!databaseConnection) return NextResponse.json({}, { status: 500 });
+  const db = await getDb();
 
-  const guestUserId = await createGuest(databaseConnection);
-  console.log("guestUserId", guestUserId);
+  const guestUser = await db.insert(guestUsers).values({
+    createdAt: new Date().toISOString(),
+    loggedInAt: new Date().toISOString(),
+  });
+  console.log("guestUseweruwherhuwehriur", guestUser);
 
-  return NextResponse.json({ guestUserId }, { status: 200 });
+  // if (!databaseConnection) return NextResponse.json({}, { status: 500 });
+
+  // const guestUserId = await createGuest(databaseConnection);
+  // console.log("guestUserId", guestUserId);
+
+  return NextResponse.json({}, { status: 200 });
 }
