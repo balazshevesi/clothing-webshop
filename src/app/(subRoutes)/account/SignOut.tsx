@@ -11,18 +11,14 @@ import { useAuthSlice } from "@/state/useAuthSlice";
 
 export default function SignOut() {
   const router = useRouter();
-  const setLoggedinTrue = useAuthSlice(
-    (state: any) => state.setLoggedinTrue,
-  ) as any;
-
   const setLogedginFalse = useAuthSlice(
     (state: any) => state.setLogedginFalse,
   ) as any;
 
   const handleSignout = () => {
     setLogedginFalse();
-    deleteCookie("UserInfo");
-    deleteCookie("Authorization");
+    deleteCookie("userInfo");
+    deleteCookie("authorization");
     router.push("/");
   };
 

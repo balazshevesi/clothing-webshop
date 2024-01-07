@@ -1,47 +1,39 @@
 import { drizzle } from "drizzle-orm/mysql2";
-import mysql, { Connection } from "mysql2/promise";
+import mysql from "mysql2/promise";
 
-let databaseConnection: mysql.Connection | null = null;
-
-const databaseConfig = {
+// Define the pool configuration using environment variables
+const poolConfig = {
   host: process.env.DATABASE_URL,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DATABASE,
+  waitForConnections: true,
+  connectionLimit: 10, // You can adjust this value based on your needs and database server capacity
+  queueLimit: 0,
 };
 
-async function connectToDb(): Promise<mysql.Connection | null> {
-  if (databaseConnection) return databaseConnection;
+// Create a pool using the configuration
+const pool = mysql.createPool(poolConfig);
 
-  //* Check config
-  if (
-    !databaseConfig.host ||
-    !databaseConfig.user ||
-    !databaseConfig.password ||
-    !databaseConfig.database
-  ) {
-    console.error("Database configuration is missing");
-    return null;
-  }
-
-  //* Connect
+async function getDatabaseConnection(): Promise<mysql.PoolConnection> {
   try {
-    console.log("Connecting to the database...");
-    const connection = await mysql.createConnection(databaseConfig);
-    databaseConnection = connection;
-    console.log("Connection successful");
-    return databaseConnection;
+    // Get a connection from the pool
+    const connection = await pool.getConnection();
+    console.log("Database connection acquired from pool");
+    return connection;
   } catch (error) {
-    console.error("Database connection error:", error);
-    return null;
+    console.error("Error acquiring database connection from pool:", error);
+    throw error; // Rethrow the error to handle it in the calling function
   }
 }
 
 // Export a function to get the database connection
 export default async function getDatabase() {
-  if (!databaseConnection) await connectToDb();
-  if (!databaseConnection) throw new Error("check database connection");
+  const connection = await getDatabaseConnection();
 
-  const db = drizzle(databaseConnection);
+  // Make sure to release the connection back to the pool when done
+  // You can use connection.release() after your database operations are complete
+
+  const db = drizzle(connection);
   return db;
 }

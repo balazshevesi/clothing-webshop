@@ -19,7 +19,6 @@ export default function LoginButton() {
   const router = useRouter();
 
   const userInfoString = getCookie("userInfo");
-  const userInfoJson = userInfoString ? JSON.parse(userInfoString) : "";
 
   return (
     <>
@@ -29,14 +28,11 @@ export default function LoginButton() {
           Log in
         </Button>
       ) : (
-        <Button
-          variant="outline"
-          onClick={() => router.push(`/account/${userInfoJson.email}`)}
-        >
+        <Button variant="outline" onClick={() => router.push(`/account`)}>
           <UserIcon className="mr-2 size-6" />
           View Account
         </Button>
-      )}{" "}
+      )}
       <LoginModal />
       <SignupModal />
     </>

@@ -3,18 +3,17 @@ import { NextResponse, NextRequest } from "next/server";
 
 import { users, carts } from "../../../../../drizzle/schema";
 import getDatabase from "../../utils/getDatabase";
-import getUserInfoByEmail from "../../utils/getUserInfoByEmail";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 
 export async function GET(
   request: Request,
-  { params }: { params: { ["email"]: string; action: string } },
+  { params }: { params: { ["userId"]: string; action: string } },
 ) {
   const db = await getDatabase();
 
   const headersList = headers();
-  const authorization = headersList.get("Authorization");
+  const authorization = headersList.get("authorization");
 
   //if not logged in
   if (!authorization) return NextResponse.json({}, { status: 401 });
@@ -25,7 +24,7 @@ export async function GET(
   if (typeof verifiedToken === "string" || verifiedToken instanceof String)
     return NextResponse.json({}, { status: 401 });
 
-  const email = params.email;
+  const userId = +params.userId;
   // const userInfo = await getUserInfoByEmail(databaseConnection, email);
   const [userInfo] = await db
     .select({
@@ -37,7 +36,7 @@ export async function GET(
       isAdmin: users.isAdmin,
     })
     .from(users)
-    .where(eq(users.email, email));
+    .where(eq(users.id, userId));
 
   if (verifiedToken.userId !== userInfo.id)
     return NextResponse.json({}, { status: 401 });

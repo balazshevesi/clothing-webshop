@@ -10,6 +10,7 @@ export interface ResponseAuthLogin {
 }
 
 export async function GET(request: Request) {
+  console.log("called create guest");
   const db = await getDatabase();
 
   const [guestUser] = await db.insert(guestUsers).values({
