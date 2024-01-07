@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 export default function Page() {
   return (
     <div>
-      <Title1>brands</Title1>
+      <Title1>Planned Sales</Title1>
       <div className=" flex justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
-        <Button>Add Brand</Button>
+        <Button>Add Planned Sales</Button>
       </div>
     </div>
   );
