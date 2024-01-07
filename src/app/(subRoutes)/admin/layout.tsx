@@ -5,7 +5,8 @@ import { ReactNode } from "react";
 
 import Container from "@/components/general/Container";
 
-import AdminPage from "./AdminPage";
+import AdminPage from "./AdminNavigation";
+import AdminNavigation from "./AdminNavigation";
 import jwt from "jsonwebtoken";
 
 export default async function adminLayout({
@@ -39,5 +40,5 @@ export default async function adminLayout({
   if (!data.userInfo.isAdmin)
     return <Container>you're not an admin g</Container>;
 
-  return <>{children}</>;
+  return <AdminNavigation>{children}</AdminNavigation>;
 }

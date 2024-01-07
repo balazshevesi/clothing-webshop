@@ -1,28 +1,27 @@
-import { drizzle } from "drizzle-orm/mysql2";
+import { MySql2Database, drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 
-// Define the pool configuration using environment variables
-const poolConfig = {
+// Define the connection configuration using environment variables
+const connectionConfig = {
   host: process.env.DATABASE_URL,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DATABASE,
-  waitForConnections: true,
-  connectionLimit: 10, // You can adjust this value based on your needs and database server capacity
-  queueLimit: 0,
 };
 
-// Create a pool using the configuration
-const pool = mysql.createPool(poolConfig);
+// Add disconnect to drizzle
+interface DatabaseConnection extends MySql2Database<Record<string, never>> {
+  disconnect: Function;
+}
 
-async function getDatabaseConnection(): Promise<mysql.PoolConnection> {
+async function getDatabaseConnection() {
   try {
-    // Get a connection from the pool
-    const connection = await pool.getConnection();
-    console.log("Database connection acquired from pool");
+    // Create a new connection
+    const connection = await mysql.createConnection(connectionConfig);
+    console.log("Database connection established");
     return connection;
   } catch (error) {
-    console.error("Error acquiring database connection from pool:", error);
+    console.error("Error establishing database connection:", error);
     throw error; // Rethrow the error to handle it in the calling function
   }
 }
@@ -31,9 +30,8 @@ async function getDatabaseConnection(): Promise<mysql.PoolConnection> {
 export default async function getDatabase() {
   const connection = await getDatabaseConnection();
 
-  // Make sure to release the connection back to the pool when done
-  // You can use connection.release() after your database operations are complete
+  const db = drizzle(connection) as DatabaseConnection;
+  db.disconnect = () => connection.end();
 
-  const db = drizzle(connection);
   return db;
 }

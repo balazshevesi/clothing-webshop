@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 import Container from "@/components/general/Container";
 import Title1 from "@/components/general/Title1";
+import { Button } from "@/components/ui/button";
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -9,12 +11,5 @@ export default async function Page() {
   const userInfoCookies = cookieStore.get("userInfo");
   const userInfo = JSON.parse(userInfoCookies?.value!);
 
-  return (
-    <div className="flex h-full items-stretch">
-      <div className=" h-full w-24 bg-pink-600">
-        <div className=" sticky top-20">navigation</div>
-      </div>
-      <Title1>Welcome back {userInfo.firstName}</Title1>
-    </div>
-  );
+  return <Title1>Welcome back {userInfo.firstName}</Title1>;
 }

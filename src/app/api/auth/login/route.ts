@@ -24,42 +24,50 @@ export async function POST(request: Request) {
   parse(PasswordSchema, password);
 
   const db = await getDatabase();
+  try {
+    const userPassword = (
+      await db
+        .select({ password: users.password })
+        .from(users)
+        .where(eq(users.email, email))
+    )[0].password;
 
-  const userPassword = (
-    await db
-      .select({ password: users.password })
+    const passwordIsCorrect = await bcrypt.compare(password, userPassword);
+    if (!passwordIsCorrect)
+      return NextResponse.json(
+        { errorMessage: "unauthorized" },
+        { status: 401 },
+      );
+
+    const [userInfo] = await db
+      .select({
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+        phoneNumber: users.phoneNumber,
+      })
       .from(users)
-      .where(eq(users.email, email))
-  )[0].password;
+      .where(eq(users.email, email));
 
-  const passwordIsCorrect = await bcrypt.compare(password, userPassword);
-  if (!passwordIsCorrect)
-    return NextResponse.json({ errorMessage: "unauthorized" }, { status: 401 });
+    const userIdJwt = jwt.sign(
+      { userId: userInfo.id },
+      process.env.JWT_SECRET_KEY!,
+      {
+        expiresIn: "28d",
+      },
+    );
 
-  const [userInfo] = await db
-    .select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      phoneNumber: users.phoneNumber,
-    })
-    .from(users)
-    .where(eq(users.email, email));
-
-  const userIdJwt = jwt.sign(
-    { userId: userInfo.id },
-    process.env.JWT_SECRET_KEY!,
-    {
-      expiresIn: "28d",
-    },
-  );
-
-  return NextResponse.json(
-    {
-      userIdJwt: userIdJwt,
-      userInfo,
-    },
-    { status: 200 },
-  );
+    return NextResponse.json(
+      {
+        userIdJwt: userIdJwt,
+        userInfo,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error(error);
+  } finally {
+    db.disconnect();
+  }
 }
