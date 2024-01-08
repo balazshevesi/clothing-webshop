@@ -12,11 +12,10 @@ export default async function Page() {
   });
   const data = await response.json();
   const content = data.content;
-  console.log("contentcontent", content);
   return (
     <div>
       <Title1>brands</Title1>
-      <div className=" flex flex-col justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
         <Link href="/admin/brands/add">Add Brand</Link>
         <div className=" flex flex-col gap-2">

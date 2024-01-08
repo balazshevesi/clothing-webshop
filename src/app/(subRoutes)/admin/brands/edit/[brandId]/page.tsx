@@ -7,8 +7,11 @@ export default async function Page({
 }) {
   const response = await fetch(
     `${process.env.HOST}/api/brand/${params.brandId}`,
+    { cache: "no-store" },
   );
   const data = await response.json();
 
-  return <BrandForm data={data.content} />;
+  if (JSON.stringify(data) === "{}") return;
+
+  return <BrandForm brandData={data.content} />;
 }

@@ -14,16 +14,19 @@ function Logo() {
   return (
     <div className="flex w-fit cursor-pointer select-none flex-col whitespace-nowrap">
       [ the masculine ideal ]
-      <div className=" flex h-0.5 w-full">
-        <div className=" flex-1 bg-indigo-500" />
-        <div className=" flex-1 bg-yellow-500" />
-        <div className=" flex-1 bg-indigo-500" />
+      <div className="flex h-0.5 w-full">
+        <div className="flex-1 bg-indigo-500" />
+        <div className="flex-1 bg-yellow-500" />
+        <div className="flex-1 bg-indigo-500" />
       </div>
     </div>
   );
 }
 
 export default function Navigation() {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get("authorization");
+
   return (
     <nav className="sticky left-0 top-0 z-50 w-full border-b border-dashed border-white/50 bg-black p-2 shadow">
       {/* desktop */}
@@ -42,7 +45,8 @@ export default function Navigation() {
           </Link>
         </div>
         <div className="flex flex-1 justify-end gap-2">
-          <LoginButton /> <CartSheet />
+          <LoginButton serverAuthorization={!!authorization} />
+          <CartSheet />
         </div>
       </Container>
       {/* mobile */}

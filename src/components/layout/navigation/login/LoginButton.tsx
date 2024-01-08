@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import getCookie from "@/utils/getCookie";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -13,12 +13,14 @@ import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 import { useAuthSlice } from "@/state/useAuthSlice";
 
-export default function LoginButton() {
+export default function LoginButton({
+  serverAuthorization,
+}: {
+  serverAuthorization: boolean;
+}) {
   const openLogin = useAuthSlice((state: any) => state.openLogin) as any;
   const isLoggedIn = useAuthSlice((state) => state.isLoggedIn);
   const router = useRouter();
-
-  const userInfoString = getCookie("userInfo");
 
   return (
     <>

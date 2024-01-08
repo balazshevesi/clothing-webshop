@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 
 import deleteCookie from "@/utils/deleteCookie";
-import getCookie from "@/utils/getCookie";
 
 import { Button } from "@/components/ui/button";
 
