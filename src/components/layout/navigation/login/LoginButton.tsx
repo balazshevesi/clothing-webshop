@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,13 +18,21 @@ export default function LoginButton({
 }: {
   serverAuthorization: boolean;
 }) {
+  const router = useRouter();
+
   const openLogin = useAuthSlice((state: any) => state.openLogin) as any;
   const isLoggedIn = useAuthSlice((state) => state.isLoggedIn);
-  const router = useRouter();
+
+  const [localLoginState, setLocalLoginState] = useState(serverAuthorization);
+
+  useEffect(() => {
+    if (isLoggedIn) setLocalLoginState(true);
+    else setLocalLoginState(false);
+  }, [isLoggedIn]);
 
   return (
     <>
-      {!isLoggedIn ? (
+      {!localLoginState ? (
         <Button variant="outline" onClick={() => openLogin()}>
           <UserIcon className="mr-2 size-6" />
           Log in

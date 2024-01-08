@@ -84,7 +84,7 @@ export default function CartSheet() {
   const cartCount = useMemo(() => {
     let count = 0;
     cart.forEach((item: any) => {
-      count = count + item.count;
+      count = count + +item.count;
     });
     return count;
   }, [cart]);

@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
-import { brands, users } from "../../../../drizzle/schema";
+import { brands, categories, users } from "../../../../drizzle/schema";
 import getDatabase from "../utils/getDatabase";
 import { GenericInputSchema } from "@/inputValidation/schema";
 import { eq } from "drizzle-orm";
@@ -17,11 +17,11 @@ export async function GET(request: Request) {
   const db = await getDatabase();
 
   try {
-    const brandsSelect = await db.select().from(brands);
-    return NextResponse.json({ content: brandsSelect }, { status: 200 });
+    const caregoriesSelect = await db.select().from(categories);
+    return NextResponse.json({ content: caregoriesSelect }, { status: 200 });
   } catch (error) {
     console.error(error);
   } finally {
-    await db.disconnect();
+    db.disconnect();
   }
 }

@@ -19,12 +19,12 @@ export default function InitState({ children }: { children: ReactNode }) {
     (state: any) => state.setLoggedinTrue,
   ) as any;
 
-  // useEffect(() => {
+  useEffect(() => {
     const userInfo = getCookie("userInfo");
     if (userInfo) setLoggedinTrue();
     const guestUserId = getCookie("guestUserId");
     if (!guestUserId) getAndsetGuestId();
-  // }, []);
+  }, []);
 
   return children;
 }

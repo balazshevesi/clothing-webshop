@@ -10,7 +10,8 @@ const connectionConfig = {
 };
 
 // Add disconnect to drizzle
-interface DatabaseConnection extends MySql2Database<Record<string, never>> {
+export interface DatabaseConnection
+  extends MySql2Database<Record<string, never>> {
   disconnect: Function;
 }
 

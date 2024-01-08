@@ -18,24 +18,22 @@ export default async function Page() {
       <div className="flex flex-col justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
         <Link href="/admin/brands/add">Add Brand</Link>
-        <div className=" flex flex-col gap-2">
-          {content.map((brand: any) => {
-            return (
-              <div
-                key={brand.id}
-                className="flex items-center justify-between gap-4 rounded bg-slate-800 px-4 py-2"
+        {content.map((brand: any) => {
+          return (
+            <div
+              key={brand.id}
+              className="flex items-center justify-between gap-4 rounded bg-slate-800 px-4 py-2"
+            >
+              {brand.name}
+              <Link
+                href={`/admin/brands/edit/${brand.id}`}
+                className="rounded bg-slate-700 p-2"
               >
-                {brand.name}
-                <Link
-                  href={`/admin/brands/edit/${brand.id}`}
-                  className=" rounded  bg-slate-700 p-2"
-                >
-                  <PencilIcon className=" size-5" />
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+                <PencilIcon className=" size-5" />
+              </Link>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 import getDatabase from "../../utils/getDatabase";
 import getIsAdmin from "../../utils/getIsAdmin";
-import { brands, users } from "./../../../../../drizzle/schema";
+import { brands, categories, users } from "../../../../../drizzle/schema";
 import { GenericInputSchema } from "@/inputValidation/schema";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await db.insert(brands).values({
+    await db.insert(categories).values({
       name,
       image,
       description,
@@ -41,8 +41,6 @@ export async function POST(request: Request) {
   } finally {
     db.disconnect();
   }
-
-  console.log("niceeee");
 
   return NextResponse.json({ status: 200 });
 }

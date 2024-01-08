@@ -17,17 +17,17 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { GenericInputSchema } from "@/inputValidation/schema";
 import { safeParse } from "valibot";
 
-export default function BrandForm({ brandData }: { brandData?: any }) {
+export default function CategoryForm({ categoryData }: { categoryData?: any }) {
   const router = useRouter();
 
-  const [name, setName] = useState(brandData ? brandData.name : "");
+  const [name, setName] = useState(categoryData ? categoryData.name : "");
   const [nameValidationMsg, setNameValidationMsg] = useState("");
 
-  const [image, setImage] = useState(brandData ? brandData.image : "");
+  const [image, setImage] = useState(categoryData ? categoryData.image : "");
   const [imageValidationMsg, setImageValidationMsg] = useState("");
 
   const [description, setDescription] = useState(
-    brandData ? brandData.description : "",
+    categoryData ? categoryData.description : "",
   );
   const [descriptionValidationMsg, setDescriptionValidationMsg] = useState("");
 
@@ -37,11 +37,11 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
 
   const handleDelete = async () => {
     const isSure = confirm(
-      `Are you sure you want to delete ${brandData.name}?`,
+      `Are you sure you want to delete ${categoryData.name}?`,
     );
     if (!isSure) return;
     const response = await fetch(
-      `http://localhost:3000/api/admin/brand/${brandData.id}`,
+      `http://localhost:3000/api/admin/category/${categoryData.id}`,
       {
         method: "delete",
         headers: {
@@ -54,10 +54,10 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
       setServerError(true);
       return;
     }
-    router.push("/admin/brands");
+    router.push("/admin/categories");
   };
 
-  const handleBrand = async (e: any) => {
+  const handleCategory = async (e: any) => {
     e.preventDefault();
 
     let validInput = true;
@@ -83,11 +83,11 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/brand${
-          brandData ? `/${brandData.id}` : ""
+        `http://localhost:3000/api/admin/category${
+          categoryData ? `/${categoryData.id}` : ""
         }`,
         {
-          method: brandData ? "put" : "post",
+          method: categoryData ? "put" : "post",
           body: JSON.stringify({ name, image, description }),
           headers: {
             authorization: getCookie("authorization")!,
@@ -104,7 +104,7 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
     }
     setIsLoading(false);
 
-    if (!brandData) {
+    if (!categoryData) {
       setName("");
       setImage("");
       setDescription("");
@@ -117,8 +117,10 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
   };
   return (
     <div className=" max-w-xl">
-      <Title2>{brandData ? `Edit ${brandData.name} ` : "Add new brand"}</Title2>
-      <form onSubmit={handleBrand} className="space-y-4  ">
+      <Title2>
+        {categoryData ? `Edit ${categoryData.name} ` : "Add new category"}
+      </Title2>
+      <form onSubmit={handleCategory} className="space-y-4  ">
         <Input
           value={name}
           onInput={(e: any) => setName(e.target.value)}
@@ -150,9 +152,9 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
         />
         <div className=" flex gap-4">
           <Button type="submit" isLoading={isLoading} disabled={isLoading}>
-            {brandData ? "Edit" : "Add"}
+            {categoryData ? "Edit" : "Add"}
           </Button>
-          {!!brandData && (
+          {!!categoryData && (
             <Button
               variant="destructive"
               size="icon"
@@ -170,7 +172,7 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
         )}
         {!!success && (
           <div className=" animate-fade-up text-green-400 duration-200">
-            {brandData ? "Edited successfully" : "Added successfully"}
+            {categoryData ? "Edited successfully" : "Added successfully"}
           </div>
         )}
       </form>
