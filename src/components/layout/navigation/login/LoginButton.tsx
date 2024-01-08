@@ -23,8 +23,8 @@ export default function LoginButton({
   const openLogin = useAuthSlice((state: any) => state.openLogin) as any;
   const isLoggedIn = useAuthSlice((state) => state.isLoggedIn);
 
+  //this block of code initilizes the state pre-hydration
   const [localLoginState, setLocalLoginState] = useState(serverAuthorization);
-
   useEffect(() => {
     if (isLoggedIn) setLocalLoginState(true);
     else setLocalLoginState(false);

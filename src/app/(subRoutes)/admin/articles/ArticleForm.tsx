@@ -2,63 +2,130 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import getCookie from "@/utils/getCookie";
 
 import Title2 from "@/components/general/Title2";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-import { GenericInputSchema } from "@/inputValidation/schema";
+import ArticleImages from "./ArticleImages";
+import {
+  GenericInputSchema,
+  GenericNumberInputSchema,
+  SizeInputSchema,
+} from "@/inputValidation/schema";
 import { safeParse } from "valibot";
 
-export default function ArticleForm({ categoryData }: { categoryData?: any }) {
+export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
   const router = useRouter();
 
-  const [name, setName] = useState(categoryData ? categoryData.name : "");
+  const [name, setName] = useState(ArticleData ? ArticleData.name : "");
   const [nameValidationMsg, setNameValidationMsg] = useState("");
 
-  const [image, setImage] = useState(categoryData ? categoryData.image : "");
-  const [imageValidationMsg, setImageValidationMsg] = useState("");
+  const [price, setPrice] = useState(ArticleData ? ArticleData.name : "");
+  const [priceValidationMsg, setPriceValidationMsg] = useState("");
+
+  const [quantityInStock, setQuantityInStock] = useState(
+    ArticleData ? ArticleData.name : "",
+  );
+  const [quantityInStockValidationMsg, setQuantityInStockValidationMsg] =
+    useState("");
+
+  const [brands, setBrands] = useState(ArticleData ? ArticleData.name : [""]);
+  const [brand, setBrand] = useState(ArticleData ? ArticleData.name : "");
+  const [brandValidationMsg, setBrandValidationMsg] = useState("");
+
+  const [categories, setCategories] = useState(
+    ArticleData ? ArticleData.name : [""],
+  );
+  const [category, setCategory] = useState(ArticleData ? ArticleData.name : "");
+  const [categoryValidationMsg, setCategoryValidationMsg] = useState("");
 
   const [description, setDescription] = useState(
-    categoryData ? categoryData.description : "",
+    ArticleData ? ArticleData.description : "",
   );
   const [descriptionValidationMsg, setDescriptionValidationMsg] = useState("");
+
+  const [images, setImages] = useState([""]);
+  const [imagesValidationMsg, setImagesValidationMsg] = useState("");
+
+  const [size, setSize] = useState("");
+  const [sizeValidationMsg, setSizeValidationMsg] = useState("");
+
+  const [color, setColor] = useState("");
+  const [colorValidationMsg, setColorValidationMsg] = useState("");
+
+  const [garmentCare, setGarmentCare] = useState("");
+  const [garmentCareValidationMsg, setGarmentCareValidationMsg] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState(false);
 
-  const handleDelete = async () => {
-    const isSure = confirm(
-      `Are you sure you want to delete ${categoryData.name}?`,
-    );
-    if (!isSure) return;
-    const response = await fetch(
-      `http://localhost:3000/api/admin/category/${categoryData.id}`,
-      {
-        method: "delete",
-        headers: {
-          authorization: getCookie("authorization")!,
-        },
-      },
-    );
+  const getBrands = async () => {
+    const response = await fetch("/api/brands");
     const data = await response.json();
-    if (!response.ok) {
-      setServerError(true);
-      return;
-    }
-    router.push("/admin/categories");
+    const content = data.content;
+    setBrands(content);
   };
+
+  const getCategories = async () => {
+    const response = await fetch("/api/categories");
+    const data = await response.json();
+    const content = data.content;
+    setCategories(content);
+  };
+
+  useEffect(() => {
+    getBrands();
+    getCategories();
+  }, []);
+
+  //todo build backend api for adding articles, and editing them, and deleting them
+  // const handleDelete = async () => {
+  //   const isSure = confirm(
+  //     `Are you sure you want to delete ${categoryData.name}?`,
+  //   );
+  //   if (!isSure) return;
+  //   const response = await fetch(
+  //     `http://localhost:3000/api/admin/category/${categoryData.id}`,
+  //     {
+  //       method: "delete",
+  //       headers: {
+  //         authorization: getCookie("authorization")!,
+  //       },
+  //     },
+  //   );
+  //   const data = await response.json();
+  //   if (!response.ok) {
+  //     setServerError(true);
+  //     return;
+  //   }
+  //   router.push("/admin/categories");
+  // };
 
   const handleCategory = async (e: any) => {
     e.preventDefault();
+    console.log(brand);
 
     let validInput = true;
     const nameValStatus = safeParse(GenericInputSchema, name);
@@ -67,34 +134,89 @@ export default function ArticleForm({ categoryData }: { categoryData?: any }) {
       validInput = false;
     } else setNameValidationMsg("");
 
-    const imageValStatus = safeParse(GenericInputSchema, image);
-    if (!imageValStatus.success) {
-      setImageValidationMsg(imageValStatus.issues[0].message);
+    const priceValStatus = safeParse(GenericNumberInputSchema, +price);
+    if (!priceValStatus.success) {
+      setPriceValidationMsg(priceValStatus.issues[0].message);
       validInput = false;
-    } else setImageValidationMsg("");
+    } else setPriceValidationMsg("");
+
+    const quantityValStatus = safeParse(
+      GenericNumberInputSchema,
+      +quantityInStock,
+    );
+    if (!quantityValStatus.success) {
+      setQuantityInStockValidationMsg(quantityValStatus.issues[0].message);
+      validInput = false;
+    } else setQuantityInStockValidationMsg("");
 
     const descriptionValStatus = safeParse(GenericInputSchema, description);
     if (!descriptionValStatus.success) {
       setDescriptionValidationMsg(descriptionValStatus.issues[0].message);
       validInput = false;
     } else setDescriptionValidationMsg("");
+
+    const garmentCareValStatus = safeParse(GenericInputSchema, garmentCare);
+    if (!garmentCareValStatus.success) {
+      setGarmentCareValidationMsg(garmentCareValStatus.issues[0].message);
+      validInput = false;
+    } else setGarmentCareValidationMsg("");
+
+    const imagesValStatus = safeParse(GenericInputSchema, images[0]);
+    if (!imagesValStatus.success) {
+      setImagesValidationMsg(imagesValStatus.issues[0].message);
+      validInput = false;
+    } else setImagesValidationMsg("");
+
+    const colorValStatus = safeParse(GenericInputSchema, color);
+    if (!colorValStatus.success) {
+      setColorValidationMsg(colorValStatus.issues[0].message);
+      validInput = false;
+    } else setColorValidationMsg("");
+
+    const brandValStatus = safeParse(GenericInputSchema, brand);
+    if (!brandValStatus.success) {
+      setBrandValidationMsg(brandValStatus.issues[0].message);
+      validInput = false;
+    } else setBrandValidationMsg("");
+
+    const categoryValStatus = safeParse(GenericInputSchema, category);
+    if (!categoryValStatus.success) {
+      setCategoryValidationMsg(categoryValStatus.issues[0].message);
+      validInput = false;
+    } else setCategoryValidationMsg("");
+
+    const sizeValStatus = safeParse(SizeInputSchema, size);
+    if (!sizeValStatus.success) {
+      setSizeValidationMsg(sizeValStatus.issues[0].message);
+      validInput = false;
+    } else setSizeValidationMsg("");
+
     if (!validInput) return;
 
     setIsLoading(true);
+
+    const submitionData = {
+      name,
+      price,
+      quantityInStock,
+      brand,
+      category,
+      description,
+      garmentCare,
+      images,
+      size,
+      color,
+    };
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/admin/category${
-          categoryData ? `/${categoryData.id}` : ""
-        }`,
-        {
-          method: categoryData ? "put" : "post",
-          body: JSON.stringify({ name, image, description }),
-          headers: {
-            authorization: getCookie("authorization")!,
-          },
+      const response = await fetch(`http://localhost:3000/api/admin/article`, {
+        method: "post",
+        body: JSON.stringify(submitionData),
+        headers: {
+          authorization: getCookie("authorization")!,
         },
-      );
+      });
       if (!response.ok) {
+        setIsLoading(false)
         setServerError(true);
         return;
       } else setServerError(false);
@@ -104,11 +226,11 @@ export default function ArticleForm({ categoryData }: { categoryData?: any }) {
     }
     setIsLoading(false);
 
-    if (!categoryData) {
-      setName("");
-      setImage("");
-      setDescription("");
-    }
+    // if (!categoryData) {
+    //   setName("");
+    //   setImage("");
+    //   setDescription("");
+    // }
 
     setSuccess(true);
     setTimeout(() => {
@@ -118,7 +240,7 @@ export default function ArticleForm({ categoryData }: { categoryData?: any }) {
   return (
     <div className=" max-w-xl">
       <Title2>
-        {categoryData ? `Edit ${categoryData.name} ` : "Add new article"}
+        {ArticleData ? `Edit ${ArticleData.name}` : "Add new article"}
       </Title2>
       <form onSubmit={handleCategory} className="space-y-4  ">
         <Input
@@ -131,35 +253,115 @@ export default function ArticleForm({ categoryData }: { categoryData?: any }) {
           placeholder="Name"
         />
         <Input
-          value={image}
-          onInput={(e: any) => setImage(e.target.value)}
-          warningText={imageValidationMsg}
+          value={price}
+          onInput={(e: any) => setPrice(e.target.value)}
+          warningText={priceValidationMsg}
           className="w-full"
-          type="text"
-          id="image"
-          placeholder="Image Path"
+          id="description"
+          type="number"
+          placeholder="Price (SEK)"
         />
-        {!!image && (
-          <img className=" w-full overflow-hidden rounded" src={image} alt="" />
+        <Input
+          value={quantityInStock}
+          onInput={(e: any) => setQuantityInStock(e.target.value)}
+          warningText={quantityInStockValidationMsg}
+          className="w-full"
+          id="quantityInStock"
+          type="number"
+          placeholder="Quantity In Stock"
+        />
+        <Select onValueChange={(value) => setBrand(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder={"Select Brand"} />
+          </SelectTrigger>
+          <SelectContent>
+            {brands.map((brand: any) => (
+              <SelectItem value={brand.name}>{brand.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {!!brandValidationMsg && (
+          <div className=" font-medium text-red-500">{brandValidationMsg}</div>
+        )}
+        <Select onValueChange={(value) => setCategory(value)}>
+          <SelectTrigger className="">
+            <SelectValue placeholder="Select Category" />
+          </SelectTrigger>
+          <SelectContent>
+            {/* <SelectItem value="light">Light</SelectItem>
+            <SelectItem value="dark">Dark</SelectItem>
+            <SelectItem value="system">System</SelectItem> */}
+            {categories.map((category: any) => (
+              <SelectItem value={category.name}>{category.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {!!categoryValidationMsg && (
+          <div className=" font-medium text-red-500">
+            {categoryValidationMsg}
+          </div>
         )}
         <Textarea
           value={description}
           onInput={(e: any) => setDescription(e.target.value)}
           warningText={descriptionValidationMsg}
-          className="w-full"
-          id="description"
           placeholder="Description"
-        />
+        ></Textarea>
+        <Textarea
+          value={garmentCare}
+          onInput={(e: any) => setGarmentCare(e.target.value)}
+          warningText={garmentCareValidationMsg}
+          placeholder="Garment Care"
+        ></Textarea>
+        <ArticleImages imagesProp={images} setImagesProp={setImages} />{" "}
+        {!!imagesValidationMsg && (
+          <div className=" font-medium text-red-500">{imagesValidationMsg}</div>
+        )}
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Properties</AccordionTrigger>
+            <AccordionContent className=" flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Select onValueChange={(state) => setSize(state)}>
+                  <SelectTrigger className="">
+                    <SelectValue placeholder="Select Size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="xs">XS</SelectItem>
+                    <SelectItem value="s">S</SelectItem>
+                    <SelectItem value="m">M</SelectItem>
+                    <SelectItem value="l">L</SelectItem>
+                    <SelectItem value="xl">XL</SelectItem>
+                  </SelectContent>
+                </Select>
+                {!!sizeValidationMsg && (
+                  <div className="font-medium text-red-500">
+                    {sizeValidationMsg}
+                  </div>
+                )}
+                <Input
+                  value={color}
+                  onInput={(e: any) => setColor(e.target.value)}
+                  warningText={colorValidationMsg}
+                  className="w-full"
+                  id="quantityInStock"
+                  type="text"
+                  placeholder="Color"
+                />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
         <div className=" flex gap-4">
           <Button type="submit" isLoading={isLoading} disabled={isLoading}>
-            {categoryData ? "Edit" : "Add"}
+            {ArticleData ? "Edit" : "Add"}
           </Button>
-          {!!categoryData && (
+          {!!ArticleData && (
             <Button
               variant="destructive"
               size="icon"
               type="button"
-              onClick={handleDelete}
+              // onClick={handleDelete}
             >
               <TrashIcon className="size-5" />
             </Button>
@@ -172,7 +374,7 @@ export default function ArticleForm({ categoryData }: { categoryData?: any }) {
         )}
         {!!success && (
           <div className=" animate-fade-up text-green-400 duration-200">
-            {categoryData ? "Edited successfully" : "Added successfully"}
+            {ArticleData ? "Edited successfully" : "Added successfully"}
           </div>
         )}
       </form>

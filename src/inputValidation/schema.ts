@@ -1,4 +1,4 @@
-import { string, minLength, email } from "valibot";
+import { string, minLength, email, number } from "valibot";
 
 export const EmailSchema = string("Your email must be a string", [
   minLength(1, "Please enter your email"),
@@ -25,3 +25,10 @@ export const LastNameSchema = string("Your password must be a string", [
 export const GenericInputSchema = string("Your input must be an string", [
   minLength(2, "Input needs to be at least two characters"),
 ]);
+
+export const SizeInputSchema = string("Your input must be an string", [
+  minLength(1, "Input needs to be at least two characters"),
+]);
+
+
+export const GenericNumberInputSchema = number("Your input must be an number");
