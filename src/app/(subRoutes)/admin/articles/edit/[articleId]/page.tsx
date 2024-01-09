@@ -3,10 +3,10 @@ import ArticleForm from "../../ArticleForm";
 export default async function Page({
   params,
 }: {
-  params: { categoryId: string };
+  params: { articleId: string };
 }) {
   const response = await fetch(
-    `${process.env.HOST}/api/article/${params.categoryId}`,
+    `${process.env.HOST}/api/article/${params.articleId}`,
     { cache: "no-store" },
   );
   const data = await response.json();
@@ -14,5 +14,6 @@ export default async function Page({
 
   if (JSON.stringify(data) === "{}") return;
 
-  return <ArticleForm categoryData={data.content} />;
+  const articleData = data.content;
+  return <ArticleForm ArticleData={articleData} />;
 }

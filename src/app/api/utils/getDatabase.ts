@@ -1,3 +1,5 @@
+import * as schema from "../../../../drizzle/schema";
+import * as schemaRelations from "../../../../drizzle/schemaRelations";
 import { MySql2Database, drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 
@@ -10,8 +12,7 @@ const connectionConfig = {
 };
 
 // Add disconnect to drizzle
-export interface DatabaseConnection
-  extends MySql2Database<Record<string, never>> {
+export interface DatabaseConnection extends MySql2Database<typeof schema> {
   disconnect: Function;
 }
 
@@ -27,11 +28,14 @@ async function getDatabaseConnection() {
   }
 }
 
-// Export a function to get the database connection
+// Export a function to get the databasse connection
 export default async function getDatabase() {
   const connection = await getDatabaseConnection();
 
-  const db = drizzle(connection) as DatabaseConnection;
+  const db = drizzle(connection, {
+    mode: "default",
+    schema: { ...schema, ...schemaRelations },
+  }) as DatabaseConnection;
   db.disconnect = () => connection.end();
 
   return db;

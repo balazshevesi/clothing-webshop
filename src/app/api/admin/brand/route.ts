@@ -36,13 +36,10 @@ export async function POST(request: Request) {
       image,
       description,
     });
+    return NextResponse.json({ status: 200 });
   } catch (error) {
     console.error(error);
   } finally {
     db.disconnect();
   }
-
-  console.log("niceeee");
-
-  return NextResponse.json({ status: 200 });
 }

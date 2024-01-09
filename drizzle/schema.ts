@@ -1,10 +1,10 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, foreignKey, primaryKey, int, varchar, unique, mysqlEnum, decimal, text, smallint, timestamp, datetime, tinyint } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, foreignKey, primaryKey, int, text, varchar, unique, mysqlEnum, decimal, smallint, timestamp, datetime, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 
 export const articleImages = mysqlTable("article_images", {
 	id: int("id").autoincrement().notNull(),
-	imagePath: varchar("image_path", { length: 100 }),
+	imagePath: text("image_path"),
 	altText: varchar("alt_text", { length: 100 }),
 	articleId: int("article_id").notNull().references(() => articles.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 },
@@ -42,6 +42,7 @@ export const articleProperties = mysqlTable("article_properties", {
 	id: int("id").autoincrement().notNull(),
 	size: mysqlEnum("size", ['XS','S','M','L','XL']),
 	color: varchar("color", { length: 100 }),
+	articleId: int("article_id").references(() => articles.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 },
 (table) => {
 	return {
@@ -54,7 +55,6 @@ export const articles = mysqlTable("articles", {
 	name: varchar("name", { length: 200 }).notNull(),
 	brandId: int("brand_id").references(() => brands.id, { onDelete: "set null" } ),
 	categoryId: int("category_id").references(() => categories.id, { onDelete: "set null", onUpdate: "cascade" } ),
-	propertiesId: int("properties_id").references(() => articleProperties.id, { onDelete: "set null", onUpdate: "cascade" } ),
 	price: decimal("price", { precision: 10, scale: 2 }).notNull(),
 	quantityInStock: int("quantity_in_stock").notNull(),
 	description: text("description"),
@@ -71,7 +71,7 @@ export const brands = mysqlTable("brands", {
 	id: int("id").autoincrement().notNull(),
 	name: varchar("name", { length: 200 }).notNull(),
 	description: text("description").notNull(),
-	image: varchar("image", { length: 400 }),
+	image: text("image"),
 },
 (table) => {
 	return {

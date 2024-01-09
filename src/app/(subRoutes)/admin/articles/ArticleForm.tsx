@@ -41,23 +41,23 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
   const [name, setName] = useState(ArticleData ? ArticleData.name : "");
   const [nameValidationMsg, setNameValidationMsg] = useState("");
 
-  const [price, setPrice] = useState(ArticleData ? ArticleData.name : "");
+  const [price, setPrice] = useState(ArticleData ? ArticleData.price : "");
   const [priceValidationMsg, setPriceValidationMsg] = useState("");
 
   const [quantityInStock, setQuantityInStock] = useState(
-    ArticleData ? ArticleData.name : "",
+    ArticleData ? ArticleData.quantityInStock : "",
   );
   const [quantityInStockValidationMsg, setQuantityInStockValidationMsg] =
     useState("");
 
-  const [brands, setBrands] = useState(ArticleData ? ArticleData.name : [""]);
-  const [brand, setBrand] = useState(ArticleData ? ArticleData.name : "");
+  const [brands, setBrands] = useState([""]);
+  const [brand, setBrand] = useState(ArticleData ? ArticleData.brand : "");
   const [brandValidationMsg, setBrandValidationMsg] = useState("");
 
-  const [categories, setCategories] = useState(
-    ArticleData ? ArticleData.name : [""],
+  const [categories, setCategories] = useState([""]);
+  const [category, setCategory] = useState(
+    ArticleData ? ArticleData.category : "",
   );
-  const [category, setCategory] = useState(ArticleData ? ArticleData.name : "");
   const [categoryValidationMsg, setCategoryValidationMsg] = useState("");
 
   const [description, setDescription] = useState(
@@ -65,16 +65,19 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
   );
   const [descriptionValidationMsg, setDescriptionValidationMsg] = useState("");
 
-  const [images, setImages] = useState([""]);
+  const [images, setImages] = useState(ArticleData ? ArticleData.images : [""]);
   const [imagesValidationMsg, setImagesValidationMsg] = useState("");
 
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState(ArticleData ? ArticleData.size : "");
+  console.log("sizesize", size);
   const [sizeValidationMsg, setSizeValidationMsg] = useState("");
 
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState(ArticleData ? ArticleData.color : "");
   const [colorValidationMsg, setColorValidationMsg] = useState("");
 
-  const [garmentCare, setGarmentCare] = useState("");
+  const [garmentCare, setGarmentCare] = useState(
+    ArticleData ? ArticleData.garmentCare : "",
+  );
   const [garmentCareValidationMsg, setGarmentCareValidationMsg] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -100,30 +103,29 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
     getCategories();
   }, []);
 
-  //todo build backend api for adding articles, and editing them, and deleting them
-  // const handleDelete = async () => {
-  //   const isSure = confirm(
-  //     `Are you sure you want to delete ${categoryData.name}?`,
-  //   );
-  //   if (!isSure) return;
-  //   const response = await fetch(
-  //     `http://localhost:3000/api/admin/category/${categoryData.id}`,
-  //     {
-  //       method: "delete",
-  //       headers: {
-  //         authorization: getCookie("authorization")!,
-  //       },
-  //     },
-  //   );
-  //   const data = await response.json();
-  //   if (!response.ok) {
-  //     setServerError(true);
-  //     return;
-  //   }
-  //   router.push("/admin/categories");
-  // };
+  const handleDelete = async () => {
+    const isSure = confirm(
+      `Are you sure you want to delete ${ArticleData.name}?`,
+    );
+    if (!isSure) return;
+    const response = await fetch(
+      `http://localhost:3000/api/admin/article/${ArticleData.id}`,
+      {
+        method: "delete",
+        headers: {
+          authorization: getCookie("authorization")!,
+        },
+      },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      setServerError(true);
+      return;
+    }
+    router.push("/admin/articles");
+  };
 
-  const handleCategory = async (e: any) => {
+  const handleArticle = async (e: any) => {
     e.preventDefault();
     console.log(brand);
 
@@ -208,15 +210,20 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
       color,
     };
     try {
-      const response = await fetch(`http://localhost:3000/api/admin/article`, {
-        method: "post",
-        body: JSON.stringify(submitionData),
-        headers: {
-          authorization: getCookie("authorization")!,
+      const response = await fetch(
+        `http://localhost:3000/api/admin/article${
+          ArticleData ? `/${ArticleData.id}` : ""
+        }`,
+        {
+          method: ArticleData ? "put" : "post",
+          body: JSON.stringify(submitionData),
+          headers: {
+            authorization: getCookie("authorization")!,
+          },
         },
-      });
+      );
       if (!response.ok) {
-        setIsLoading(false)
+        setIsLoading(false);
         setServerError(true);
         return;
       } else setServerError(false);
@@ -225,24 +232,17 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
       console.error(error);
     }
     setIsLoading(false);
-
-    // if (!categoryData) {
-    //   setName("");
-    //   setImage("");
-    //   setDescription("");
-    // }
-
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
     }, 2000);
   };
   return (
-    <div className=" max-w-xl">
+    <div className="max-w-xl">
       <Title2>
         {ArticleData ? `Edit ${ArticleData.name}` : "Add new article"}
       </Title2>
-      <form onSubmit={handleCategory} className="space-y-4  ">
+      <form onSubmit={handleArticle} className="space-y-4 ">
         <Input
           value={name}
           onInput={(e: any) => setName(e.target.value)}
@@ -270,7 +270,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
           type="number"
           placeholder="Quantity In Stock"
         />
-        <Select onValueChange={(value) => setBrand(value)}>
+        <Select value={brand} onValueChange={(value) => setBrand(value)}>
           <SelectTrigger>
             <SelectValue placeholder={"Select Brand"} />
           </SelectTrigger>
@@ -283,7 +283,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
         {!!brandValidationMsg && (
           <div className=" font-medium text-red-500">{brandValidationMsg}</div>
         )}
-        <Select onValueChange={(value) => setCategory(value)}>
+        <Select value={category} onValueChange={(value) => setCategory(value)}>
           <SelectTrigger className="">
             <SelectValue placeholder="Select Category" />
           </SelectTrigger>
@@ -313,7 +313,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
           warningText={garmentCareValidationMsg}
           placeholder="Garment Care"
         ></Textarea>
-        <ArticleImages imagesProp={images} setImagesProp={setImages} />{" "}
+        <ArticleImages imagesProp={images} setImagesProp={setImages} />
         {!!imagesValidationMsg && (
           <div className=" font-medium text-red-500">{imagesValidationMsg}</div>
         )}
@@ -322,16 +322,16 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
             <AccordionTrigger>Properties</AccordionTrigger>
             <AccordionContent className=" flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <Select onValueChange={(state) => setSize(state)}>
+                <Select value={size} onValueChange={(state) => setSize(state)}>
                   <SelectTrigger className="">
                     <SelectValue placeholder="Select Size" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="xs">XS</SelectItem>
-                    <SelectItem value="s">S</SelectItem>
-                    <SelectItem value="m">M</SelectItem>
-                    <SelectItem value="l">L</SelectItem>
-                    <SelectItem value="xl">XL</SelectItem>
+                    <SelectItem value="XS">XS</SelectItem>
+                    <SelectItem value="S">S</SelectItem>
+                    <SelectItem value="M">M</SelectItem>
+                    <SelectItem value="L">L</SelectItem>
+                    <SelectItem value="XL">XL</SelectItem>
                   </SelectContent>
                 </Select>
                 {!!sizeValidationMsg && (
@@ -361,7 +361,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
               variant="destructive"
               size="icon"
               type="button"
-              // onClick={handleDelete}
+              onClick={handleDelete}
             >
               <TrashIcon className="size-5" />
             </Button>
