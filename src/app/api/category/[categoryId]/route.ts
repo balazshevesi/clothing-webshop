@@ -1,18 +1,8 @@
-import { headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
-
-import getDatabase from "../../utils/getDatabase";
-import { GenericInputSchema } from "@/inputValidation/schema";
-import { eq } from "drizzle-orm";
-import { parse, string } from "valibot";
 import { categories } from "../../../../../drizzle/schema";
-
-export interface Body {
-  name: string;
-  image: string;
-  description: string;
-}
+import getDatabase from "../../utils/getDatabase";
+import { eq } from "drizzle-orm";
 
 export async function GET(
   request: Request,

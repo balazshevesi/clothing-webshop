@@ -53,7 +53,7 @@ export default function ArticleImages({
                         <TrashIcon className=" size-5" />
                       </Button>
                     </div>
-                    <img className="rounded" src={image} alt="" />
+                    <img className="max-w-44 rounded" src={image} alt="" />
                   </div>
                 );
               })}

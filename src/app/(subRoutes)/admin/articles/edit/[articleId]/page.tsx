@@ -10,7 +10,6 @@ export default async function Page({
     { cache: "no-store" },
   );
   const data = await response.json();
-  console.log("datadatadata", data);
 
   if (JSON.stringify(data) === "{}") return;
 

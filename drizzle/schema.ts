@@ -15,7 +15,7 @@ export const articleImages = mysqlTable("article_images", {
 });
 
 export const articleListingRelations = mysqlTable("article_listing_relations", {
-	id: int("id").notNull(),
+	id: int("id").autoincrement().notNull(),
 	articleId: int("article_id").notNull().references(() => articles.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	listingId: int("listing_id").notNull().references(() => listings.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 },
@@ -63,7 +63,6 @@ export const articles = mysqlTable("articles", {
 (table) => {
 	return {
 		articlesId: primaryKey({ columns: [table.id], name: "articles_id"}),
-		articlesUn: unique("articles_UN").on(table.name, table.brandId),
 	}
 });
 
@@ -134,7 +133,7 @@ export const listings = mysqlTable("listings", {
 	title: varchar("title", { length: 200 }).notNull(),
 	description: text("description").notNull(),
 	articleIdDefault: int("article_id_default").references(() => articles.id, { onDelete: "set null", onUpdate: "cascade" } ),
-	imagePath: varchar("image_path", { length: 400 }),
+	imagePath: text("image_path"),
 },
 (table) => {
 	return {

@@ -94,7 +94,7 @@ export async function PUT(
       .select({ id: articles.id })
       .from(articles)
       .where(eq(articles.name, name));
-    const articleId = categorySelect.id;
+    const articleId = articleSelect.id;
 
     // update article props
     const [articlePropsUpdate] = await db
@@ -107,7 +107,9 @@ export async function PUT(
 
     // should actually be a transaction
     // delete article images
-    await db.delete(articleImages).where(eq(articleImages.id, articleId));
+    await db
+      .delete(articleImages)
+      .where(eq(articleImages.articleId, articleId));
 
     // insert article images
     const values = images.map((image) => {

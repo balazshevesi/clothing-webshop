@@ -41,6 +41,7 @@ export default async function AdminNavigation({
     <div className="flex items-stretch gap-4">
       <div className="shrink-0  border-r border-dashed border-white/50">
         <div className="flex h-full w-full flex-col items-center gap-2 p-4 pt-8">
+          <AdminNavLink section="listings" />
           <AdminNavLink section="articles" />
           <AdminNavLink section="brands" />
           <AdminNavLink section="categories" />

@@ -7,12 +7,6 @@ import { GenericInputSchema } from "@/inputValidation/schema";
 import { eq } from "drizzle-orm";
 import { parse, string } from "valibot";
 
-export interface Body {
-  name: string;
-  image: string;
-  description: string;
-}
-
 export async function GET(
   request: Request,
   { params }: { params: { brandId: string } },
