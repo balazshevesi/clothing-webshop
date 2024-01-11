@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { useEffect, useState } from "react";
+
 import MostPopular from "@/components/MostPopular";
 import Reviews from "@/components/Reviews";
 import SelectArticle from "@/components/SelectArticle";
@@ -22,7 +24,19 @@ import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
 
 export default function Content({ listing }: { listing: any }) {
-  const [selectedArticle, setSelectedArticle] = useQueryState("article");
+  const [selectedArticleParam, setSelectedArticleParam] =
+    useQueryState("article");
+  const [selectedArticle, setSelectedArticle] = useState(
+    listing.articleIdDefault,
+  );
+  useEffect(() => {
+    setSelectedArticleParam(selectedArticle);
+  }, [selectedArticle]);
+
+  const currentArticle = listing.articles.filter(
+    (article: any) => +article.id === +selectedArticle!,
+  )[0];
+
   return (
     <>
       <Container className="pt-14">
@@ -34,12 +48,14 @@ export default function Content({ listing }: { listing: any }) {
         </div> */}
 
         <div className="flex flex-col items-stretch gap-8 lg:flex-row">
-          <LeftSectoin selectedArticle={+selectedArticle!} listing={listing} />
+          <LeftSectoin currentArticle={currentArticle!} listing={listing} />
           <div className="w-full shrink-0 lg:w-[22rem]">
-            <div className=" mb-10">
-              <Title1>{listing.title}</Title1>
+            <div className="mb-10">
+              <Title1 className=" mb-4">{listing.title}</Title1>
+              <p className=" mb-6 text-xl">{currentArticle.price} SEK</p>
               <p>{listing.description}</p>
             </div>
+
             {/* <div className=" mb-6">S</div> */}
             <SelectArticle
               selectedArticle={selectedArticle}
@@ -55,7 +71,7 @@ export default function Content({ listing }: { listing: any }) {
                   article description
                 </AccordionTrigger>
                 <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
+                  {currentArticle.description}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
@@ -63,7 +79,7 @@ export default function Content({ listing }: { listing: any }) {
                   garment care
                 </AccordionTrigger>
                 <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
+                  {currentArticle.garmentCare}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
@@ -71,7 +87,7 @@ export default function Content({ listing }: { listing: any }) {
                   shipping
                 </AccordionTrigger>
                 <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
+                  Shipps within 5 working days
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

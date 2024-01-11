@@ -12,27 +12,26 @@ import {
 
 interface LeftSectoin {
   listing: any;
-  selectedArticle: number;
+  currentArticle: any;
 }
 
-export default function LeftSectoin({ listing, selectedArticle }: LeftSectoin) {
+export default function LeftSectoin({ listing, currentArticle }: LeftSectoin) {
   return (
-    <Carousel className="relative grow overflow-hidden rounded">
-      <CarouselContent>
-        {/* {product.images.map((image: any, index: number) => (
-          <CarouselItem key={index} className=" px-0">
-            <Image
-              alt=""
-              height={1000}
-              width={1000}
-              src={image}
-              className=" aspect-square object-cover"
-            />
-          </CarouselItem>
-        ))} */}
-        {listing.articles
-          .filter((article: any) => +article.id === +selectedArticle)[0]
-          .articleImages.map((imageObj: any, i: number) => (
+    <div>
+      <Carousel className="relative grow overflow-hidden rounded">
+        <CarouselContent>
+          {/* {product.images.map((image: any, index: number) => (
+            <CarouselItem key={index} className=" px-0">
+              <Image
+                alt=""
+                height={1000}
+                width={1000}
+                src={image}
+                className=" aspect-square object-cover"
+              />
+            </CarouselItem>
+          ))} */}
+          {currentArticle.articleImages.map((imageObj: any, i: number) => (
             <CarouselItem key={i} className=" px-0">
               <Image
                 alt=""
@@ -43,10 +42,11 @@ export default function LeftSectoin({ listing, selectedArticle }: LeftSectoin) {
               />
             </CarouselItem>
           ))}
-      </CarouselContent>
-      <CarouselPrevious className=" absolute left-2" />
-      <CarouselNext className=" absolute right-2" />
-    </Carousel>
+        </CarouselContent>
+        <CarouselPrevious className=" absolute left-2" />
+        <CarouselNext className=" absolute right-2" />
+      </Carousel>
+    </div>
   );
 }
 

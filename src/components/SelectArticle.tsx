@@ -108,7 +108,7 @@ export default function SelectArticle({
         })}
       </div>
       <div className=" mb-8">
-        <span className="uppercase">quantity in stock </span>
+        <span className="">In Stock: </span>
         <span>
           {
             listing.articles.filter(

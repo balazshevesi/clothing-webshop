@@ -1,4 +1,5 @@
 import MostPopular from "@/components/MostPopular";
+
 import Content from "./Content";
 
 export default async function Page({
