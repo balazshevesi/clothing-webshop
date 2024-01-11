@@ -29,7 +29,10 @@ export async function GET(request: Request) {
       },
     );
 
-    return NextResponse.json({ guestUserId: userIdJwt }, { status: 200 });
+    return NextResponse.json(
+      { guestUserAuth: userIdJwt, guestUserId },
+      { status: 200 },
+    );
   } catch (error) {
     console.error(error);
   } finally {
