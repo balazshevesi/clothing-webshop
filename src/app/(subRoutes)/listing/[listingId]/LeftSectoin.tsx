@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export default function LeftSectoin({ product }: { product: any }) {
+export default function LeftSectoin({ listing }: { listing: any }) {
   return (
     <Carousel className="relative grow overflow-hidden rounded">
       <CarouselContent>
@@ -25,12 +25,25 @@ export default function LeftSectoin({ product }: { product: any }) {
             />
           </CarouselItem>
         ))} */}
+        {listing.articles
+          .filter((article: any) => article.id === listing.articleIdDefault)[0]
+          .articleImages.map((imageObj: any, i: number) => (
+            <CarouselItem key={i} className=" px-0">
+              <Image
+                alt=""
+                height={1000}
+                width={1000}
+                src={imageObj.imagePath}
+                className=" aspect-square object-cover"
+              />
+            </CarouselItem>
+          ))}
         <CarouselItem className=" w-full px-0">
           <Image
             alt=""
             height={1000}
             width={1000}
-            src={product.image}
+            src={listing.image}
             className=" aspect-square object-cover"
           />
         </CarouselItem>

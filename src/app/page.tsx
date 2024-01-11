@@ -38,7 +38,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      {/* <MostPopular /> */}
+      <MostPopular />
     </>
   );
 }

@@ -4,7 +4,7 @@ import Title2 from "./general/Title2";
 
 export default async function MostPopular() {
   const response: any = await fetch(
-    `${process.env.HOST}/api/products/most-popular`,
+    `${process.env.HOST}/api/listings/most-popular`,
     { cache: "no-store" },
   );
 

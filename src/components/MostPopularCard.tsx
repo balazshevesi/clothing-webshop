@@ -34,17 +34,17 @@ export default function MostPopularCard({ item }: { item: any }) {
         className="absolute left-0 top-0 z-0 h-full w-full opacity-40 blur-xl"
         width={200}
         height={200}
-        src={item.image}
+        src={item.imagePath}
         alt=""
       />
       <div className="relative z-10 flex w-full flex-col">
         <div className="p-4">
-          <Link href={`/product/${item.id}`}>
+          <Link href={`/listing/${item.id}`}>
             <Image
               className=" relative z-10 aspect-[1/1] w-full overflow-hidden rounded"
               width={200}
               height={200}
-              src={item.images}
+              src={item.imagePath}
               alt=""
             />
           </Link>
@@ -53,7 +53,7 @@ export default function MostPopularCard({ item }: { item: any }) {
               <strong>{item.title}</strong>
             </div>
             <div className="mb-4 font-light">
-              <strong>{item.price} SEK</strong>
+              <strong>{item.defaultArticle.price} SEK</strong>
             </div>
           </div>
           <div className="mt-auto w-full">

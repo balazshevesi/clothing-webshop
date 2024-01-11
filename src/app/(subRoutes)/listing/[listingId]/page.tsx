@@ -20,12 +20,12 @@ import LeftSectoin from "./LeftSectoin";
 export default async function Product({
   params,
 }: {
-  params: { product_id: string };
+  params: { listingId: string };
 }) {
   const response: any = await fetch(
-    `${process.env.HOST}/api/product/${params.product_id}`,
+    `${process.env.HOST}/api/listing/${params.listingId}`,
   );
-  const product = (await response.json()).content[0];
+  const listing = (await response.json()).content;
 
   return (
     <>
@@ -38,19 +38,19 @@ export default async function Product({
         </div> */}
 
         <div className="flex flex-col items-stretch gap-8 lg:flex-row">
-          <LeftSectoin product={product} />
+          <LeftSectoin listing={listing} />
           <div className="w-full shrink-0 lg:w-[22rem]">
             <div className=" mb-10">
-              <Title1>{product.title}</Title1>
-              <p>{product.description}</p>
+              <Title1>{listing.title}</Title1>
+              <p>{listing.description}</p>
             </div>
             <div className=" mb-10 w-full">
-              <AddToCartBtn item={product} />
+              <AddToCartBtn item={listing} />
             </div>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
                 <AccordionTrigger className="uppercase">
-                  fabric
+                  article description
                 </AccordionTrigger>
                 <AccordionContent>
                   Yes. It adheres to the WAI-ARIA design pattern.
