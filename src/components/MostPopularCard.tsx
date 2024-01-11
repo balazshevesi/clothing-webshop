@@ -29,7 +29,7 @@ export default function MostPopularCard({ item }: { item: any }) {
     : 0;
 
   return (
-    <div className=" relative w-[24rem] min-w-[18rem] overflow-hidden whitespace-nowrap rounded">
+    <div className="relative w-[22rem] min-w-[18rem] overflow-hidden whitespace-nowrap rounded">
       <Image
         className="absolute left-0 top-0 z-0 h-full w-full opacity-40 blur-xl"
         width={200}
@@ -39,14 +39,16 @@ export default function MostPopularCard({ item }: { item: any }) {
       />
       <div className="relative z-10 flex w-full flex-col">
         <div className="p-4">
-          <Link href={`/listing/${item.id}`}>
-            <Image
-              className=" relative z-10 aspect-[1/1] w-full overflow-hidden rounded"
-              width={200}
-              height={200}
-              src={item.imagePath}
-              alt=""
-            />
+          <Link href={`/listing/${item.id}?article=${item.defaultArticle.id}`}>
+            <div className="flex aspect-square items-center justify-center overflow-hidden rounded">
+              <Image
+                className="relative z-10 w-full"
+                width={200}
+                height={200}
+                src={item.imagePath}
+                alt=""
+              />
+            </div>
           </Link>
           <div className="p-2">
             <div className="mb-4 mt-2 max-w-full overflow-auto">

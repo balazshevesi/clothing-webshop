@@ -42,6 +42,7 @@ export async function GET(
           where: eq(articles.id, articleId),
           with: {
             articleImages: true,
+            articleProperties: true,
           },
         }),
     );

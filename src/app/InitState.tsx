@@ -18,13 +18,13 @@ const getAndsetGuestId = async () => {
 
 const updateLoggedInAt = async () => {
   if (getCookie("authorization"))
-    await fetch(`api/loglogin/user/${JSON.parse(getCookie("userInfo")!).id}`, {
+    await fetch(`/api/loglogin/user/${JSON.parse(getCookie("userInfo")!).id}`, {
       headers: {
         authorization: getCookie("authorization")!,
       },
     });
   if (getCookie("guestUserId"))
-    await fetch(`api/loglogin/guest/${getCookie("guestUserId")}`, {
+    await fetch(`/api/loglogin/guest/${getCookie("guestUserId")}`, {
       headers: {
         guestUserAuth: getCookie("guestUserAuth")!,
       },
