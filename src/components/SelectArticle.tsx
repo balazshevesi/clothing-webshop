@@ -51,6 +51,15 @@ export default function SelectArticle({
     articlesAvailableForSelectedColor,
   );
 
+  const sizeOrder = ["XS", "S", "M", "L", "XL"];
+  articlesAvailableForSelectedColor.sort((a: any, b: any) => {
+    let sizeA = a.articleProperties[0]?.size;
+    let sizeB = b.articleProperties[0]?.size;
+    let indexA = sizeOrder.indexOf(sizeA);
+    let indexB = sizeOrder.indexOf(sizeB);
+    return indexA - indexB;
+  });
+
   return (
     <div>
       <div className="mb-4 flex gap-2">

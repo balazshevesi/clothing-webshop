@@ -10,6 +10,7 @@ import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 export default function AddToCartBtn({ item }: { item: any }) {
   const { items, updateCount, increment, decrement, addItem, open } =
     useShoppingCartSlice();
+
   const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
     ? items.filter((cartItem) => cartItem.id === item.id)[0].count
     : 0;
@@ -19,8 +20,7 @@ export default function AddToCartBtn({ item }: { item: any }) {
     if (itemCount) {
       inputRef.current!.value = itemCount;
     }
-  }, [items]);
-  itemCount;
+  }, [items, item]);
 
   return (
     <>

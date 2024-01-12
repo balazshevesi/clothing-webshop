@@ -55,14 +55,14 @@ function CartItem({ item }: { item: any }) {
       </Button>
 
       <Image
-        alt={`picture of ${item.title}`}
+        alt={`picture of ${item.name}`}
         width={50}
         height={50}
         src={item.image}
         className=" aspect-square size-14"
       />
       <div className="flex grow flex-col overflow-auto whitespace-nowrap">
-        <div>{item.title}</div>
+        <div>{item.name}</div>
       </div>
       <div className="flex shrink-0 flex-col gap-2">
         <div className="flex w-full"></div>

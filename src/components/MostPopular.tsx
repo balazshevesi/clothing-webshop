@@ -16,7 +16,9 @@ export default async function MostPopular() {
         <Title2>most popular</Title2>
         <div className="flex w-full grid-cols-4 gap-8 overflow-auto py-4">
           {products.map((item: any) => {
-            return <MostPopularCard item={item} key={JSON.stringify(item)} />;
+            return (
+              <MostPopularCard listing={item} key={JSON.stringify(item)} />
+            );
           })}
         </div>
       </Container>

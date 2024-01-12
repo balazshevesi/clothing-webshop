@@ -1,4 +1,3 @@
-//! doesn't work yet
 import { NextResponse, NextRequest } from "next/server";
 
 import { articles, listings } from "../../../../../drizzle/schema";
@@ -19,16 +18,18 @@ export async function GET(request: Request) {
     // });
     const defaultArticlePromises = content.map(
       async (listing) =>
-        await db
-          .select()
-          .from(articles)
-          .where(eq(articles.id, +listing.articleIdDefault!)),
+        (
+          await db
+            .select()
+            .from(articles)
+            .where(eq(articles.id, +listing.articleIdDefault!))
+        )[0],
     );
     const defaultArticles = await Promise.all(defaultArticlePromises);
 
     content = content.map((item, i) => {
       const frozenItem = { ...item };
-      frozenItem.defaultArticle = defaultArticles[i][0];
+      frozenItem.defaultArticle = defaultArticles[i];
       return frozenItem;
     });
   } catch {}

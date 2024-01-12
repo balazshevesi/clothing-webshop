@@ -23,6 +23,9 @@ import AddToCartBtn from "./AddToCartBtn";
 import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
 
+// dunno why it doesen't do this my default
+document.body.scrollTop = document.documentElement.scrollTop = 0;
+
 export default function Content({ listing }: { listing: any }) {
   const [selectedArticleParam, setSelectedArticleParam] =
     useQueryState("article");
@@ -55,7 +58,6 @@ export default function Content({ listing }: { listing: any }) {
               <p className=" mb-6 text-xl">{currentArticle.price} SEK</p>
               <p>{listing.description}</p>
             </div>
-
             {/* <div className=" mb-6">S</div> */}
             <SelectArticle
               selectedArticle={selectedArticle}
@@ -63,7 +65,7 @@ export default function Content({ listing }: { listing: any }) {
               listing={listing}
             />
             <div className=" mb-10 w-full">
-              <AddToCartBtn item={listing} />
+              <AddToCartBtn item={currentArticle} />
             </div>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
