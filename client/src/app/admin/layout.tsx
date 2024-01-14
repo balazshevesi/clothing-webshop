@@ -13,7 +13,7 @@ export default async function adminLayout({
   children: ReactNode;
 }) {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("authorization");
+  const authorization = cookieStore.get("userAuth");
   if (!authorization) return <Container>you're not logged in g</Container>;
 
   let verifiedToken;

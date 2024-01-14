@@ -17,7 +17,7 @@ export default function SignOut() {
   const handleSignout = () => {
     setLogedginFalse();
     deleteCookie("userInfo");
-    deleteCookie("authorization");
+    deleteCookie("userAuth");
     router.push("/");
   };
 

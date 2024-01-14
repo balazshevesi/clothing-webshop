@@ -8,7 +8,7 @@ import SignOut from "./SignOut";
 
 export default async function Page() {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("authorization");
+  const authorization = cookieStore.get("userAuth");
   const userInfoCookies = cookieStore.get("userInfo");
   const userInfo = JSON.parse(userInfoCookies?.value!)
 

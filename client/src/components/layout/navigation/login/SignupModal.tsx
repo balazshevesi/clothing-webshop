@@ -97,7 +97,7 @@ export default function SignupModal() {
     const data = await response.json();
     //on sucess
     if (data.userIdJwt) {
-      document.cookie = `authorization=${data.userIdJwt}`;
+      document.cookie = `userAuth=${data.userIdJwt}`;
       document.cookie = `userInfo=${JSON.stringify(data.userInfo)}`;
 
       setLoggedinTrue();

@@ -71,7 +71,7 @@ export default function LoginModal() {
     const data = await response.json();
     //on success
     if (data.userIdJwt) {
-      document.cookie = `authorization=${data.userIdJwt}`;
+      document.cookie = `userAuth=${data.userIdJwt}`;
       document.cookie = `userInfo=${JSON.stringify(data.userInfo)}`;
       setLoggedinTrue();
       setIsIncorrect(false);

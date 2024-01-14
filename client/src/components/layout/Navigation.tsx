@@ -25,7 +25,7 @@ function Logo() {
 
 export default function Navigation() {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("authorization");
+  const authorization = cookieStore.get("userAuth");
 
   return (
     <nav className="sticky left-0 top-0 z-50 w-full border-b border-dashed border-white/50 bg-black p-2 shadow">

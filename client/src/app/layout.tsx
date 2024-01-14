@@ -31,7 +31,7 @@ export default async function RootLayout({
   const cookieStore = cookies();
 
   //note that we're not awaiting shit
-  const authorization = cookieStore.get("authorization");
+  const authorization = cookieStore.get("userAuth");
   const userInfo = cookieStore.get("userInfo");
   if (authorization && userInfo) {
     fetch(

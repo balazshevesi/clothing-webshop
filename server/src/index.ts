@@ -44,7 +44,7 @@ app.use("*", async (c, next) => {
 //admin stuffs
 const adminRoutes = new Hono();
 adminRoutes.use(async (c, next) => {
-  const authHeader = c.req.header("Authorization");
+  const authHeader = c.req.header("userAuth");
   if (!authHeader) {
     c.status(401);
     return c.json({});
@@ -475,11 +475,41 @@ app.get("/listings/most-popular", async (c) => {
   return c.json({ content: contentWithArticles });
 });
 
+//cart
+app.get("/cart/:userId", async (c) => {
+  const db = await getDatabase();
+  const { userId } = c.req.param();
+  const authHeader = c.req.header("userAuth");
+
+  if (!authHeader) return c.status(401);
+
+  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+  const { payload } = JSON.parse(
+    JSON.stringify(await jose.jwtVerify(authHeader, encodedKey))
+  );
+
+  const [userInfo] = await db
+    .select({
+      id: usersTbl.id,
+      firstName: usersTbl.firstName,
+      lastName: usersTbl.lastName,
+      email: usersTbl.email,
+      phoneNumber: usersTbl.phoneNumber,
+      isAdmin: usersTbl.isAdmin,
+    })
+    .from(usersTbl)
+    .where(eq(usersTbl.id, +userId));
+
+  if (payload.userId !== userInfo.id) return c.status(401);
+
+  return c.json({ userInfo });
+});
+
 //users
 app.get("/user/:userId", async (c) => {
   const db = await getDatabase();
   const { userId } = c.req.param();
-  const authHeader = c.req.header("Authorization");
+  const authHeader = c.req.header("userAuth");
 
   if (!authHeader) return c.status(401);
 
@@ -532,7 +562,7 @@ app.get("/log/guest-user/:guestUserId", async (c) => {
 app.get("/log/user/:userId", async (c) => {
   const db = await getDatabase();
   const { userId } = c.req.param();
-  const authorization = c.req.header("authorization");
+  const authorization = c.req.header("userAuth");
   if (!authorization) {
     c.status(401);
     return c.json({});
@@ -545,7 +575,6 @@ app.get("/log/user/:userId", async (c) => {
     c.status(401);
     return c.json({});
   }
-
   await db
     .update(usersTbl)
     .set({ loggedInAt: getTimeStamp() })

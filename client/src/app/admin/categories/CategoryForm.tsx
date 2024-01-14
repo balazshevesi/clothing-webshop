@@ -45,7 +45,7 @@ export default function CategoryForm({ categoryData }: { categoryData?: any }) {
       {
         method: "delete",
         headers: {
-          authorization: getCookie("authorization")!,
+          authorization: getCookie("userAuth")!,
         },
       },
     );
@@ -90,7 +90,7 @@ export default function CategoryForm({ categoryData }: { categoryData?: any }) {
           method: categoryData ? "put" : "post",
           body: JSON.stringify({ name, image, description }),
           headers: {
-            authorization: getCookie("authorization")!,
+            authorization: getCookie("userAuth")!,
           },
         },
       );
