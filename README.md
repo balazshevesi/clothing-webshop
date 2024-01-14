@@ -1,12 +1,13 @@
 ## TODO
 
-- [ ] Build mobile menue n shit
 - [ ] Build backend for cart, and intergrate with the frontend
 - [ ] Build filter/browse section of the website
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system
 - [ ] Fix wierd shit in admin panel. (probably need it's own state)
 - [ ] Streamline input validation and form submission
+- [ ] Switch add to cart modal to sonner toast
+- [x] Build mobile menue n shit
 - [x] Log user loggin time
 
 ---

@@ -4,9 +4,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
-import { Bars3Icon } from "@heroicons/react/24/solid";
 
 import Container from "../general/Container";
+import NavigationDropdown from "./NavigationDropdown";
 import CartSheet from "./navigation/cart/CartSheet";
 import LoginButton from "./navigation/login/LoginButton";
 
@@ -53,9 +53,10 @@ export default function Navigation() {
       <Container className="flex flex-col gap-4 px-0 py-1 lg:hidden">
         <div className=" flex">
           <div className="flex flex-1 justify-start gap-2">
-            <Button variant="secondary" className="uppercase">
-              <Bars3Icon className=" size-6" />
-            </Button>
+            <NavigationDropdown />
+            {/* 
+            
+            */}
           </div>
           <div className="flex flex-1 shrink items-center justify-center text-sm font-bold uppercase tracking-wider sm:text-lg">
             <Link
