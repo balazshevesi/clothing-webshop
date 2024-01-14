@@ -69,7 +69,6 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
   const [imagesValidationMsg, setImagesValidationMsg] = useState("");
 
   const [size, setSize] = useState(ArticleData ? ArticleData.size : "");
-  console.log("sizesize", size);
   const [sizeValidationMsg, setSizeValidationMsg] = useState("");
 
   const [color, setColor] = useState(ArticleData ? ArticleData.color : "");
@@ -131,7 +130,6 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
 
   const handleArticle = async (e: any) => {
     e.preventDefault();
-    console.log(brand);
 
     let validInput = true;
     const nameValStatus = safeParse(GenericInputSchema, name);

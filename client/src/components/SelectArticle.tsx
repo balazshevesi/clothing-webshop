@@ -35,7 +35,6 @@ export default function SelectArticle({
       ),
     });
   });
-  console.log("colorscolors", colors);
 
   let articlesAvailableForSelectedColor: any;
   colors.forEach((colorObj: any) => {
@@ -46,10 +45,6 @@ export default function SelectArticle({
     )
       articlesAvailableForSelectedColor = colorObj.articles;
   });
-  console.log(
-    "sizesAvailableForSelectedColor",
-    articlesAvailableForSelectedColor,
-  );
 
   const sizeOrder = ["XS", "S", "M", "L", "XL"];
   articlesAvailableForSelectedColor.sort((a: any, b: any) => {

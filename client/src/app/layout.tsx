@@ -27,6 +27,35 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+
+  //note that we're not awaiting shit
+  const authorization = cookieStore.get("authorization");
+  const userInfo = cookieStore.get("userInfo");
+  if (authorization && userInfo) {
+    fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/log/user/${
+        JSON.parse(userInfo.value).id
+      }`,
+      {
+        method: "get",
+        headers: { authorization: authorization.value },
+      },
+    );
+  }
+  //note that we're not awaiting shit
+  const guestUserId = cookieStore.get("guestUserId");
+  const guestUserAuth = cookieStore.get("guestUserAuth");
+  if (guestUserId && guestUserAuth) {
+    fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/log/guest-user/${guestUserId.value}`,
+      {
+        method: "get",
+        headers: { guestUserAuth: guestUserAuth.value },
+      },
+    );
+  }
+
   return (
     <html lang="en">
       <body

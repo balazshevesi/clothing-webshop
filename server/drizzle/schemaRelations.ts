@@ -31,7 +31,7 @@ export const articlePropertiesRelations = relations(
       fields: [articleProperties.articleId],
       references: [articles.id],
     }),
-  }),
+  })
 );
 
 export const brandsRelations = relations(brands, ({ many }) => ({
@@ -53,7 +53,7 @@ export const articleListingRelationsRelations = relations(
       fields: [articleListingRelations.listingId],
       references: [listings.id],
     }),
-  }),
+  })
 );
 
 // export const brandsRelations = relations(brands, ({ one }) => ({

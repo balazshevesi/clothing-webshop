@@ -19,7 +19,7 @@ export default async function getDatabase(): Promise<MySql2Database<Schema>> {
   if (!dbConnection) {
     try {
       const connection = await mysql.createConnection(connectionConfig);
-      console.log("Database connection established");
+      console.info("Database connection established");
 
       dbConnection = drizzle<Schema>(connection, {
         mode: "default",

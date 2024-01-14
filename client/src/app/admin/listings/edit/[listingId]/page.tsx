@@ -13,7 +13,5 @@ export default async function Page({
 
   if (JSON.stringify(data) === "{}") return;
 
-  console.log("datadata", data);
-
   return <ListingForm listingContent={data.content} />;
 }

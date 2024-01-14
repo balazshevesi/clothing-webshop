@@ -54,8 +54,6 @@ export default function SelectArticlesModal({
     availableArticles || getArticles();
   }, []);
 
-  console.log("selectedArticlesselectedArticles", selectedArticles);
-
   useEffect(() => {
     //syncs availableArticles to articles (if availableArticles is provided)
     availableArticles && setArticles(() => availableArticles);
@@ -87,7 +85,6 @@ export default function SelectArticlesModal({
       <div className=" flex flex-col flex-wrap gap-2">
         {!!selectedArticles &&
           selectedArticles.map((article: any) => {
-            console.log("articlearticle", article);
             return (
               <div className="flex items-center gap-2 text-sm font-medium text-white/50">
                 <img

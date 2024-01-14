@@ -8,7 +8,9 @@ import isBrowser from "@/utils/isBrowser";
 import { useAuthSlice } from "@/state/useAuthSlice";
 
 const getAndsetGuestId = async () => {
-  const response = await fetch(`api/auth/create-guest`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/auth/create-guest`,
+  );
   const data = await response.json();
   const guestUserId = data.guestUserId;
   const guestUserAuth = data.guestUserAuth;

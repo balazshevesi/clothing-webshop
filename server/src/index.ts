@@ -4,20 +4,21 @@ import { Hono } from "hono";
 import * as jose from "jose";
 
 import {
-  articleImages as articleImagesT,
-  articleListingRelations as articleListingRelationsT,
-  articleProperties as articlePropertiesT,
-  articles as articlesT,
-  brands as brandsT,
-  carts as cartsT,
-  categories as categoriesT,
-  guestUsers as guestUsersT,
-  listings as listingsT,
-  users as usersT,
+  articleImages as articleImagesTbl,
+  articleListingRelations as articleListingRelationsTbl,
+  articleProperties as articlePropertiesTbl,
+  articles as articlesTbl,
+  brands as brandsTbl,
+  carts as cartsTbl,
+  categories as categoriesTbl,
+  guestUsers as guestUsersTbl,
+  listings as listingsTbl,
+  users as usersTbl,
 } from "../drizzle/schema";
 
 import { eq } from "drizzle-orm";
 import getDatabase from "./utils/getDatabase";
+import getTimeStamp from "./utils/getTimestamp";
 
 const app = new Hono();
 
@@ -56,10 +57,10 @@ adminRoutes.use(async (c, next) => {
   const db = await getDatabase();
   const [userInfo] = await db
     .select({
-      isAdmin: usersT.isAdmin,
+      isAdmin: usersTbl.isAdmin,
     })
-    .from(usersT)
-    .where(eq(usersT.id, payload.userId));
+    .from(usersTbl)
+    .where(eq(usersTbl.id, payload.userId));
 
   if (!userInfo || !userInfo.isAdmin) {
     c.status(401);
@@ -86,20 +87,20 @@ adminRoutes.post("/article", async (c) => {
   const body: ArticleBody = await c.req.json();
 
   const [brandSelect] = await db
-    .select({ id: brandsT.id })
-    .from(brandsT)
-    .where(eq(brandsT.name, body.brand));
+    .select({ id: brandsTbl.id })
+    .from(brandsTbl)
+    .where(eq(brandsTbl.name, body.brand));
   const brandId = brandSelect.id;
 
   // find category id from brand name
   const [categorySelect] = await db
-    .select({ id: categoriesT.id })
-    .from(categoriesT)
-    .where(eq(categoriesT.name, body.category));
+    .select({ id: categoriesTbl.id })
+    .from(categoriesTbl)
+    .where(eq(categoriesTbl.name, body.category));
   const categoryId = categorySelect.id;
 
   // insert article
-  const [articleInsert] = await db.insert(articlesT).values({
+  const [articleInsert] = await db.insert(articlesTbl).values({
     name: body.name,
     price: body.price,
     quantityInStock: body.quantityInStock,
@@ -112,14 +113,14 @@ adminRoutes.post("/article", async (c) => {
 
   // insert article props
   const [articlePropsInsert] = await db
-    .insert(articlePropertiesT)
+    .insert(articlePropertiesTbl)
     .values({ size: body.size, color: body.color, articleId });
 
   // insert article images
   const values = body.images.map((image) => {
     return { imagePath: image, articleId };
   });
-  await db.insert(articleImagesT).values(values);
+  await db.insert(articleImagesTbl).values(values);
 
   return c.json({});
 });
@@ -131,21 +132,21 @@ adminRoutes.put("/article/:articleId", async (c) => {
 
   // find brand id from brand name
   const [brandSelect] = await db
-    .select({ id: brandsT.id })
-    .from(brandsT)
-    .where(eq(brandsT.name, body.brand));
+    .select({ id: brandsTbl.id })
+    .from(brandsTbl)
+    .where(eq(brandsTbl.name, body.brand));
   const brandId = brandSelect.id;
 
   // find category id from brand name
   const [categorySelect] = await db
-    .select({ id: categoriesT.id })
-    .from(categoriesT)
-    .where(eq(categoriesT.name, body.category));
+    .select({ id: categoriesTbl.id })
+    .from(categoriesTbl)
+    .where(eq(categoriesTbl.name, body.category));
   const categoryId = categorySelect.id;
 
   // update article
   const [updatedArticle] = await db
-    .update(articlesT)
+    .update(articlesTbl)
     .set({
       name: body.name,
       price: body.price,
@@ -155,28 +156,28 @@ adminRoutes.put("/article/:articleId", async (c) => {
       brandId: brandId,
       categoryId: categoryId,
     })
-    .where(eq(articlesT.id, +articleId));
+    .where(eq(articlesTbl.id, +articleId));
 
   // update article props
   const [articlePropsUpdate] = await db
-    .update(articlePropertiesT)
+    .update(articlePropertiesTbl)
     .set({
       size: body.size,
       color: body.color,
     })
-    .where(eq(articlePropertiesT.articleId, +articleId));
+    .where(eq(articlePropertiesTbl.articleId, +articleId));
 
   // should actually be a transaction
   // delete article images
   await db
-    .delete(articleImagesT)
-    .where(eq(articleImagesT.articleId, +articleId));
+    .delete(articleImagesTbl)
+    .where(eq(articleImagesTbl.articleId, +articleId));
 
   // insert article images
   const values = body.images.map((image) => {
     return { imagePath: image, articleId: +articleId };
   });
-  await db.insert(articleImagesT).values(values);
+  await db.insert(articleImagesTbl).values(values);
 
   return c.json({});
 });
@@ -184,7 +185,7 @@ adminRoutes.put("/article/:articleId", async (c) => {
 adminRoutes.delete("/article/:articleId", async (c) => {
   const db = await getDatabase();
   const { articleId } = c.req.param();
-  await db.delete(articlesT).where(eq(articlesT.id, +articleId));
+  await db.delete(articlesTbl).where(eq(articlesTbl.id, +articleId));
   return c.json({});
 });
 
@@ -197,7 +198,7 @@ interface BrandBody {
 adminRoutes.post("/brand", async (c) => {
   const db = await getDatabase();
   const body: BrandBody = await c.req.json();
-  await db.insert(brandsT).values({
+  await db.insert(brandsTbl).values({
     name: body.name,
     image: body.image,
     description: body.description,
@@ -209,19 +210,19 @@ adminRoutes.put("/brand/:brandId", async (c) => {
   const { brandId } = c.req.param();
   const body: BrandBody = await c.req.json();
   const [brandsUpdate] = await db
-    .update(brandsT)
+    .update(brandsTbl)
     .set({
       name: body.name,
       description: body.description,
       image: body.image,
     })
-    .where(eq(brandsT.id, +brandId));
+    .where(eq(brandsTbl.id, +brandId));
   return c.json({});
 });
 adminRoutes.delete("/brand/:brandId", async (c) => {
   const db = await getDatabase();
   const { brandId } = c.req.param();
-  await db.delete(brandsT).where(eq(brandsT.id, +brandId));
+  await db.delete(brandsTbl).where(eq(brandsTbl.id, +brandId));
   return c.json({});
 });
 
@@ -234,7 +235,7 @@ interface CategoryBody {
 adminRoutes.post("/category", async (c) => {
   const db = await getDatabase();
   const body: CategoryBody = await c.req.json();
-  await db.insert(categoriesT).values({
+  await db.insert(categoriesTbl).values({
     name: body.name,
     image: body.image,
     description: body.description,
@@ -246,15 +247,15 @@ adminRoutes.put("/category/:categoryId", async (c) => {
   const { categoryId } = c.req.param();
   const body: CategoryBody = await c.req.json();
   await db
-    .update(categoriesT)
+    .update(categoriesTbl)
     .set({ name: body.name, description: body.description, image: body.image })
-    .where(eq(categoriesT.id, +categoryId));
+    .where(eq(categoriesTbl.id, +categoryId));
   return c.json({});
 });
 adminRoutes.delete("/category/:categoryId", async (c) => {
   const db = await getDatabase();
   const { categoryId } = c.req.param();
-  await db.delete(categoriesT).where(eq(categoriesT.id, +categoryId));
+  await db.delete(categoriesTbl).where(eq(categoriesTbl.id, +categoryId));
   return c.json({});
 });
 
@@ -270,7 +271,7 @@ adminRoutes.post("/listing", async (c) => {
   const db = await getDatabase();
   const body: ListingBody = await c.req.json();
 
-  const [listingInsert] = await db.insert(listingsT).values({
+  const [listingInsert] = await db.insert(listingsTbl).values({
     title: body.title,
     description: body.description,
     articleIdDefault: body.defaultArticle.id,
@@ -282,7 +283,7 @@ adminRoutes.post("/listing", async (c) => {
     listingId,
     articleId: article.id,
   }));
-  await db.insert(articleListingRelationsT).values(listingRelations);
+  await db.insert(articleListingRelationsTbl).values(listingRelations);
 
   return c.json({});
 });
@@ -292,32 +293,32 @@ adminRoutes.put("/listing/:listingId", async (c) => {
   const body: ListingBody = await c.req.json();
 
   await db
-    .update(listingsT)
+    .update(listingsTbl)
     .set({
       title: body.title,
       description: body.description,
       imagePath: body.image,
       articleIdDefault: body.defaultArticle.id,
     })
-    .where(eq(listingsT.id, +listingId));
+    .where(eq(listingsTbl.id, +listingId));
 
   //^ should be a transation
   //delete
   await db
-    .delete(articleListingRelationsT)
-    .where(eq(articleListingRelationsT.listingId, +listingId));
+    .delete(articleListingRelationsTbl)
+    .where(eq(articleListingRelationsTbl.listingId, +listingId));
   //insert
   const listingRelations = body.includedArticles.map((article) => ({
     listingId: +listingId,
     articleId: article.id,
   }));
-  await db.insert(articleListingRelationsT).values(listingRelations);
+  await db.insert(articleListingRelationsTbl).values(listingRelations);
   return c.json({});
 });
 adminRoutes.delete("/listing/:listingId", async (c) => {
   const db = await getDatabase();
   const { listingId } = c.req.param();
-  await db.delete(listingsT).where(eq(listingsT.id, +listingId));
+  await db.delete(listingsTbl).where(eq(listingsTbl.id, +listingId));
   return c.json({});
 });
 
@@ -338,16 +339,16 @@ app.get("/article/:articleId", async (c) => {
   });
   const brandName = (
     await db
-      .select({ name: brandsT.name })
-      .from(brandsT)
-      .where(eq(brandsT.id, +articleSelect.brandId!))
+      .select({ name: brandsTbl.name })
+      .from(brandsTbl)
+      .where(eq(brandsTbl.id, +articleSelect.brandId!))
   )[0].name;
 
   const categoryName = (
     await db
-      .select({ name: categoriesT.name })
-      .from(categoriesT)
-      .where(eq(categoriesT.id, +articleSelect.categoryId!))
+      .select({ name: categoriesTbl.name })
+      .from(categoriesTbl)
+      .where(eq(categoriesTbl.id, +articleSelect.categoryId!))
   )[0].name;
 
   //asign more stuffs
@@ -387,13 +388,13 @@ app.get("/brand/:brandId", async (c) => {
   const { brandId } = c.req.param();
   const [brandsSelect] = await db
     .select()
-    .from(brandsT)
-    .where(eq(brandsT.id, +brandId));
+    .from(brandsTbl)
+    .where(eq(brandsTbl.id, +brandId));
   return c.json({ content: brandsSelect });
 });
 app.get("/brands", async (c) => {
   const db = await getDatabase();
-  const brandsSelect = await db.select().from(brandsT);
+  const brandsSelect = await db.select().from(brandsTbl);
   return c.json({ content: brandsSelect });
 });
 
@@ -403,13 +404,13 @@ app.get("/category/:categoryId", async (c) => {
   const { categoryId } = c.req.param();
   const [categorySelect] = await db
     .select()
-    .from(categoriesT)
-    .where(eq(categoriesT.id, +categoryId));
+    .from(categoriesTbl)
+    .where(eq(categoriesTbl.id, +categoryId));
   return c.json({ content: categorySelect });
 });
 app.get("/categories", async (c) => {
   const db = await getDatabase();
-  const caregoriesSelect = await db.select().from(categoriesT);
+  const caregoriesSelect = await db.select().from(categoriesTbl);
   return c.json({ content: caregoriesSelect });
 });
 
@@ -433,7 +434,7 @@ app.get("/listing/:listingId", async (c) => {
     async (articleId: number) =>
       // (await db.select().from(articles).where(eq(articles.id, articleId)))[0],
       await db.query.articles.findFirst({
-        where: eq(articlesT.id, articleId),
+        where: eq(articlesTbl.id, articleId),
         with: {
           articleImages: true,
           articleProperties: true,
@@ -448,19 +449,19 @@ app.get("/listing/:listingId", async (c) => {
 });
 app.get("/listings", async (c) => {
   const db = await getDatabase();
-  const listingssSelect = await db.select().from(listingsT);
+  const listingssSelect = await db.select().from(listingsTbl);
   return c.json({ content: listingssSelect });
 });
 app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();
-  const listingsContent = await db.select().from(listingsT).limit(5);
+  const listingsContent = await db.select().from(listingsTbl).limit(5);
 
   const defaultArticlePromises = listingsContent.map(
     (listing) =>
       db
         .select()
-        .from(articlesT)
-        .where(eq(articlesT.id, +listing.articleIdDefault!))
+        .from(articlesTbl)
+        .where(eq(articlesTbl.id, +listing.articleIdDefault!))
         .then((articles) => articles[0]) // Assuming the database call returns an array
   );
 
@@ -489,19 +490,67 @@ app.get("/user/:userId", async (c) => {
 
   const [userInfo] = await db
     .select({
-      id: usersT.id,
-      firstName: usersT.firstName,
-      lastName: usersT.lastName,
-      email: usersT.email,
-      phoneNumber: usersT.phoneNumber,
-      isAdmin: usersT.isAdmin,
+      id: usersTbl.id,
+      firstName: usersTbl.firstName,
+      lastName: usersTbl.lastName,
+      email: usersTbl.email,
+      phoneNumber: usersTbl.phoneNumber,
+      isAdmin: usersTbl.isAdmin,
     })
-    .from(usersT)
-    .where(eq(usersT.id, +userId));
+    .from(usersTbl)
+    .where(eq(usersTbl.id, +userId));
 
   if (payload.userId !== userInfo.id) return c.status(401);
 
   return c.json({ userInfo });
+});
+
+//logging
+app.get("/log/guest-user/:guestUserId", async (c) => {
+  const db = await getDatabase();
+  const { guestUserId } = c.req.param();
+  const guestUserAuth = c.req.header("guestUserAuth");
+  if (!guestUserAuth) {
+    c.status(401);
+    return c.json({});
+  }
+
+  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+  const { payload } = JSON.parse(
+    JSON.stringify(await jose.jwtVerify(guestUserAuth, encodedKey))
+  );
+  if (+payload.guestUserId !== +guestUserId) {
+    c.status(401);
+    return c.json({});
+  }
+  await db
+    .update(guestUsersTbl)
+    .set({ loggedInAt: getTimeStamp() })
+    .where(eq(guestUsersTbl.id, +guestUserId));
+  return c.json({});
+});
+app.get("/log/user/:userId", async (c) => {
+  const db = await getDatabase();
+  const { userId } = c.req.param();
+  const authorization = c.req.header("authorization");
+  if (!authorization) {
+    c.status(401);
+    return c.json({});
+  }
+  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+  const { payload } = JSON.parse(
+    JSON.stringify(await jose.jwtVerify(authorization, encodedKey))
+  );
+  if (+payload.userId !== +userId) {
+    c.status(401);
+    return c.json({});
+  }
+
+  await db
+    .update(usersTbl)
+    .set({ loggedInAt: getTimeStamp() })
+    .where(eq(usersTbl.id, +userId));
+  return c.json({});
 });
 
 //auth
@@ -528,14 +577,12 @@ interface ResponseAuth {
 }
 app.get("/auth/create-guest", async (c) => {
   const db = await getDatabase();
-  const body: ResponseAuth = await c.req.json();
-
-  const [guestUser] = await db.insert(guestUsersT).values({
-    createdAt: new Date().toISOString(),
-    loggedInAt: new Date().toISOString(),
+  const [guestUser] = await db.insert(guestUsersTbl).values({
+    createdAt: getTimeStamp(),
+    loggedInAt: getTimeStamp(),
   });
   const guestUserId = guestUser.insertId;
-  await db.insert(cartsT).values({
+  await db.insert(cartsTbl).values({
     guestUserId: guestUserId,
   });
 
@@ -555,9 +602,9 @@ app.post("/auth/login", async (c) => {
 
   const userPassword = (
     await db
-      .select({ password: usersT.password })
-      .from(usersT)
-      .where(eq(usersT.email, body.email))
+      .select({ password: usersTbl.password })
+      .from(usersTbl)
+      .where(eq(usersTbl.email, body.email))
   )[0].password;
 
   const passwordIsCorrect = await bcrypt.compare(body.password, userPassword);
@@ -569,14 +616,14 @@ app.post("/auth/login", async (c) => {
 
   const [userInfo] = await db
     .select({
-      id: usersT.id,
-      firstName: usersT.firstName,
-      lastName: usersT.lastName,
-      email: usersT.email,
-      phoneNumber: usersT.phoneNumber,
+      id: usersTbl.id,
+      firstName: usersTbl.firstName,
+      lastName: usersTbl.lastName,
+      email: usersTbl.email,
+      phoneNumber: usersTbl.phoneNumber,
     })
-    .from(usersT)
-    .where(eq(usersT.email, body.email));
+    .from(usersTbl)
+    .where(eq(usersTbl.email, body.email));
 
   const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
   const userIdJwt = await new jose.SignJWT({ userId: userInfo.id })
@@ -592,36 +639,36 @@ app.post("/auth/signup", async (c) => {
   const body: SignupBody = await c.req.json();
 
   const emailIsTaken =
-    (await db.select().from(usersT).where(eq(usersT.email, body.email)))
+    (await db.select().from(usersTbl).where(eq(usersTbl.email, body.email)))
       .length > 0;
 
   if (emailIsTaken) return c.json({ errorMessage: "email is taken" });
 
   const hashedPassword = await bcrypt.hash(body.password, 10);
 
-  const [insertUser] = await db.insert(usersT).values({
+  const [insertUser] = await db.insert(usersTbl).values({
     firstName: body.firstName,
     lastName: body.lastName,
     phoneNumber: body.phone,
     email: body.email,
     password: hashedPassword,
-    createdAt: new Date().toISOString(),
-    loggedInAt: new Date().toISOString(),
+    createdAt: getTimeStamp(),
+    loggedInAt: getTimeStamp(),
   });
   const userId = insertUser.insertId;
 
   const [userInfo] = await db
     .select({
-      id: usersT.id,
-      firstName: usersT.firstName,
-      lastName: usersT.lastName,
-      email: usersT.email,
-      phoneNumber: usersT.phoneNumber,
+      id: usersTbl.id,
+      firstName: usersTbl.firstName,
+      lastName: usersTbl.lastName,
+      email: usersTbl.email,
+      phoneNumber: usersTbl.phoneNumber,
     })
-    .from(usersT)
-    .where(eq(usersT.id, userId));
+    .from(usersTbl)
+    .where(eq(usersTbl.id, userId));
 
-  await db.insert(cartsT).values({
+  await db.insert(cartsTbl).values({
     userId: userId,
   });
 

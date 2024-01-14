@@ -32,6 +32,7 @@ export default async function adminLayout({
   if (!verifiedToken || typeof verifiedToken.userId !== "number") {
     return <Container>token is invalid</Container>;
   }
+  
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/user/${verifiedToken.userId}`,
