@@ -20,7 +20,7 @@ export async function GET(
         articleImages: true,
         articleProperties: true,
       },
-      where: (articles, { eq }) => eq(articles.id, articleId),
+      where: (articles: { id: any; }, { eq }: any) => eq(articles.id, articleId),
     });
     const brandName = (
       await db

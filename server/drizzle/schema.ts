@@ -26,14 +26,14 @@ export const articleListingRelations = mysqlTable("article_listing_relations", {
 	}
 });
 
-export const articlePlannedSalesRelations = mysqlTable("article_planned_sales_relations", {
+export const articlePlannedSalesRelation = mysqlTable("article_planned_sales_relation", {
 	id: int("id").autoincrement().notNull(),
 	articleId: int("article_id").notNull().references(() => articles.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	plannedSaleId: int("planned_sale_id").notNull().references(() => plannedSales.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 },
 (table) => {
 	return {
-		articlePlannedSalesRelationsId: primaryKey({ columns: [table.id], name: "article_planned_sales_relations_id"}),
+		articlePlannedSalesRelationId: primaryKey({ columns: [table.id], name: "article_planned_sales_relation_id"}),
 		articlePlannedSalesRelationUn: unique("article_planned_sales_relation_UN").on(table.articleId, table.plannedSaleId),
 	}
 });
@@ -42,7 +42,7 @@ export const articleProperties = mysqlTable("article_properties", {
 	id: int("id").autoincrement().notNull(),
 	size: mysqlEnum("size", ['XS','S','M','L','XL']),
 	color: varchar("color", { length: 100 }),
-	articleId: int("article_id").references(() => articles.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	articleId: int("article_id").notNull().references(() => articles.id),
 },
 (table) => {
 	return {
@@ -63,6 +63,7 @@ export const articles = mysqlTable("articles", {
 (table) => {
 	return {
 		articlesId: primaryKey({ columns: [table.id], name: "articles_id"}),
+		articlesUn: unique("articles_UN").on(table.name, table.brandId),
 	}
 });
 
@@ -75,7 +76,6 @@ export const brands = mysqlTable("brands", {
 (table) => {
 	return {
 		brandsId: primaryKey({ columns: [table.id], name: "brands_id"}),
-		brandsUn: unique("brands_UN").on(table.name),
 	}
 });
 
@@ -108,12 +108,11 @@ export const categories = mysqlTable("categories", {
 	id: int("id").autoincrement().notNull(),
 	name: varchar("name", { length: 200 }).notNull(),
 	description: text("description").notNull(),
-	image: varchar("image", { length: 400 }),
+	image: text("image"),
 },
 (table) => {
 	return {
 		categoriesId: primaryKey({ columns: [table.id], name: "categories_id"}),
-		categoriesUn: unique("categories_UN").on(table.name),
 	}
 });
 

@@ -30,18 +30,7 @@ export interface Body {
 }
 
 export async function POST(request: Request) {
-  const {
-    name,
-    price,
-    quantityInStock,
-    brand,
-    category,
-    description,
-    garmentCare,
-    images,
-    size,
-    color,
-  }: Body = await request.json();
+  const body: Body = await request.json();
 
   // parse(GenericInputSchema, body.name);
   // parse(GenericInputSchema, image);
@@ -60,25 +49,25 @@ export async function POST(request: Request) {
     const [brandSelect] = await db
       .select({ id: brands.id })
       .from(brands)
-      .where(eq(brands.name, brand));
+      .where(eq(brands.name, body.brand));
     const brandId = brandSelect.id;
 
     // find category id from brand name
     const [categorySelect] = await db
       .select({ id: categories.id })
       .from(categories)
-      .where(eq(categories.name, category));
+      .where(eq(categories.name, body.category));
     const categoryId = categorySelect.id;
 
     // insert article
     const [articleInsert] = await db.insert(articles).values({
-      name,
-      price,
-      quantityInStock,
-      description,
-      garmentCare,
-      brandId,
-      categoryId,
+      name: body.name,
+      price: body.price,
+      quantityInStock: body.quantityInStock,
+      description: body.description,
+      garmentCare: body.garmentCare,
+      brandId: body.brandId,
+      categoryId: body.categoryId,
     });
     const articleId = articleInsert.insertId;
 
