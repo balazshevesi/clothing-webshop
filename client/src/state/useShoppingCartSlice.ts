@@ -1,3 +1,5 @@
+import getCookie from "@/utils/getCookie";
+
 import { create } from "zustand";
 
 interface useShoppingCart {
@@ -12,35 +14,70 @@ interface useShoppingCart {
   close: Function;
 }
 
+const sendUpdatedItem = async (item: any, newCount: number) => {
+  const userInfoCookie = getCookie("userInfo");
+  const guestUserIdCookie = getCookie("guestUserId");
+
+  fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/${
+      userInfoCookie ? "user" : "guest-user"
+    }/${
+      userInfoCookie ? JSON.parse(userInfoCookie).id : guestUserIdCookie
+    }/cart/update-count`,
+    {
+      method: "post",
+      headers: {
+        userAuth: getCookie("userAuth")!,
+        guestUserAuth: getCookie("guestUserAuth")!,
+      },
+      body: JSON.stringify({
+        articleId: item.id,
+        newCount: +newCount,
+      }),
+    },
+  );
+};
+
 export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
   items: [],
   isOpen: false,
 
-  // addItem: (item: any) => {
-  //   return set((state: any) => {
-  //     const itemAlredyExists = state.items.includes(item);
-  //     if (itemAlredyExists) {
-  //       const updatedItems = state.items.map((stateItem: any) => {
-  //         if (stateItem.id === item.id) stateItem.count++;
-  //         return stateItem;
-  //       });
-  //       return { items: updatedItems };
-  //     }
-  //     item.count = 1;
-  //     return { items: [...state.items, item] };
-  //   });
-  // },
+  fetchAndSetCart: async () => {
+    const userInfoCookie = getCookie("userInfo");
+    const guestUserIdCookie = getCookie("guestUserId");
 
-  // removeItem: (item: any) =>
-  //   set((state: any) => {
-  //     const newItems = state.items.filter(
-  //       (stateItem: any) => stateItem.id !== item.id,
-  //     );
-  //     return { items: newItems };
-  //   }),
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/${
+        userInfoCookie ? "user" : "guest-user"
+      }/${
+        userInfoCookie ? JSON.parse(userInfoCookie).id : guestUserIdCookie
+      }/cart`,
+      {
+        method: "get",
+        headers: {
+          userAuth: getCookie("userAuth")!,
+          guestUserAuth: getCookie("guestUserAuth")!,
+        },
+      },
+    );
+    const data = await response.json();
+
+    const stateFormat = data.content.cartItems.map((cartItem: any) => {
+      const frozenArticle = { ...cartItem.articles };
+      frozenArticle.count = cartItem.quantity;
+      return frozenArticle;
+    });
+
+    set((state: any) => {
+      return { items: stateFormat };
+    });
+  },
+
+  resetCart: async () => set((state: any) => ({ items: [] })),
 
   updateCount: (item: any, newCount: number) =>
     set((state: any) => {
+      sendUpdatedItem(item, newCount);
       const updatedItems = state.items.map((stateItem: any) => {
         if (item.id === stateItem.id) stateItem.count = newCount;
         return stateItem;
@@ -48,11 +85,20 @@ export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
       const removeIfCountIsNull = updatedItems.filter(
         (stateItem: any) => stateItem.count > 0,
       );
+      //yessir
+      if (
+        state.items.filter((stateItem: any) => stateItem.id === item.id)
+          .length === 0
+      ) {
+        item.count = 1;
+        return { items: [...state.items, item] };
+      }
       return { items: removeIfCountIsNull };
     }),
 
   increment: (item: any) =>
     set((state: any) => {
+      sendUpdatedItem(item, item.count + 1);
       const updatedCount = state.items.map((stateItem: any) => {
         if (stateItem.id === item.id) stateItem.count++;
         return stateItem;
@@ -68,6 +114,7 @@ export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
     }),
   decrement: (item: any) =>
     set((state: any) => {
+      sendUpdatedItem(item, item.count - 1);
       const updatedCount = state.items.map((stateItem: any) => {
         if (stateItem.id === item.id) stateItem.count--;
         return stateItem;

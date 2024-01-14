@@ -13,13 +13,13 @@ export default async function adminLayout({
   children: ReactNode;
 }) {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("userAuth");
-  if (!authorization) return <Container>you're not logged in g</Container>;
+  const userAuth = cookieStore.get("userAuth");
+  if (!userAuth) return <Container>you're not logged in g</Container>;
 
   let verifiedToken;
   try {
     const { payload } = await jwtVerify(
-      authorization.value,
+      userAuth.value,
       new TextEncoder().encode(process.env.JWT_SECRET_KEY),
     );
     verifiedToken = payload;
@@ -32,14 +32,13 @@ export default async function adminLayout({
   if (!verifiedToken || typeof verifiedToken.userId !== "number") {
     return <Container>token is invalid</Container>;
   }
-  
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/user/${verifiedToken.userId}`,
     {
       method: "GET",
       headers: {
-        Authorization: authorization.value,
+        userAuth: userAuth.value,
       },
     },
   );

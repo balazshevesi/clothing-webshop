@@ -8,16 +8,19 @@ import SignOut from "./SignOut";
 
 export default async function Page() {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("userAuth");
+  const userAuth = cookieStore.get("userAuth");
   const userInfoCookies = cookieStore.get("userInfo");
-  const userInfo = JSON.parse(userInfoCookies?.value!)
+  const userInfo = JSON.parse(userInfoCookies?.value!);
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/user/${userInfo.id}`, {
-    method: "get",
-    headers: {
-      authorization: String(authorization?.value),
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/user/${userInfo.id}`,
+    {
+      method: "get",
+      headers: {
+        userAuth: String(userAuth?.value),
+      },
     },
-  });
+  );
   const data = await response.json();
 
   return (
@@ -29,7 +32,7 @@ export default async function Page() {
         {!!data.userInfo && !!data.userInfo.isAdmin && (
           <Link
             href={"/admin"}
-            className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+            className="bg-primary text-primary-foreground ring-offset-background hover:bg-primary/90 focus-visible:ring-ring inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
           >
             View Admin Panel
           </Link>

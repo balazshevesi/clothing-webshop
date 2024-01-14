@@ -66,7 +66,7 @@ export default function ListingForm({
       {
         method: "delete",
         headers: {
-          authorization: getCookie("userAuth")!,
+          userAuth: getCookie("userAuth")!,
         },
       },
     );
@@ -118,7 +118,7 @@ export default function ListingForm({
           method: listingContent ? "put" : "post",
           body: JSON.stringify(formData),
           headers: {
-            authorization: getCookie("userAuth")!,
+            userAuth: getCookie("userAuth")!,
           },
         },
       );

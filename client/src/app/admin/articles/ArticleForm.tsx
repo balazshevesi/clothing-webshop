@@ -116,7 +116,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
       {
         method: "delete",
         headers: {
-          authorization: getCookie("userAuth")!,
+          userAuth: getCookie("userAuth")!,
         },
       },
     );
@@ -220,7 +220,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
           method: ArticleData ? "put" : "post",
           body: JSON.stringify(submitionData),
           headers: {
-            authorization: getCookie("userAuth")!,
+            userAuth: getCookie("userAuth")!,
           },
         },
       );

@@ -45,7 +45,7 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
       {
         method: "delete",
         headers: {
-          authorization: getCookie("userAuth")!,
+          userAuth: getCookie("userAuth")!,
         },
       },
     );
@@ -90,7 +90,7 @@ export default function BrandForm({ brandData }: { brandData?: any }) {
           method: brandData ? "put" : "post",
           body: JSON.stringify({ name, image, description }),
           headers: {
-            authorization: getCookie("userAuth")!,
+            userAuth: getCookie("userAuth")!,
           },
         },
       );

@@ -31,16 +31,16 @@ export default async function RootLayout({
   const cookieStore = cookies();
 
   //note that we're not awaiting shit
-  const authorization = cookieStore.get("userAuth");
+  const userAuth = cookieStore.get("userAuth");
   const userInfo = cookieStore.get("userInfo");
-  if (authorization && userInfo) {
+  if (userAuth && userInfo) {
     fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST}/log/user/${
         JSON.parse(userInfo.value).id
       }`,
       {
         method: "get",
-        headers: { authorization: authorization.value },
+        headers: { userAuth: userAuth.value },
       },
     );
   }

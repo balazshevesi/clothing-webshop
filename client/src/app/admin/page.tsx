@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function Page() {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("userAuth");
+  const userAuth = cookieStore.get("userAuth");
   const userInfoCookies = cookieStore.get("userInfo");
   const userInfo = JSON.parse(userInfoCookies?.value!);
 

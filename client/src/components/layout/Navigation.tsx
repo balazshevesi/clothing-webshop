@@ -25,7 +25,7 @@ function Logo() {
 
 export default function Navigation() {
   const cookieStore = cookies();
-  const authorization = cookieStore.get("userAuth");
+  const userAuth = cookieStore.get("userAuth");
 
   return (
     <nav className="sticky left-0 top-0 z-50 w-full border-b border-dashed border-white/50 bg-black p-2 shadow">
@@ -45,7 +45,7 @@ export default function Navigation() {
           </Link>
         </div>
         <div className="flex flex-1 justify-end gap-2">
-          <LoginButton serverAuthorization={!!authorization} />
+          <LoginButton serverAuthorization={!!userAuth} />
           <CartSheet />
         </div>
       </Container>

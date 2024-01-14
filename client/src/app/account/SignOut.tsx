@@ -7,6 +7,7 @@ import deleteCookie from "@/utils/deleteCookie";
 import { Button } from "@/components/ui/button";
 
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 export default function SignOut() {
   const router = useRouter();
@@ -14,10 +15,20 @@ export default function SignOut() {
     (state: any) => state.setLogedginFalse,
   ) as any;
 
+  const fetchAndSetCart = useShoppingCartSlice(
+    (state: any) => state.fetchAndSetCart,
+  ) as any;
+
+  const resetCart = useShoppingCartSlice(
+    (state: any) => state.resetCart,
+  ) as any;
+
   const handleSignout = () => {
     setLogedginFalse();
     deleteCookie("userInfo");
     deleteCookie("userAuth");
+    resetCart();
+    fetchAndSetCart();
     router.push("/");
   };
 

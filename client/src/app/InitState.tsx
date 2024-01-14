@@ -6,6 +6,7 @@ import getCookie from "@/utils/getCookie";
 import isBrowser from "@/utils/isBrowser";
 
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { useShoppingCartSlice as shoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 const getAndsetGuestId = async () => {
   const response = await fetch(
@@ -18,24 +19,12 @@ const getAndsetGuestId = async () => {
   document.cookie = `guestUserAuth=${guestUserAuth}`;
 };
 
-// const updateLoggedInAt = async () => {
-//   if (getCookie("authorization"))
-//     await fetch(`/api/loglogin/user/${JSON.parse(getCookie("userInfo")!).id}`, {
-//       headers: {
-//         authorization: getCookie("authorization")!,
-//       },
-//     });
-//   if (getCookie("guestUserId"))
-//     await fetch(`/api/loglogin/guest/${getCookie("guestUserId")}`, {
-//       headers: {
-//         guestUserAuth: getCookie("guestUserAuth")!,
-//       },
-//     });
-// };
-
 export default function InitState({ children }: { children: ReactNode }) {
   const setLoggedinTrue = useAuthSlice(
     (state: any) => state.setLoggedinTrue,
+  ) as any;
+  const fetchAndSetCart = shoppingCartSlice(
+    (state: any) => state.fetchAndSetCart,
   ) as any;
 
   useEffect(() => {
@@ -44,6 +33,7 @@ export default function InitState({ children }: { children: ReactNode }) {
     const guestUserId = getCookie("guestUserId");
     if (!guestUserId) getAndsetGuestId();
 
+    fetchAndSetCart();
     // updateLoggedInAt();
   }, []);
 

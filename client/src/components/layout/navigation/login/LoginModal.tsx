@@ -18,9 +18,14 @@ import { Label } from "@/components/ui/label";
 
 import { EmailSchema, PasswordSchema } from "@/inputValidation/schema";
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { parse, flatten, safeParse } from "valibot";
 
 export default function LoginModal() {
+  const fetchAndSetCart = useShoppingCartSlice(
+    (state: any) => state.fetchAndSetCart,
+  ) as any;
+
   const loginIsOpen = useAuthSlice((state) => state.loginIsOpen);
   const closeLogin = useAuthSlice((state) => state.closeLogin);
   const openSignup = useAuthSlice((state) => state.openSignup);
@@ -35,7 +40,7 @@ export default function LoginModal() {
 
   const { register, handleSubmit, reset } = useForm();
 
-  const handleSignup = async (formData: any) => {
+  const handleLogin = async (formData: any) => {
     let validInput = true;
     const emailValStatus = safeParse(EmailSchema, formData.email);
     if (!emailValStatus.success) {
@@ -77,6 +82,7 @@ export default function LoginModal() {
       setIsIncorrect(false);
       closeLogin();
       reset();
+      fetchAndSetCart();
     } else setIsIncorrect(true);
 
     setIsLoading(false);
@@ -91,7 +97,7 @@ export default function LoginModal() {
       }}
     >
       <AlertDialogContent>
-        <form onSubmit={handleSubmit(handleSignup)}>
+        <form onSubmit={handleSubmit(handleLogin)}>
           <AlertDialogHeader>
             <AlertDialogTitle>Login</AlertDialogTitle>
             <AlertDialogDescription>

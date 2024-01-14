@@ -2,6 +2,7 @@ import { cartItems } from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import * as jose from "jose";
 
 import {
@@ -26,22 +27,10 @@ import getAndValidateGuestUser from "./utils/getAndValidateGuestUser";
 
 const app = new Hono();
 
-app.use("*", async (c, next) => {
-  c.header("Access-Control-Allow-Origin", "*");
-  c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  c.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  c.header("Access-Control-Allow-Credentials", "true");
-
-  // If the request is an OPTIONS request, respond with 200
-  if (c.req.method === "OPTIONS") {
-    return c.text("", 204);
-  }
-
-  await next();
-});
+app.use("*", cors({ origin: "*" }));
+// app.options("*", (c) => {
+//   return c.text("", 204);
+// });
 
 //~ define routes
 
@@ -700,14 +689,14 @@ app.get("/log/guest-user/:guestUserId", async (c) => {
 app.get("/log/user/:userId", async (c) => {
   const db = await getDatabase();
   const { userId } = c.req.param();
-  const authorization = c.req.header("userAuth");
-  if (!authorization) {
+  const userAuth = c.req.header("userAuth");
+  if (!userAuth) {
     c.status(401);
     return c.json({});
   }
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(authorization, encodedKey))
+    JSON.stringify(await jose.jwtVerify(userAuth, encodedKey))
   );
   if (+payload.userId !== +userId) {
     c.status(401);
