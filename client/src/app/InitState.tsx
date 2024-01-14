@@ -16,20 +16,20 @@ const getAndsetGuestId = async () => {
   document.cookie = `guestUserAuth=${guestUserAuth}`;
 };
 
-const updateLoggedInAt = async () => {
-  if (getCookie("authorization"))
-    await fetch(`/api/loglogin/user/${JSON.parse(getCookie("userInfo")!).id}`, {
-      headers: {
-        authorization: getCookie("authorization")!,
-      },
-    });
-  if (getCookie("guestUserId"))
-    await fetch(`/api/loglogin/guest/${getCookie("guestUserId")}`, {
-      headers: {
-        guestUserAuth: getCookie("guestUserAuth")!,
-      },
-    });
-};
+// const updateLoggedInAt = async () => {
+//   if (getCookie("authorization"))
+//     await fetch(`/api/loglogin/user/${JSON.parse(getCookie("userInfo")!).id}`, {
+//       headers: {
+//         authorization: getCookie("authorization")!,
+//       },
+//     });
+//   if (getCookie("guestUserId"))
+//     await fetch(`/api/loglogin/guest/${getCookie("guestUserId")}`, {
+//       headers: {
+//         guestUserAuth: getCookie("guestUserAuth")!,
+//       },
+//     });
+// };
 
 export default function InitState({ children }: { children: ReactNode }) {
   const setLoggedinTrue = useAuthSlice(
@@ -42,7 +42,7 @@ export default function InitState({ children }: { children: ReactNode }) {
     const guestUserId = getCookie("guestUserId");
     if (!guestUserId) getAndsetGuestId();
 
-    updateLoggedInAt();
+    // updateLoggedInAt();
   }, []);
 
   return children;

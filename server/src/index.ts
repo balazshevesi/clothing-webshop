@@ -19,6 +19,25 @@ import {
 import { eq } from "drizzle-orm";
 import getDatabase from "./utils/getDatabase";
 
+const app = new Hono();
+
+app.use("*", async (c, next) => {
+  c.header("Access-Control-Allow-Origin", "*");
+  c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  c.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  c.header("Access-Control-Allow-Credentials", "true");
+
+  // If the request is an OPTIONS request, respond with 200
+  if (c.req.method === "OPTIONS") {
+    return c.text("", 204);
+  }
+
+  await next();
+});
+
 //~ define routes
 
 //admin stuffs
@@ -50,7 +69,6 @@ adminRoutes.use(async (c, next) => {
 });
 
 // admin articles
-
 interface ArticleBody {
   name: string;
   price: string;
@@ -302,7 +320,6 @@ adminRoutes.delete("/listing/:listingId", async (c) => {
 });
 
 adminRoutes.get("/", (c) => c.json({}));
-const app = new Hono();
 app.route("/admin", adminRoutes);
 
 //articles
@@ -621,3 +638,11 @@ export default {
   port: 3002,
   fetch: app.fetch,
 };
+function cors(arg0: {
+  origin: unknown;
+  allowedHeaders: string[];
+  allowMethods: string[];
+  credentials: boolean;
+}) {
+  throw new Error("Function not implemented.");
+}

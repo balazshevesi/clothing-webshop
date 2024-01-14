@@ -79,10 +79,13 @@ export default function SignupModal() {
 
     setIsLoading(true);
 
-    const response = await fetch("/api/auth/signup", {
-      method: "post",
-      body: JSON.stringify(formData),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/auth/signup`,
+      {
+        method: "post",
+        body: JSON.stringify(formData),
+      },
+    );
     if (response.status === 500) {
       setServerError(true);
       setIsLoading(false);
