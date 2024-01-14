@@ -1,6 +1,5 @@
 ## TODO
 
-- [ ] Build backend for cart, and intergrate with the frontend
 - [ ] Build filter/browse section of the website
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system
@@ -9,6 +8,7 @@
 - [ ] Present account info in a cleaner way, and make it ediatable
 - [ ] Maybe add favourites idk
 - [ ] Add planned sales shit
+- [x] Build backend for cart, and intergrate with the frontend
 - [x] Make state logic even simpler, only increment, decrement, remove and add gets handled automatically?
 - [x] Switch add to cart modal to sonner toast
 - [x] Build mobile menue n shit
