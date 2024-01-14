@@ -1,13 +1,11 @@
-//* protects route and sub routes
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
 import { ReactNode } from "react";
 
 import Container from "@/components/general/Container";
 
-import AdminPage from "./AdminNavigation";
 import AdminNavigation from "./AdminNavigation";
-import jwt from "jsonwebtoken";
+import { jwtVerify } from "jose";
 
 export default async function adminLayout({
   children,
@@ -18,27 +16,36 @@ export default async function adminLayout({
   const authorization = cookieStore.get("authorization");
   if (!authorization) return <Container>you're not logged in g</Container>;
 
-  //verify token
-  const verifiedToken = jwt.verify(
-    authorization.value,
-    process.env.JWT_SECRET_KEY!,
-  );
-  //if token is invalid
-  if (typeof verifiedToken === "string" || verifiedToken instanceof String)
+  let verifiedToken;
+  try {
+    const { payload } = await jwtVerify(
+      authorization.value,
+      new TextEncoder().encode(process.env.JWT_SECRET_KEY),
+    );
+    verifiedToken = payload;
+  } catch (error) {
+    // Handle the error appropriately - token verification failed
     return <Container>token is invalid</Container>;
+  }
+
+  // If token is invalid or doesn't have the required claims
+  if (!verifiedToken || typeof verifiedToken.userId !== "number") {
+    return <Container>token is invalid</Container>;
+  }
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/user/${verifiedToken.userId}`,
     {
-      method: "get",
+      method: "GET",
       headers: {
-        authorization: String(authorization?.value),
+        Authorization: authorization.value,
       },
     },
   );
   const data = await response.json();
-  if (!data.userInfo.isAdmin)
+  if (!data.userInfo.isAdmin) {
     return <Container>you're not an admin g</Container>;
+  }
 
   return <AdminNavigation>{children}</AdminNavigation>;
 }

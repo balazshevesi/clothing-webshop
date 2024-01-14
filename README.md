@@ -1,3 +1,11 @@
+## naming conventions used
+
+**mySQL**: snake_case
+**API Route Names** (excluding dynamic-route names): kebab-case
+**JS/TS Code**: camelCase
+**Interacting with mySQL in JS**: when i run the introspect in drizzle, it automagically converts the mySql tables names into camelCase, but i also rename them to include a "T" at the end in the actuall index.ts file.
+**Types and Schema validations**: PascalCase
+
 ## bigger stuff
 
 - [ ] Setup database and backend

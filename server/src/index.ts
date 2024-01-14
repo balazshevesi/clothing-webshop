@@ -4,16 +4,16 @@ import { Hono } from "hono";
 import * as jose from "jose";
 
 import {
-  articleImages,
-  articleListingRelations,
-  articleProperties,
-  articles,
-  brands,
-  carts,
-  categories,
-  guestUsers,
-  listings,
-  users,
+  articleImages as articleImagesT,
+  articleListingRelations as articleListingRelationsT,
+  articleProperties as articlePropertiesT,
+  articles as articlesT,
+  brands as brandsT,
+  carts as cartsT,
+  categories as categoriesT,
+  guestUsers as guestUsersT,
+  listings as listingsT,
+  users as usersT,
 } from "../drizzle/schema";
 
 import { eq } from "drizzle-orm";
@@ -56,10 +56,10 @@ adminRoutes.use(async (c, next) => {
   const db = await getDatabase();
   const [userInfo] = await db
     .select({
-      isAdmin: users.isAdmin,
+      isAdmin: usersT.isAdmin,
     })
-    .from(users)
-    .where(eq(users.id, payload.userId));
+    .from(usersT)
+    .where(eq(usersT.id, payload.userId));
 
   if (!userInfo || !userInfo.isAdmin) {
     c.status(401);
@@ -86,20 +86,20 @@ adminRoutes.post("/article", async (c) => {
   const body: ArticleBody = await c.req.json();
 
   const [brandSelect] = await db
-    .select({ id: brands.id })
-    .from(brands)
-    .where(eq(brands.name, body.brand));
+    .select({ id: brandsT.id })
+    .from(brandsT)
+    .where(eq(brandsT.name, body.brand));
   const brandId = brandSelect.id;
 
   // find category id from brand name
   const [categorySelect] = await db
-    .select({ id: categories.id })
-    .from(categories)
-    .where(eq(categories.name, body.category));
+    .select({ id: categoriesT.id })
+    .from(categoriesT)
+    .where(eq(categoriesT.name, body.category));
   const categoryId = categorySelect.id;
 
   // insert article
-  const [articleInsert] = await db.insert(articles).values({
+  const [articleInsert] = await db.insert(articlesT).values({
     name: body.name,
     price: body.price,
     quantityInStock: body.quantityInStock,
@@ -112,14 +112,14 @@ adminRoutes.post("/article", async (c) => {
 
   // insert article props
   const [articlePropsInsert] = await db
-    .insert(articleProperties)
+    .insert(articlePropertiesT)
     .values({ size: body.size, color: body.color, articleId });
 
   // insert article images
   const values = body.images.map((image) => {
     return { imagePath: image, articleId };
   });
-  await db.insert(articleImages).values(values);
+  await db.insert(articleImagesT).values(values);
 
   return c.json({});
 });
@@ -131,21 +131,21 @@ adminRoutes.put("/article/:articleId", async (c) => {
 
   // find brand id from brand name
   const [brandSelect] = await db
-    .select({ id: brands.id })
-    .from(brands)
-    .where(eq(brands.name, body.brand));
+    .select({ id: brandsT.id })
+    .from(brandsT)
+    .where(eq(brandsT.name, body.brand));
   const brandId = brandSelect.id;
 
   // find category id from brand name
   const [categorySelect] = await db
-    .select({ id: categories.id })
-    .from(categories)
-    .where(eq(categories.name, body.category));
+    .select({ id: categoriesT.id })
+    .from(categoriesT)
+    .where(eq(categoriesT.name, body.category));
   const categoryId = categorySelect.id;
 
   // update article
   const [updatedArticle] = await db
-    .update(articles)
+    .update(articlesT)
     .set({
       name: body.name,
       price: body.price,
@@ -155,26 +155,28 @@ adminRoutes.put("/article/:articleId", async (c) => {
       brandId: brandId,
       categoryId: categoryId,
     })
-    .where(eq(articles.id, +articleId));
+    .where(eq(articlesT.id, +articleId));
 
   // update article props
   const [articlePropsUpdate] = await db
-    .update(articleProperties)
+    .update(articlePropertiesT)
     .set({
       size: body.size,
       color: body.color,
     })
-    .where(eq(articleProperties.articleId, +articleId));
+    .where(eq(articlePropertiesT.articleId, +articleId));
 
   // should actually be a transaction
   // delete article images
-  await db.delete(articleImages).where(eq(articleImages.articleId, +articleId));
+  await db
+    .delete(articleImagesT)
+    .where(eq(articleImagesT.articleId, +articleId));
 
   // insert article images
   const values = body.images.map((image) => {
     return { imagePath: image, articleId: +articleId };
   });
-  await db.insert(articleImages).values(values);
+  await db.insert(articleImagesT).values(values);
 
   return c.json({});
 });
@@ -182,7 +184,7 @@ adminRoutes.put("/article/:articleId", async (c) => {
 adminRoutes.delete("/article/:articleId", async (c) => {
   const db = await getDatabase();
   const { articleId } = c.req.param();
-  await db.delete(articles).where(eq(articles.id, +articleId));
+  await db.delete(articlesT).where(eq(articlesT.id, +articleId));
   return c.json({});
 });
 
@@ -195,7 +197,7 @@ interface BrandBody {
 adminRoutes.post("/brand", async (c) => {
   const db = await getDatabase();
   const body: BrandBody = await c.req.json();
-  await db.insert(brands).values({
+  await db.insert(brandsT).values({
     name: body.name,
     image: body.image,
     description: body.description,
@@ -207,19 +209,19 @@ adminRoutes.put("/brand/:brandId", async (c) => {
   const { brandId } = c.req.param();
   const body: BrandBody = await c.req.json();
   const [brandsUpdate] = await db
-    .update(brands)
+    .update(brandsT)
     .set({
       name: body.name,
       description: body.description,
       image: body.image,
     })
-    .where(eq(brands.id, +brandId));
+    .where(eq(brandsT.id, +brandId));
   return c.json({});
 });
 adminRoutes.delete("/brand/:brandId", async (c) => {
   const db = await getDatabase();
   const { brandId } = c.req.param();
-  await db.delete(brands).where(eq(brands.id, +brandId));
+  await db.delete(brandsT).where(eq(brandsT.id, +brandId));
   return c.json({});
 });
 
@@ -232,7 +234,7 @@ interface CategoryBody {
 adminRoutes.post("/category", async (c) => {
   const db = await getDatabase();
   const body: CategoryBody = await c.req.json();
-  await db.insert(categories).values({
+  await db.insert(categoriesT).values({
     name: body.name,
     image: body.image,
     description: body.description,
@@ -244,15 +246,15 @@ adminRoutes.put("/category/:categoryId", async (c) => {
   const { categoryId } = c.req.param();
   const body: CategoryBody = await c.req.json();
   await db
-    .update(categories)
+    .update(categoriesT)
     .set({ name: body.name, description: body.description, image: body.image })
-    .where(eq(categories.id, +categoryId));
+    .where(eq(categoriesT.id, +categoryId));
   return c.json({});
 });
 adminRoutes.delete("/category/:categoryId", async (c) => {
   const db = await getDatabase();
   const { categoryId } = c.req.param();
-  await db.delete(categories).where(eq(categories.id, +categoryId));
+  await db.delete(categoriesT).where(eq(categoriesT.id, +categoryId));
   return c.json({});
 });
 
@@ -268,7 +270,7 @@ adminRoutes.post("/listing", async (c) => {
   const db = await getDatabase();
   const body: ListingBody = await c.req.json();
 
-  const [listingInsert] = await db.insert(listings).values({
+  const [listingInsert] = await db.insert(listingsT).values({
     title: body.title,
     description: body.description,
     articleIdDefault: body.defaultArticle.id,
@@ -280,7 +282,7 @@ adminRoutes.post("/listing", async (c) => {
     listingId,
     articleId: article.id,
   }));
-  await db.insert(articleListingRelations).values(listingRelations);
+  await db.insert(articleListingRelationsT).values(listingRelations);
 
   return c.json({});
 });
@@ -290,32 +292,32 @@ adminRoutes.put("/listing/:listingId", async (c) => {
   const body: ListingBody = await c.req.json();
 
   await db
-    .update(listings)
+    .update(listingsT)
     .set({
       title: body.title,
       description: body.description,
       imagePath: body.image,
       articleIdDefault: body.defaultArticle.id,
     })
-    .where(eq(listings.id, +listingId));
+    .where(eq(listingsT.id, +listingId));
 
   //^ should be a transation
   //delete
   await db
-    .delete(articleListingRelations)
-    .where(eq(articleListingRelations.listingId, +listingId));
+    .delete(articleListingRelationsT)
+    .where(eq(articleListingRelationsT.listingId, +listingId));
   //insert
   const listingRelations = body.includedArticles.map((article) => ({
     listingId: +listingId,
     articleId: article.id,
   }));
-  await db.insert(articleListingRelations).values(listingRelations);
+  await db.insert(articleListingRelationsT).values(listingRelations);
   return c.json({});
 });
 adminRoutes.delete("/listing/:listingId", async (c) => {
   const db = await getDatabase();
   const { listingId } = c.req.param();
-  await db.delete(listings).where(eq(listings.id, +listingId));
+  await db.delete(listingsT).where(eq(listingsT.id, +listingId));
   return c.json({});
 });
 
@@ -336,16 +338,16 @@ app.get("/article/:articleId", async (c) => {
   });
   const brandName = (
     await db
-      .select({ name: brands.name })
-      .from(brands)
-      .where(eq(brands.id, +articleSelect.brandId!))
+      .select({ name: brandsT.name })
+      .from(brandsT)
+      .where(eq(brandsT.id, +articleSelect.brandId!))
   )[0].name;
 
   const categoryName = (
     await db
-      .select({ name: categories.name })
-      .from(categories)
-      .where(eq(categories.id, +articleSelect.categoryId!))
+      .select({ name: categoriesT.name })
+      .from(categoriesT)
+      .where(eq(categoriesT.id, +articleSelect.categoryId!))
   )[0].name;
 
   //asign more stuffs
@@ -385,13 +387,13 @@ app.get("/brand/:brandId", async (c) => {
   const { brandId } = c.req.param();
   const [brandsSelect] = await db
     .select()
-    .from(brands)
-    .where(eq(brands.id, +brandId));
+    .from(brandsT)
+    .where(eq(brandsT.id, +brandId));
   return c.json({ content: brandsSelect });
 });
 app.get("/brands", async (c) => {
   const db = await getDatabase();
-  const brandsSelect = await db.select().from(brands);
+  const brandsSelect = await db.select().from(brandsT);
   return c.json({ content: brandsSelect });
 });
 
@@ -401,13 +403,13 @@ app.get("/category/:categoryId", async (c) => {
   const { categoryId } = c.req.param();
   const [categorySelect] = await db
     .select()
-    .from(categories)
-    .where(eq(categories.id, +categoryId));
+    .from(categoriesT)
+    .where(eq(categoriesT.id, +categoryId));
   return c.json({ content: categorySelect });
 });
 app.get("/categories", async (c) => {
   const db = await getDatabase();
-  const caregoriesSelect = await db.select().from(categories);
+  const caregoriesSelect = await db.select().from(categoriesT);
   return c.json({ content: caregoriesSelect });
 });
 
@@ -431,7 +433,7 @@ app.get("/listing/:listingId", async (c) => {
     async (articleId: number) =>
       // (await db.select().from(articles).where(eq(articles.id, articleId)))[0],
       await db.query.articles.findFirst({
-        where: eq(articles.id, articleId),
+        where: eq(articlesT.id, articleId),
         with: {
           articleImages: true,
           articleProperties: true,
@@ -446,19 +448,19 @@ app.get("/listing/:listingId", async (c) => {
 });
 app.get("/listings", async (c) => {
   const db = await getDatabase();
-  const listingssSelect = await db.select().from(listings);
+  const listingssSelect = await db.select().from(listingsT);
   return c.json({ content: listingssSelect });
 });
 app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();
-  const listingsContent = await db.select().from(listings).limit(5);
+  const listingsContent = await db.select().from(listingsT).limit(5);
 
   const defaultArticlePromises = listingsContent.map(
     (listing) =>
       db
         .select()
-        .from(articles)
-        .where(eq(articles.id, +listing.articleIdDefault!))
+        .from(articlesT)
+        .where(eq(articlesT.id, +listing.articleIdDefault!))
         .then((articles) => articles[0]) // Assuming the database call returns an array
   );
 
@@ -487,15 +489,15 @@ app.get("/user/:userId", async (c) => {
 
   const [userInfo] = await db
     .select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      phoneNumber: users.phoneNumber,
-      isAdmin: users.isAdmin,
+      id: usersT.id,
+      firstName: usersT.firstName,
+      lastName: usersT.lastName,
+      email: usersT.email,
+      phoneNumber: usersT.phoneNumber,
+      isAdmin: usersT.isAdmin,
     })
-    .from(users)
-    .where(eq(users.id, +userId));
+    .from(usersT)
+    .where(eq(usersT.id, +userId));
 
   if (payload.userId !== userInfo.id) return c.status(401);
 
@@ -528,12 +530,12 @@ app.get("/auth/create-guest", async (c) => {
   const db = await getDatabase();
   const body: ResponseAuth = await c.req.json();
 
-  const [guestUser] = await db.insert(guestUsers).values({
+  const [guestUser] = await db.insert(guestUsersT).values({
     createdAt: new Date().toISOString(),
     loggedInAt: new Date().toISOString(),
   });
   const guestUserId = guestUser.insertId;
-  await db.insert(carts).values({
+  await db.insert(cartsT).values({
     guestUserId: guestUserId,
   });
 
@@ -549,16 +551,16 @@ app.get("/auth/create-guest", async (c) => {
 
 app.post("/auth/login", async (c) => {
   const db = await getDatabase();
-  const { email, password }: LoginBody = await c.req.json();
+  const body: LoginBody = await c.req.json();
 
   const userPassword = (
     await db
-      .select({ password: users.password })
-      .from(users)
-      .where(eq(users.email, email))
+      .select({ password: usersT.password })
+      .from(usersT)
+      .where(eq(usersT.email, body.email))
   )[0].password;
 
-  const passwordIsCorrect = await bcrypt.compare(password, userPassword);
+  const passwordIsCorrect = await bcrypt.compare(body.password, userPassword);
 
   if (!passwordIsCorrect) {
     c.status(401);
@@ -567,14 +569,14 @@ app.post("/auth/login", async (c) => {
 
   const [userInfo] = await db
     .select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      phoneNumber: users.phoneNumber,
+      id: usersT.id,
+      firstName: usersT.firstName,
+      lastName: usersT.lastName,
+      email: usersT.email,
+      phoneNumber: usersT.phoneNumber,
     })
-    .from(users)
-    .where(eq(users.email, email));
+    .from(usersT)
+    .where(eq(usersT.email, body.email));
 
   const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
   const userIdJwt = await new jose.SignJWT({ userId: userInfo.id })
@@ -590,14 +592,14 @@ app.post("/auth/signup", async (c) => {
   const body: SignupBody = await c.req.json();
 
   const emailIsTaken =
-    (await db.select().from(users).where(eq(users.email, body.email))).length >
-    0;
+    (await db.select().from(usersT).where(eq(usersT.email, body.email)))
+      .length > 0;
 
   if (emailIsTaken) return c.json({ errorMessage: "email is taken" });
 
   const hashedPassword = await bcrypt.hash(body.password, 10);
 
-  const [insertUser] = await db.insert(users).values({
+  const [insertUser] = await db.insert(usersT).values({
     firstName: body.firstName,
     lastName: body.lastName,
     phoneNumber: body.phone,
@@ -610,16 +612,16 @@ app.post("/auth/signup", async (c) => {
 
   const [userInfo] = await db
     .select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      phoneNumber: users.phoneNumber,
+      id: usersT.id,
+      firstName: usersT.firstName,
+      lastName: usersT.lastName,
+      email: usersT.email,
+      phoneNumber: usersT.phoneNumber,
     })
-    .from(users)
-    .where(eq(users.id, userId));
+    .from(usersT)
+    .where(eq(usersT.id, userId));
 
-  await db.insert(carts).values({
+  await db.insert(cartsT).values({
     userId: userId,
   });
 
@@ -638,11 +640,3 @@ export default {
   port: 3002,
   fetch: app.fetch,
 };
-function cors(arg0: {
-  origin: unknown;
-  allowedHeaders: string[];
-  allowMethods: string[];
-  credentials: boolean;
-}) {
-  throw new Error("Function not implemented.");
-}
