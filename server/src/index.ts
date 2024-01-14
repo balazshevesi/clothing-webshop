@@ -1,3 +1,4 @@
+import { cartItems } from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
@@ -14,11 +15,14 @@ import {
   guestUsers as guestUsersTbl,
   listings as listingsTbl,
   users as usersTbl,
+  cartItems as cartItemsTbl,
 } from "../drizzle/schema";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import getDatabase from "./utils/getDatabase";
 import getTimeStamp from "./utils/getTimestamp";
+import getAndValidateUser from "./utils/getAndValidateUser";
+import getAndValidateGuestUser from "./utils/getAndValidateGuestUser";
 
 const app = new Hono();
 
@@ -475,12 +479,11 @@ app.get("/listings/most-popular", async (c) => {
   return c.json({ content: contentWithArticles });
 });
 
-//cart
-app.get("/cart/:userId", async (c) => {
+//users
+app.get("/user/:userId", async (c) => {
   const db = await getDatabase();
   const { userId } = c.req.param();
   const authHeader = c.req.header("userAuth");
-
   if (!authHeader) return c.status(401);
 
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
@@ -505,34 +508,169 @@ app.get("/cart/:userId", async (c) => {
   return c.json({ userInfo });
 });
 
-//users
-app.get("/user/:userId", async (c) => {
+//cart
+interface CartBody {
+  articleId: string;
+}
+interface UpdateCount extends CartBody {
+  newCount: string;
+}
+app.post("/user/:userId/cart/update-count", async (c) => {
+  const db = await getDatabase();
+  const body: UpdateCount = await c.req.json();
+  const { userId } = c.req.param();
+  const userAuth = c.req.header("userAuth");
+  if (!userAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const user = await getAndValidateUser(userId, userAuth, db);
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.userId, +userId));
+
+  const itemAlredyExists =
+    (
+      await db
+        .select()
+        .from(cartItemsTbl)
+        .where(
+          and(
+            eq(cartItemsTbl.cartId, cart.id),
+            eq(cartItemsTbl.articleId, +body.articleId)
+          )
+        )
+    ).length > 0;
+  //handle adding new item
+  if (!itemAlredyExists)
+    await db.insert(cartItemsTbl).values({
+      cartId: cart.id,
+      articleId: +body.articleId,
+      quantity: +body.newCount,
+      addedAt: getTimeStamp(),
+    });
+  //handle updating count
+  if (itemAlredyExists && +body.newCount !== 0) {
+    await db
+      .update(cartItemsTbl)
+      .set({
+        quantity: +body.newCount,
+      })
+      .where(
+        and(
+          eq(cartItemsTbl.cartId, cart.id),
+          eq(cartItemsTbl.articleId, +body.articleId)
+        )
+      );
+  }
+  //handle delete
+  if (+body.newCount === 0 && itemAlredyExists)
+    await db
+      .delete(cartItemsTbl)
+      .where(
+        and(
+          eq(cartItemsTbl.cartId, cart.id),
+          eq(cartItemsTbl.articleId, +body.articleId)
+        )
+      );
+  return c.json({});
+});
+app.get("/user/:userId/cart", async (c) => {
   const db = await getDatabase();
   const { userId } = c.req.param();
-  const authHeader = c.req.header("userAuth");
+  const userAuth = c.req.header("userAuth");
+  if (!userAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const user = await getAndValidateUser(userId, userAuth, db);
+  const cart = await db.query.carts.findFirst({
+    where: (cart, { eq }) => eq(cart.userId, +userId),
+    with: {
+      cartItems: { with: { articles: { with: { articleImages: true } } } },
+    },
+  });
+  return c.json({ content: cart });
+});
 
-  if (!authHeader) return c.status(401);
+app.post("/guest-user/:guestUserId/cart/update-count", async (c) => {
+  const db = await getDatabase();
+  const body: UpdateCount = await c.req.json();
+  const { guestUserId } = c.req.param();
+  const guestUserAuth = c.req.header("guestUserAuth");
+  if (!guestUserAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const user = await getAndValidateGuestUser(guestUserId, guestUserAuth, db);
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.guestUserId, +guestUserId));
 
-  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
-  const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(authHeader, encodedKey))
-  );
-
-  const [userInfo] = await db
-    .select({
-      id: usersTbl.id,
-      firstName: usersTbl.firstName,
-      lastName: usersTbl.lastName,
-      email: usersTbl.email,
-      phoneNumber: usersTbl.phoneNumber,
-      isAdmin: usersTbl.isAdmin,
-    })
-    .from(usersTbl)
-    .where(eq(usersTbl.id, +userId));
-
-  if (payload.userId !== userInfo.id) return c.status(401);
-
-  return c.json({ userInfo });
+  const itemAlredyExists =
+    (
+      await db
+        .select()
+        .from(cartItemsTbl)
+        .where(
+          and(
+            eq(cartItemsTbl.cartId, cart.id),
+            eq(cartItemsTbl.articleId, +body.articleId)
+          )
+        )
+    ).length > 0;
+  //handle adding new item
+  if (!itemAlredyExists)
+    await db.insert(cartItemsTbl).values({
+      cartId: cart.id,
+      articleId: +body.articleId,
+      quantity: +body.newCount,
+      addedAt: getTimeStamp(),
+    });
+  //handle updating count
+  if (itemAlredyExists && +body.newCount !== 0) {
+    await db
+      .update(cartItemsTbl)
+      .set({
+        quantity: +body.newCount,
+      })
+      .where(
+        and(
+          eq(cartItemsTbl.cartId, cart.id),
+          eq(cartItemsTbl.articleId, +body.articleId)
+        )
+      );
+  }
+  //handle delete
+  if (+body.newCount === 0 && itemAlredyExists)
+    await db
+      .delete(cartItemsTbl)
+      .where(
+        and(
+          eq(cartItemsTbl.cartId, cart.id),
+          eq(cartItemsTbl.articleId, +body.articleId)
+        )
+      );
+  return c.json({});
+});
+app.get("/guest-user/:guestUserId/cart", async (c) => {
+  const db = await getDatabase();
+  const { guestUserId } = c.req.param();
+  const guestUserAuth = c.req.header("guestUserAuth");
+  if (!guestUserAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const user = await getAndValidateUser(guestUserId, guestUserAuth, db);
+  const cart = await db.query.carts.findFirst({
+    where: (cart, { eq }) => eq(cart.guestUserId, +guestUserId),
+    with: {
+      cartItems: { with: { articles: { with: { articleImages: true } } } },
+    },
+  });
+  return c.json({ content: cart });
 });
 
 //logging

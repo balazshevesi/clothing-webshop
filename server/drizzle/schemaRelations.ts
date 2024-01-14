@@ -1,4 +1,11 @@
-import { articleListingRelations, listings } from "./schema";
+import {
+  articleListingRelations,
+  cartItems,
+  carts,
+  guestUsers,
+  listings,
+  users,
+} from "./schema";
 //! NOTE TO FUTURE SELF: THIS FILE IS NOT GENERATED (UNLIKE schema.ts) BY DRIZZLE, SO DON'T DELTE IT PLS
 // https://www.youtube.com/watch?v=PmCHk-ADJq8
 // https://orm.drizzle.team/docs/rqb
@@ -10,6 +17,7 @@ import { relations } from "drizzle-orm";
 export const articlesRelations = relations(articles, ({ one, many }) => ({
   articleImages: many(articleImages),
   articleProperties: many(articleProperties),
+  cartItems: many(cartItems),
   brands: one(brands, {
     fields: [articles.brandId],
     references: [brands.id],
@@ -55,6 +63,29 @@ export const articleListingRelationsRelations = relations(
     }),
   })
 );
+
+export const cartsRelations = relations(carts, ({ one, many }) => ({
+  // users: one(users, {
+  //   fields: [carts.userId],
+  //   references: [users.id],
+  // }),
+  // guestUsers: one(guestUsers, {
+  //   fields: [carts.guestUserId],
+  //   references: [guestUsers.id],
+  // }),
+  cartItems: many(cartItems),
+}));
+
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  carts: one(carts, {
+    fields: [cartItems.cartId],
+    references: [carts.id],
+  }),
+  articles: one(articles, {
+    fields: [cartItems.articleId],
+    references: [articles.id],
+  }),
+}));
 
 // export const brandsRelations = relations(brands, ({ one }) => ({
 //   articles: one(articles, {

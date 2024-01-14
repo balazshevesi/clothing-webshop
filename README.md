@@ -7,6 +7,8 @@
 - [ ] Fix wierd shit in admin panel. (probably need it's own state)
 - [ ] Streamline input validation and form submission
 - [ ] Present account info in a cleaner way, and make it ediatable
+- [ ] Maybe add favourites idk
+- [ ] Add planned sales shit
 - [x] Make state logic even simpler, only increment, decrement, remove and add gets handled automatically?
 - [x] Switch add to cart modal to sonner toast
 - [x] Build mobile menue n shit
