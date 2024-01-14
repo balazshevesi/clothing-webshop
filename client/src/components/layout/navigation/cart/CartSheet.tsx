@@ -25,12 +25,13 @@ import Counter from "./Counter";
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 function CartItem({ item }: { item: any }) {
-  const removeItem = useShoppingCartSlice(
-    (state: any) => state.removeItem,
-  ) as any;
   const updateCount = useShoppingCartSlice(
     (state: any) => state.updateCount,
   ) as any;
+  const decrement = useShoppingCartSlice(
+    (state: any) => state.decrement,
+  ) as any;
+
   const [itemCount, setItemCount] = useState(item.count);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ function CartItem({ item }: { item: any }) {
         variant="ghost"
         className=" absolute right-0 top-0 size-6"
         onClick={() => {
-          removeItem(item);
+          updateCount(item, 0);
         }}
       >
         <XMarkIcon className="size-4" />

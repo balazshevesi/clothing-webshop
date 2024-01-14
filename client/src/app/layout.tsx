@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import Footer from "@/components/layout/Footer";
 import Navigation from "@/components/layout/Navigation";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 import InitState from "./InitState";
 import "./global.css";
@@ -66,6 +67,7 @@ export default async function RootLayout({
             <div className="h-screen overflow-auto bg-black">
               <Navigation />
               {children}
+              <Toaster />
               <Footer />
             </div>
           </InitState>

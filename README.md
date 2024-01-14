@@ -6,7 +6,9 @@
 - [ ] Find email provider and setup forgot password system
 - [ ] Fix wierd shit in admin panel. (probably need it's own state)
 - [ ] Streamline input validation and form submission
-- [ ] Switch add to cart modal to sonner toast
+- [ ] Present account info in a cleaner way, and make it ediatable
+- [x] Make state logic even simpler, only increment, decrement, remove and add gets handled automatically?
+- [x] Switch add to cart modal to sonner toast
 - [x] Build mobile menue n shit
 - [x] Log user loggin time
 

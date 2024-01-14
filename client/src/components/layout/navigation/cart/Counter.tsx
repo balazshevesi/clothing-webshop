@@ -10,8 +10,11 @@ import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 export default function Counter({ item }: { item: any }) {
   const { items, updateCount, increment, decrement } = useShoppingCartSlice();
-  const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
-    .count;
+  const itemExistsInCart =
+    items.filter((cartItem) => cartItem.id === item.id).length > 0;
+  const itemCount = itemExistsInCart
+    ? items.filter((cartItem) => cartItem.id === item.id)[0].count
+    : 0;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -23,9 +26,7 @@ export default function Counter({ item }: { item: any }) {
     <div className="flex gap-1">
       <Button
         className="select-none"
-        onClick={() => {
-          decrement(item);
-        }}
+        onClick={() => decrement(item)}
         variant="secondary"
       >
         -
@@ -44,9 +45,7 @@ export default function Counter({ item }: { item: any }) {
       />
       <Button
         className="select-none"
-        onClick={() => {
-          increment(item);
-        }}
+        onClick={() => increment(item)}
         variant="secondary"
       >
         +

@@ -2,13 +2,21 @@
 
 import { useEffect, useRef } from "react";
 
+import Counter from "@/components/layout/navigation/cart/Counter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
+import { toast } from "sonner";
 
-export default function AddToCartBtn({ item }: { item: any }) {
-  const { items, updateCount, increment, decrement, addItem, open } =
+export default function AddToCartBtn({
+  item,
+  listing,
+}: {
+  item: any;
+  listing: any;
+}) {
+  const { items, updateCount, increment, decrement, open } =
     useShoppingCartSlice();
 
   const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
@@ -68,7 +76,21 @@ export default function AddToCartBtn({ item }: { item: any }) {
           </Button>
         </div>
       ) : (
-        <Button onClick={() => addItem(item)} className=" w-full uppercase">
+        <Button
+          onClick={() => {
+            toast(`${listing.title} ligger nu i din kundvagn`, {
+              description: (
+                <div className=" mt-2 flex gap-2">
+                  <Button>Öppna kundvagn</Button>
+                  <Counter item={item} />
+                </div>
+              ),
+              duration: 6000,
+            });
+            increment(item);
+          }}
+          className=" w-full uppercase"
+        >
           add to cart
         </Button>
       )}

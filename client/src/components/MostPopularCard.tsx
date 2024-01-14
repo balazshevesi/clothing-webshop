@@ -22,10 +22,11 @@ import { Button } from "@/components/ui/button";
 
 import Counter from "./layout/navigation/cart/Counter";
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
+import { toast } from "sonner";
 
 export default function MostPopularCard({ listing }: { listing: any }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { items, addItem, open } = useShoppingCartSlice();
+  const { items, open, increment } = useShoppingCartSlice();
   const itemCount = items.filter(
     (cartItem) => cartItem.id === listing.defaultArticle.id,
   )[0]
@@ -69,8 +70,18 @@ export default function MostPopularCard({ listing }: { listing: any }) {
               <Button
                 className="w-full"
                 onClick={() => {
-                  setModalIsOpen(true);
-                  addItem(listing.defaultArticle);
+                  // setModalIsOpen(true);
+                  toast(`${listing.title} ligger nu i din kundvagn`, {
+                    description: (
+                      <div className=" mt-2 flex gap-2">
+                        <Button>Öppna kundvagn</Button>{" "}
+                        <Counter item={listing.defaultArticle} />
+                      </div>
+                    ),
+                    duration: 6000,
+                  });
+
+                  increment(listing.defaultArticle);
                 }}
               >
                 KÖP
@@ -82,7 +93,7 @@ export default function MostPopularCard({ listing }: { listing: any }) {
             )}
           </div>
         </div>
-        <AlertDialog
+        {/* <AlertDialog
           open={modalIsOpen}
           onOpenChange={() => {
             setModalIsOpen(false);
@@ -93,10 +104,6 @@ export default function MostPopularCard({ listing }: { listing: any }) {
               <AlertDialogTitle>
                 {listing.title} ligger nu i din kundvagn!
               </AlertDialogTitle>
-              {/* <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription> */}
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Fortsätt handla</AlertDialogCancel>
@@ -106,7 +113,7 @@ export default function MostPopularCard({ listing }: { listing: any }) {
               <AlertDialogAction>Till kassan</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
-        </AlertDialog>
+        </AlertDialog> */}
       </div>
     </div>
   );

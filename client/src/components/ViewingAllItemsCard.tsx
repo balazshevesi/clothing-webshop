@@ -23,7 +23,7 @@ import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 export default function ViewingAllItemsCard({ item }: { item: any }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { items, addItem, open } = useShoppingCartSlice();
+  const { items, open, increment } = useShoppingCartSlice();
   const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
     ? items.filter((cartItem) => cartItem.id === item.id)[0]
     : 0;
@@ -62,7 +62,7 @@ export default function ViewingAllItemsCard({ item }: { item: any }) {
                 className="w-full"
                 onClick={() => {
                   setModalIsOpen(true);
-                  addItem(item);
+                  increment(item);
                 }}
               >
                 KÖP
