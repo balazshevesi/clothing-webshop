@@ -1,4 +1,4 @@
-import { cartItems } from "./../drizzle/schema";
+import { cartItems } from "../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
