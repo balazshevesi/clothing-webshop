@@ -17,6 +17,7 @@ const getAndsetGuestId = async () => {
   const guestUserAuth = data.guestUserAuth;
   document.cookie = `guestUserId=${guestUserId}`;
   document.cookie = `guestUserAuth=${guestUserAuth}`;
+  return data;
 };
 
 export default function InitState({ children }: { children: ReactNode }) {
@@ -28,12 +29,15 @@ export default function InitState({ children }: { children: ReactNode }) {
   ) as any;
 
   useEffect(() => {
-    const userInfo = getCookie("userInfo");
-    if (userInfo) setLoggedinTrue();
-    const guestUserId = getCookie("guestUserId");
-    if (!guestUserId) getAndsetGuestId();
+    const asyncStuffs = async () => {
+      const userInfo = getCookie("userInfo");
+      if (userInfo) setLoggedinTrue();
 
-    fetchAndSetCart();
+      const guestUserId = getCookie("guestUserId");
+      if (!guestUserId) await getAndsetGuestId();
+      fetchAndSetCart();
+    };
+    asyncStuffs();
     // updateLoggedInAt();
   }, []);
 

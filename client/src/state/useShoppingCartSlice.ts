@@ -2,7 +2,7 @@ import getCookie from "@/utils/getCookie";
 
 import { create } from "zustand";
 
-interface useShoppingCart {
+interface UseShoppingCart {
   // addItem: Function;
   // removeItem: Function;
   items: any[];
@@ -12,9 +12,11 @@ interface useShoppingCart {
   decrement: Function;
   open: Function;
   close: Function;
+  resetCart: Function;
+  fetchAndSetCart: Function;
 }
 
-function debounce(func: Function, wait: number) {
+const debounce = (func: Function, wait: number) => {
   let timeout: any;
   return (...args: any) => {
     const later = () => {
@@ -24,7 +26,7 @@ function debounce(func: Function, wait: number) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
-}
+};
 
 const sendUpdatedItem = async (item: any, newCount: number) => {
   const userInfoCookie = getCookie("userInfo");
@@ -51,7 +53,7 @@ const sendUpdatedItem = async (item: any, newCount: number) => {
 };
 const debouncedSendUpdatedItem = debounce(sendUpdatedItem, 750); // Adjust 500 to your preferred debounce time in ms
 
-export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
+export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
   items: [],
   isOpen: false,
 
@@ -86,7 +88,7 @@ export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
     });
   },
 
-  resetCart: async () => set((state: any) => ({ items: [] })),
+  resetCart: () => set((state: any) => ({ items: [] })),
 
   updateCount: (item: any, newCount: number) =>
     set((state: any) => {
@@ -111,7 +113,7 @@ export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
 
   increment: (item: any) =>
     set((state: any) => {
-      debouncedSendUpdatedItem(item, item.count + 1);
+      debouncedSendUpdatedItem(item, item.count ? item.count + 1 : 1);
       const updatedCount = state.items.map((stateItem: any) => {
         if (stateItem.id === item.id) stateItem.count++;
         return stateItem;
@@ -127,7 +129,7 @@ export const useShoppingCartSlice = create<useShoppingCart>()((set) => ({
     }),
   decrement: (item: any) =>
     set((state: any) => {
-      debouncedSendUpdatedItem(item, item.count - 1);
+      debouncedSendUpdatedItem(item, +item.count - 1);
       const updatedCount = state.items.map((stateItem: any) => {
         if (stateItem.id === item.id) stateItem.count--;
         return stateItem;

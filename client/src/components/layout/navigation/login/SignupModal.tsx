@@ -24,6 +24,7 @@ import {
   PhoneSchema,
 } from "@/inputValidation/schema";
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { parse, flatten, safeParse } from "valibot";
 
 export default function SignupModal() {
@@ -43,6 +44,11 @@ export default function SignupModal() {
   const signupIsOpen = useAuthSlice((state) => state.signupIsOpen);
   const closeSignup = useAuthSlice((state) => state.closeSignup);
   const setLoggedinTrue = useAuthSlice((state) => state.setLoggedinTrue);
+
+  const resetCart = useShoppingCartSlice((state) => state.resetCart);
+  const fetchAndSetCart = useShoppingCartSlice(
+    (state) => state.fetchAndSetCart,
+  );
 
   const handleSignup = async (formData: any) => {
     let validInput = true;
@@ -102,6 +108,9 @@ export default function SignupModal() {
 
       setLoggedinTrue();
       closeSignup();
+
+      resetCart();
+      fetchAndSetCart();
       reset();
     } else if (data.errorMessage === "email is taken") setEmailIsTaken(true);
     else setEmailIsTaken(false);

@@ -1,17 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import BrandForm from "../../BrandForm";
+import { useAdminPanel } from "@/state/useAdminPanel";
+import { useQuery } from "@tanstack/react-query";
 
-export default async function Page({
-  params,
-}: {
-  params: { brandId: string };
-}) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/brand/${params.brandId}`,
-    { cache: "no-store" },
-  );
-  const data = await response.json();
-
-  if (JSON.stringify(data) === "{}") return;
-
-  return <BrandForm brandData={data.content} />;
+export default function Page({ params }: { params: { brandId: string } }) {
+  const { fetchBrand } = useAdminPanel();
+  const { data, isLoading } = useQuery({
+    queryKey: ["brandId" + params.brandId],
+    queryFn: () => fetchBrand(params.brandId),
+  });
+  if (isLoading || !data) return <div>Loading...</div>;
+  return <BrandForm brandData={data} />;
 }

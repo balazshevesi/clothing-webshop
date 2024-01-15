@@ -23,7 +23,7 @@ export default function NavigationDropdown() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="rounded-lg bg-zinc-800 p-2">
+      <DropdownMenuTrigger className="rounded-lg bg-slate-800 p-2">
         <Bars3Icon className="size-6" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="space-y-2 p-2">

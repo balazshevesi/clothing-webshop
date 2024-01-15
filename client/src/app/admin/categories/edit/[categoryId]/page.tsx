@@ -1,17 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import CategoryForm from "../../CategoryForm";
+import { useAdminPanel } from "@/state/useAdminPanel";
+import { useQuery } from "@tanstack/react-query";
 
-export default async function Page({
-  params,
-}: {
-  params: { categoryId: string };
-}) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/category/${params.categoryId}`,
-    { cache: "no-store" },
-  );
-  const data = await response.json();
-
-  if (JSON.stringify(data) === "{}") return;
-
-  return <CategoryForm categoryData={data.content} />;
+export default function Page({ params }: { params: { categoryId: string } }) {
+  const { fetchCategory } = useAdminPanel();
+  const { data, isLoading } = useQuery({
+    queryKey: ["categoryId" + params.categoryId],
+    queryFn: () => fetchCategory(params.categoryId),
+  });
+  if (isLoading || !data) return <div>Loading...</div>;
+  return <CategoryForm categoryData={data} />;
 }

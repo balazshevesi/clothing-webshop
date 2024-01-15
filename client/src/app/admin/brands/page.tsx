@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+
+import { useEffect } from "react";
 
 import Title1 from "@/components/general/Title1";
 import Title2 from "@/components/general/Title2";
@@ -6,22 +10,24 @@ import { Button } from "@/components/ui/button";
 
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-export default async function Page() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/brands`,
-    {
-      cache: "no-store",
-    },
-  );
-  const data = await response.json();
-  const content = data.content;
+import { useAdminPanel } from "@/state/useAdminPanel";
+import { useQuery } from "@tanstack/react-query";
+
+export default function Page() {
+  const { fetchAndSetBrands, brands } = useAdminPanel();
+  const { isLoading } = useQuery({
+    queryKey: ["brands"],
+    queryFn: () => fetchAndSetBrands(),
+  });
+  if (brands.length === 0) return <div>loading...</div>;
+
   return (
     <div>
       <Title1>brands</Title1>
       <div className="flex flex-col justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
         <Link href="/admin/brands/add">Add Brand</Link>
-        {content.map((brand: any) => {
+        {brands.map((brand: any) => {
           return (
             <div
               key={brand.id}

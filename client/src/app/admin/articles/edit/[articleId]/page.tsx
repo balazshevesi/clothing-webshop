@@ -1,18 +1,17 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+
 import ArticleForm from "../../ArticleForm";
+import { useAdminPanel } from "@/state/useAdminPanel";
+import { useQuery } from "@tanstack/react-query";
 
-export default async function Page({
-  params,
-}: {
-  params: { articleId: string };
-}) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/article/${params.articleId}`,
-    { cache: "no-store" },
-  );
-  const data = await response.json();
-
-  if (JSON.stringify(data) === "{}") return;
-
-  const articleData = data.content;
-  return <ArticleForm ArticleData={articleData} />;
+export default function Page({ params }: { params: { articleId: string } }) {
+  const { fetchArticle } = useAdminPanel();
+  const { data, isLoading } = useQuery({
+    queryKey: ["articleId" + params.articleId],
+    queryFn: () => fetchArticle(params.articleId),
+  });
+  if (isLoading || !data) return <div>Loading...</div>;
+  return <ArticleForm ArticleData={data} />;
 }

@@ -1,13 +1,18 @@
 ## TODO
 
 - [ ] Build filter/browse section of the website
+- [ ] Fill the db with shit
+- [ ] Make it so if there is only one color, or one size, don't display options (frontend)
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system
-- [ ] Fix wierd shit in admin panel. (probably need it's own state)
+- [ ] Host that shit: prolly client on AWS amplify, then backend in a docker on AWS lambda in a docker
+- [ ] Add warining if not enough is in stock
 - [ ] Streamline input validation and form submission
+
 - [ ] Present account info in a cleaner way, and make it ediatable
 - [ ] Maybe add favourites idk
 - [ ] Add planned sales shit
+- [x] Fix wierd shit in admin panel. (probably need it's own state)
 - [x] Build backend for cart, and intergrate with the frontend
 - [x] Make state logic even simpler, only increment, decrement, remove and add gets handled automatically?
 - [x] Switch add to cart modal to sonner toast
@@ -16,20 +21,19 @@
 
 ---
 
-- [ ] Fill the db with shit
-- [ ] Host that shit: prolly client on AWS amplify, then backend in a docker on AWS lambda
-- [ ] Write a nice readme
-- [ ] Maybe do end to end typesafety?
+
+- [ ] Make shopping cart pritter
 - [ ] Maybe some "migrate cart" funcitonallity for users who fill their carts, then later decide to signup?
 - [ ] Checkout react qurey maybe?
 - [ ] Write some tests? idk
+- [ ] Write a nice readme
 
 ---
 
 - [ ] Write GA loggbok from commit history
 - [ ] Chill
 
-## naming conventions used
+## naming conventions
 
 **mySQL**: snake_case
 
