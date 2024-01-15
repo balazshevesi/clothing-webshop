@@ -449,13 +449,11 @@ app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();
   const listingsContent = await db.select().from(listingsTbl).limit(5);
 
-  const defaultArticlePromises = listingsContent.map(
-    (listing) =>
-      db
-        .select()
-        .from(articlesTbl)
-        .where(eq(articlesTbl.id, +listing.articleIdDefault!))
-        .then((articles) => articles[0]) // Assuming the database call returns an array
+  const defaultArticlePromises = listingsContent.map((listing) =>
+    db.query.articles.findFirst({
+      where: (article, { eq }) => eq(article.id, +listing.articleIdDefault!),
+      with: { articleImages: true },
+    })
   );
 
   const defaultArticles = await Promise.all(defaultArticlePromises);

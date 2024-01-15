@@ -39,6 +39,8 @@ function CartItem({ item }: { item: any }) {
     updateCount(item, itemCount);
   }, [itemCount]);
 
+  console.log("itemitem", item);
+
   return (
     <div
       key={JSON.stringify(item)}
@@ -59,7 +61,7 @@ function CartItem({ item }: { item: any }) {
         alt={`picture of ${item.name}`}
         width={50}
         height={50}
-        src={item.image}
+        src={item.articleImages[0].imagePath}
         className=" aspect-square size-14"
       />
       <div className="flex grow flex-col overflow-auto whitespace-nowrap">

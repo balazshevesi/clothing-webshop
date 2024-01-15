@@ -1,8 +1,8 @@
 ## TODO
 
 - [ ] Build filter/browse section of the website
-- [ ] Fill the db with shit
-- [ ] Make it so if there is only one color, or one size, don't display options (frontend)
+- [x] Fill the db with shit
+- [x] Make it so if there is only one color, or one size, don't display options (frontend)
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system
 - [ ] Host that shit: prolly client on AWS amplify, then backend in a docker on AWS lambda in a docker
@@ -21,10 +21,9 @@
 
 ---
 
-
-- [ ] Make shopping cart pritter
+- [x] Make shopping cart pritter
 - [ ] Maybe some "migrate cart" funcitonallity for users who fill their carts, then later decide to signup?
-- [ ] Checkout react qurey maybe?
+- [x] Checkout react qurey maybe?
 - [ ] Write some tests? idk
 - [ ] Write a nice readme
 
@@ -49,21 +48,4 @@
 
 I choose these naming conventions to simplyfy and streamline the development process. Ideally the developer should be able to look at a variable, and without the help of his IDE, alredy have an idea of where the variable comes from.
 
-## bigger stuff
-
-- [ ] Setup database and backend
-- [ ] Make readme more descriptive
-- [ ] Build admin panel
-- [ ] Setup stripe
-- [ ] Setup breadcrums
-- [ ] Add pagination
-
-## smaller stuff
-
-- [ ] Hook up filter config to url path stuff
-- [ ] Add zooming to product pages
-- [ ] Fill in footer
-- [ ] Make nav responsive (just add hamburger menue)
-- [ ] Define a type for items
-- [ ] Change "category/[category]" to just "/browse" and store filters n shit in url params
-- [ ] change popups things to sonner toast that says something like "succesfully added to cart"
+##

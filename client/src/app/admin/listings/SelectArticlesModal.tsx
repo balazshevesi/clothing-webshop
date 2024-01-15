@@ -104,7 +104,7 @@ export default function SelectArticlesModal({
           <AlertDialogHeader>
             <AlertDialogTitle>{text}</AlertDialogTitle>
             <AlertDialogDescription>
-              <div className="grid gap-4">
+              <div className="grid max-h-72 gap-4 overflow-auto">
                 {articles.map((article: any) => (
                   <>
                     <div className="flex items-center gap-4 rounded-lg bg-slate-900 p-2">

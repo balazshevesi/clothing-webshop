@@ -58,58 +58,60 @@ export default function SelectArticle({
   return (
     <div>
       <div className="mb-4 flex gap-2">
-        {colors.map((colorObj: any) => {
-          if (
-            colorObj.articles.filter(
-              (article: any) => article.id === +selectedArticle!,
-            ).length > 0
-          )
-            return (
-              <Button
-                onClick={() => setSelectedArticle(+colorObj.articles[0].id)}
-                variant="outline"
-                className="rounded-full bg-slate-700"
-              >
-                {colorObj.color}
-              </Button>
-            );
-          else
-            return (
-              <Button
-                onClick={() => setSelectedArticle(+colorObj.articles[0].id)}
-                variant="outline"
-                className="rounded-full"
-              >
-                {colorObj.color}
-              </Button>
-            );
-        })}
+        {colors.length > 1 &&
+          colors.map((colorObj: any) => {
+            if (
+              colorObj.articles.filter(
+                (article: any) => article.id === +selectedArticle!,
+              ).length > 0
+            )
+              return (
+                <Button
+                  onClick={() => setSelectedArticle(+colorObj.articles[0].id)}
+                  variant="outline"
+                  className="rounded-full bg-slate-700"
+                >
+                  {colorObj.color}
+                </Button>
+              );
+            else
+              return (
+                <Button
+                  onClick={() => setSelectedArticle(+colorObj.articles[0].id)}
+                  variant="outline"
+                  className="rounded-full"
+                >
+                  {colorObj.color}
+                </Button>
+              );
+          })}
       </div>
 
       <div className="mb-4 flex gap-2">
-        {articlesAvailableForSelectedColor.map((article: any) => {
-          if (article.id === +selectedArticle!)
-            return (
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full bg-slate-700"
-              >
-                {article.articleProperties[0].size}
-              </Button>
-            );
-          else
-            return (
-              <Button
-                onClick={() => setSelectedArticle(+article.id)}
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
-                {article.articleProperties[0].size}
-              </Button>
-            );
-        })}
+        {articlesAvailableForSelectedColor.length > 1 &&
+          articlesAvailableForSelectedColor.map((article: any) => {
+            if (article.id === +selectedArticle!)
+              return (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full bg-slate-700"
+                >
+                  {article.articleProperties[0].size}
+                </Button>
+              );
+            else
+              return (
+                <Button
+                  onClick={() => setSelectedArticle(+article.id)}
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  {article.articleProperties[0].size}
+                </Button>
+              );
+          })}
       </div>
       <div className=" mb-8">
         <span className="">In Stock: </span>

@@ -23,9 +23,6 @@ import AddToCartBtn from "./AddToCartBtn";
 import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
 
-// dunno why it doesen't do this my default
-document.body.scrollTop = document.documentElement.scrollTop = 0;
-
 export default function Content({ listing }: { listing: any }) {
   const [selectedArticleParam, setSelectedArticleParam] =
     useQueryState("article");
@@ -35,6 +32,11 @@ export default function Content({ listing }: { listing: any }) {
   useEffect(() => {
     setSelectedArticleParam(selectedArticle);
   }, [selectedArticle]);
+
+  useEffect(() => {
+    // dunno why it doesen't do this my default
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }, []);
 
   const currentArticle = listing.articles.filter(
     (article: any) => +article.id === +selectedArticle!,
