@@ -160,10 +160,6 @@ Denna delen av readme:n är inte färdig
 
   Här använder jag Railway igen
 
-# Problem, problemlösning och lärdomar
-
-Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att [jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂](https://www.youtube.com/watch?v=D2_r4q2imnQ&ab_channel=GamingSoundFX).
-
 # Namn conventioner
 
 - **Databas**: snake_case
@@ -179,6 +175,10 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 - **Extra**: Databas tabeller ska ha Tbl som suffix
 
 Jag valde dessa conventioner för att simplifiera och streamlina utvecklings processen och samtidigt föja best-practices. Tanken bakom de är ju att jag som utvecklare inte ska behöva funder på triviala grejer som namn givning, samt att man inte ska behöver tänka typ "fan, vad hetter den endpointen igen?".
+
+# Problem, problemlösning och lärdomar
+
+Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att [jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂](https://www.youtube.com/watch?v=D2_r4q2imnQ&ab_channel=GamingSoundFX).
 
 - ## State management
 
