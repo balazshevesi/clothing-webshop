@@ -46,6 +46,18 @@
 
 # Innehåll
 
+- [Problem, problemlösning och lärdomar](#problem-problemlösning-och-lärdomar)
+
+- [Namn conventioner](#namn-conventioner)
+
+- [Tech stack](#tech-stack)
+
+- [Hosting och deployment](#hosting-och-deployment)
+
+- [Databas design](#databas-design)
+
+- [Gymnasie arbete](#gymnasie-arbete)
+
 # Problem, problemlösning och lärdomar
 
 Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂.
@@ -54,8 +66,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
 Detta är faktiskt andra gången jag har försökt att bygga detta för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
 
-När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt.
-Så jag valde att testa Zustand, och det funkar fint tycker jag.
+När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt. Så jag valde att testa Zustand, och det funkar fint tycker jag.
 
 ## Behovet av en ORM
 
@@ -93,7 +104,31 @@ Nästa steg blev då att hitta något system för att hosta dockerfilen. AWS har
 
 Med Render kan man bara koppla github repot och sen _bara funkar det_, och de verkade stödja docker, men cold-startsen är brutala (typ 1min). Senare hittade jag att Railway också kunde deploya docker (där är cold-startsen helt okej).
 
-## TODO
+# Namn conventioner
+
+- **Databas**: snake_case
+
+- **API Route namn**: kebab-case
+
+- **JS/TS Code**: camelCase
+
+- **Client-Side Storage**: camelCase
+
+- **Types and Schema validations**: PascalCase
+
+- **Extra**: Databas tabeller ska ha Tbl som suffix
+
+Jag valde dessa conventioner för att simplifiera och streamlina utvecklings processen och samtidigt föja best-practices. Tanken bakom de är ju att jag som utvecklare inte ska behöva funder på triviala grejer som namn givning, samt att man inte ska behöver tänka typ "fan, vad hetter den endpointen igen?".
+
+# Databas design
+
+# Hosting och deployment
+
+# Tech stack
+
+# Gymnasie arbete
+
+# TODO
 
 - [ ] Remove zustand state from admin panel logic, just rely on react query
 
@@ -128,21 +163,3 @@ Med Render kan man bara koppla github repot och sen _bara funkar det_, och de ve
 
 - [ ] Write GA loggbok from commit history
 - [ ] Chill
-
-# naming conventions
-
-**mySQL**: snake_case
-
-**API Route Names** (excluding dynamic-route names): kebab-case
-
-**JS/TS Code**: camelCase
-
-**Client-Side Storage**: camelCase
-
-**Interacting with mySQL in JS**: when i run the introspect in drizzle, it automagically converts the mySql tables names into camelCase, but i also rename them to include "Tbl" at the end.
-
-**Types and Schema validations**: PascalCase
-
-I choose these naming conventions to simplyfy and streamline the development process. Ideally the developer should be able to look at a variable, and without the help of his IDE, alredy have an idea of where the variable comes from.
-
-##
