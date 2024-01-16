@@ -68,8 +68,7 @@ Detta repot innehåller källkoden
 
 # Problem, problemlösning och lärdomar
 
-Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂.
-<audio src="readme-assets/bruh.mp3" controls preload></audio>
+Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att [jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂](https://www.youtube.com/watch?v=D2_r4q2imnQ&ab_channel=GamingSoundFX).
 
 ## State management
 
