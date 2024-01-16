@@ -44,23 +44,31 @@
 
 </div>
 
+---
+
+En fullstack e-handel hemsida byggd som gymnasie arbete.
+
+Hemsidan är byggd med och utnyttjar: javascript, typescript, prettier + eslint, react, next, tailwind, shadcn/ui, nuqs, tanstack-react-query, zustand, mysql, drizzle, bun (package-manager och runtime), docker, vercel, railway, postman, git + github
+
+Detta repot innehåller källkoden
+
 # Innehåll
-
-- [Problem, problemlösning och lärdomar](#problem-problemlösning-och-lärdomar)
-
-- [Namn conventioner](#namn-conventioner)
 
 - [Tech stack](#tech-stack)
 
 - [Hosting och deployment](#hosting-och-deployment)
 
+- [Problem, problemlösning och lärdomar](#problem-problemlösning-och-lärdomar)
+
 - [Databas design](#databas-design)
+
+- [Namn conventioner](#namn-conventioner)
 
 - [Gymnasie arbete](#gymnasie-arbete)
 
 # Problem, problemlösning och lärdomar
 
-Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂.
+Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters problem, allt ifrån att jag låste ut mig själv ifrån min egen databas, till att jag satt i timmar med en ".Dockerfile", som borde hetat "Dockerfile" 😂. ()
 
 ## State management
 
