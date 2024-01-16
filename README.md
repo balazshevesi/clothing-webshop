@@ -38,6 +38,9 @@
   <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white">
   </a>
+    <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white">
+  </a>
 
 </div>
 
@@ -49,7 +52,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
 ## State management
 
-Detta är faktiskt andra gången jag har försökt att bygga detta. Varför? för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
+Detta är faktiskt andra gången jag har försökt att bygga detta för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
 
 När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt.
 Så jag valde att testa Zustand, och det funkar fint tycker jag.
@@ -84,7 +87,11 @@ Pga av att innehållet på admin panelen är väldigt interaktivt så är det no
 
 ## Att hosta en bun API
 
-A
+Bun är en relativt ny grej och därmed finns det inga bra no-bulshit guider på att hosta det. Efter lite googling så kom jag fram till att jag var tvungen till att kötta ner den i en docker container. Det finns ju nån offeciel Dockerfile template på Bun:s hemsida, men jag valde att använda en ifån nån artikel på Medium för att den verkade mycket mer simpel.
+
+Nästa steg blev då att hitta något system för att hosta dockerfilen. AWS har ju EC2 eller Lambda, men komplexiteten är jävligt hög, (jag vet inte riktigt hur det hade fungerat, men jag antar) att jag hade först behövt göra någon typ av automatisering som lyssnar på commits på github repot, sen hämtar dockerfilen och bygger en docker image ifrån den, och sedan hostar den på EC2 eller Lambda. Det låter cp-komplicerat, jag ville ha något mer simeplt.
+
+Med Render kan man bara koppla github repot och sen _bara funkar det_, och de verkade stödja docker, men cold-startsen är brutala (typ 1min). Senare hittade jag att Railway också kunde deploya docker (där är cold-startsen helt okej).
 
 ## TODO
 
