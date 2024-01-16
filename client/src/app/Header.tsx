@@ -9,8 +9,8 @@ export default function Header() {
       <Image
         alt=""
         className="animateMainImage relative z-0 h-full select-none overflow-hidden rounded-b-xl border-b border-dashed border-white/50 object-cover "
-        height={2000}
-        width={4000}
+        height={1000}
+        width={2000}
         src="https://images.unsplash.com/photo-1630230594884-e1a57e130ac9?q=80&w=2873&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
       />
       <div className="absolute z-10 flex w-full flex-col items-center">
@@ -18,7 +18,7 @@ export default function Header() {
           <Title1 className="animate-fade-up font-bold drop-shadow-sm">
             clothing for the modern man
           </Title1>
-          <p className="mb-12 animate-fade-up text-lg delay-200">
+          <p className="animate-fade-up mb-12 text-lg delay-200">
             Sweden based startup aiming to disrupt the clothing market
           </p>
         </div>

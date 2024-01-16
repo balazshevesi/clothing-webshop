@@ -8,6 +8,7 @@ export default async function MostPopular() {
     { cache: "no-store" },
   );
 
+  console.log("productproductsproductss", await response.json());
   const products = (await response.json()).content;
 
   return (

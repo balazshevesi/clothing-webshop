@@ -838,6 +838,6 @@ app.post("/auth/signup", async (c) => {
 
 //~ export
 export default {
-  port: 3002,
+  port: process.env.PORT,
   fetch: app.fetch,
 };

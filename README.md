@@ -1,5 +1,5 @@
 <h1 align="center">
-  Clothing Webshop 🛍️⏳
+  Clothing Webshop 🛍️
 </h1>
 <h3 align="center">
   Fullstack e-handel hemsida
@@ -49,11 +49,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
 ## State management
 
-Detta är faktiskt andra gången jag har försökt att bygga detta. Varför? för fösta gången så blev det kaos pga
-min state management lösning inte var genomtänkt.
-_Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den.
-Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten.
-Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
+Detta är faktiskt andra gången jag har försökt att bygga detta. Varför? för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
 
 När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt.
 Så jag valde att testa Zustand, och det funkar fint tycker jag.
@@ -84,9 +80,11 @@ Motivationen till det var dels också att jag började ogilla file-based-routing
 
 Första gången jag byggde ut admin panelen så tänkte jag att jag skulle använda server-komponenter, men det visade sig vara ett rätt dumt val. Server-komponenter renderas ju på servern, när webläsaren tar emot de som cachar den de. Det betyder att trots att innehållet kan ha ändrats så kommer webläsaren visa den cachade verisonen och _inte_ be servern efter en ny. I praktiken så betyder det att man kan lägga till en artikel i admin/articles/add, och sedan när man kommer tillbaks till admin/articles så kommer den nya artiklen inte visas. Denna chachingen går inte att stänga av. Dokumnetationen säger (komiskt nog) typ bara "nej".
 
-Pga av att innehållet på admin panelen är väldigt interaktivt så är det nog smartare att bygga ut data fetchingen på clienten. Jag har alldrig använt react query innan, men här passar den faktiskt perfekt.
+Pga av att innehållet på admin panelen är väldigt interaktivt så är det nog smartare att bygga ut data fetchingen på clienten instället. Jag har alldrig använt react query innan, men här passar den faktiskt perfekt.
 
-##
+## Att hosta en bun API
+
+A
 
 ## TODO
 
