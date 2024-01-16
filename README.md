@@ -66,6 +66,8 @@ Detta repot innehåller källkoden.
 
       - [Tanstack Query](#tanstack-query)
 
+      - [Nuqs](#nuqs)
+
   - [Bun](#bun)
 
     - [Hono](#hono)
