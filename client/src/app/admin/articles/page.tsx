@@ -10,16 +10,15 @@ import { Button } from "@/components/ui/button";
 
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { fetchArticles } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
-  const { fetchAndSetArticles, articles } = useAdminPanel();
-  const { isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["articles"],
-    queryFn: () => fetchAndSetArticles(),
+    queryFn: () => fetchArticles(),
   });
-  if (articles.length === 0) return <div>loading...</div>;
+  if (!data || data.length === 0) return <div>loading...</div>;
 
   return (
     <div>
@@ -27,7 +26,7 @@ export default function Page() {
       <div className="flex flex-col justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
         <Link href="/admin/articles/add">Add Article</Link>
-        {articles.map((category: any) => {
+        {data.map((category: any) => {
           return (
             <div
               key={category.id}

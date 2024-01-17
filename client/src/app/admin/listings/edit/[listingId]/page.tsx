@@ -1,7 +1,7 @@
 "use client";
 
 import ListingForm from "../../ListingForm";
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { useAdminPanel } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page({ params }: { params: { listingId: string } }) {

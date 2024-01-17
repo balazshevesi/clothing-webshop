@@ -2,24 +2,19 @@
 
 import Link from "next/link";
 
-import { useEffect } from "react";
-
 import Title1 from "@/components/general/Title1";
-import Title2 from "@/components/general/Title2";
-import { Button } from "@/components/ui/button";
 
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { fetchBrands } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
-  const { fetchAndSetBrands, brands } = useAdminPanel();
   const { data, isLoading } = useQuery({
     queryKey: ["brands"],
-    queryFn: () => fetchAndSetBrands(),
+    queryFn: () => fetchBrands(),
   });
-  if (brands.length === 0) return <div>loading...</div>;
+  if (!data || data.length === 0) return <div>loading...</div>;
 
   return (
     <div>
@@ -27,7 +22,7 @@ export default function Page() {
       <div className="flex flex-col justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
         <Link href="/admin/brands/add">Add Brand</Link>
-        {brands.map((brand: any) => {
+        {data.map((brand: any) => {
           return (
             <div
               key={brand.id}

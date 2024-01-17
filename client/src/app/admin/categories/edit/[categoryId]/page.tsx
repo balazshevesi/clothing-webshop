@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import CategoryForm from "../../CategoryForm";
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { useAdminPanel } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page({ params }: { params: { categoryId: string } }) {

@@ -1,21 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
-
 import Title1 from "@/components/general/Title1";
-import Title2 from "@/components/general/Title2";
 import { Button } from "@/components/ui/button";
 
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { fetchPlannedSales } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
-  const { fetchAndSetPlannedSales, plannedSales } = useAdminPanel();
-  const { isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["plannedSales"],
-    queryFn: () => fetchAndSetPlannedSales(),
+    queryFn: () => fetchPlannedSales(),
   });
-  if (plannedSales.length === 0) return <div>loading...</div>;
+  if (!data || data.length === 0) return <div>loading...</div>;
 
   return (
     <div>

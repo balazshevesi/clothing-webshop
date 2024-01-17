@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import BrandForm from "../../BrandForm";
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { useAdminPanel } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page({ params }: { params: { brandId: string } }) {

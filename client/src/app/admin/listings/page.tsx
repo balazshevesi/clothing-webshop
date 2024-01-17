@@ -2,29 +2,26 @@
 
 import Link from "next/link";
 
-import { useEffect } from "react";
-
 import Title1 from "@/components/general/Title1";
 
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-import { useAdminPanel } from "@/state/useAdminPanel";
+import { fetchListings } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
-  const { fetchAndSetListings, listings } = useAdminPanel();
-  const { isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["listings"],
-    queryFn: () => fetchAndSetListings(),
+    queryFn: () => fetchListings(),
   });
-  if (listings.length === 0) return <div>loading...</div>;
+  if (!data || data.length === 0) return <div>loading...</div>;
   return (
     <div>
       <Title1>Listings</Title1>
       <div className="flex flex-col justify-between gap-4">
         {/* <Title2>list of brands</Title2> */}
         <Link href="/admin/listings/add">Add Listings</Link>
-        {listings.map((category: any) => {
+        {data.map((category: any) => {
           return (
             <div
               key={category.id}
