@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
   const { fetchAndSetBrands, brands } = useAdminPanel();
-  const { isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["brands"],
     queryFn: () => fetchAndSetBrands(),
   });

@@ -66,99 +66,116 @@ Detta repot innehåller källkoden.
 
 # Tech stack och dependencies
 
-- ## React
+- ## [⚛️ React](https://react.dev/)
 
-  - ### Next
+  - ### [🔼 Next](https://nextjs.org/)
 
     Eftersom att jag bygger en webshop så kommer jag behöva bra SEO. Bra SEO är inte något som en standard SPA erbjuder, så därför blir man tjungen till att antingen server rendera den eller skriva typ rå HTML. Server rendering låter ju trevligare.
 
     Jag valde att använda mig av nextjs då det typ är det enda sättet att server rendera React och samtidigt använda de nya server komponent mönstrerna.
 
-  - ### Server komponenter
+  - ### [🌐 Server komponenter](https://react.dev/learn/start-a-new-react-project#bleeding-edge-react-frameworks)
 
     Server komponenter är det självklara sättet att göra server rendering och data fetching på. Jag använder de så mycker jag kan.
 
   - ### State management
 
-    - #### Zustand
+    - #### [🐻 Zustand](https://zustand-demo.pmnd.rs/)
 
       Jag tycker om konceptet med unidirectional data flow och global state som Redux populariserade. Men jag ogillar all setup, boilerplate, och komplexitet som kommer med Redux.
 
       Jag valde Zustand för att konceptet är identiskt till Redux, men implemtationen är beydligt enklare.
 
-    - #### Tanstack Query
+    - #### [🔬 Tanstack Query](https://tanstack.com/query/latest)
 
       Jag valde att använda Tanstack Query i admin panelen för att hantera dels data fetching, och dels caching av datan.
 
-    - #### Nuqs
+    - #### [🔎 Nuqs](https://nuqs.47ng.com/)
 
       Jag råkade hitta Nuqs i en github tråd när jag letade information om hur man hanterar URL qurey params i nextjs appar, och Nuqs visade sig vara den perfekta lösningen. APIn är exakt som en useState, men staten synkroniseras automagiskt med URL quries. Repot förjärnar mer stjärnor.s
 
-- ### Styling
+  - ### Styling
 
-  - #### Tailwind
+    - #### [🌊 Tailwind](https://tailwindcss.com/)
 
-    I min (begränsade) erfarenhet så är Tailwind det absolut enklaste sättet är göra styling på.
+      I min (begränsade) erfarenhet så är Tailwind det absolut enklaste sättet är göra styling på.
 
-  - #### Shadcn/ui
+    - #### [⭐ Heroicons](https://heroicons.com/)
 
-    Om man redan använder React och Tailwind så är Shadcn ett självklart val.
+      Heroicons brukar vara min go-to för ikoner. De har inte den största urvalet, men alla av ikonerna ser bra ut, och dessutom har de outlineade verisioner.
 
-    Det som sklijer Shadcn/ui åt all de andra komponent biblioteken är att du själv äger äger komponenterna. Om du vill ändra någonting på de så kan du helt enkelt bara öppna komponenten och ändra det sjäv.
+    - #### [🔘 Shadcn/ui](https://ui.shadcn.com/)
 
-- ## Bun
+      Om man redan använder React och Tailwind så är Shadcn ett självklart val.
 
-  - ### Hono
+      Det som sklijer Shadcn/ui åt all de andra komponent biblioteken är att du själv äger äger komponenterna. Om du vill ändra någonting på de så kan du helt enkelt bara öppna komponenten och ändra det sjäv.
+
+- ## [🧄 Bun](https://bun.sh/)
+
+  - ### [🔥 Hono](https://hono.dev/)
 
     Jag valde Hono för att den har ett API som efterliknar express, men är kompatibel med Bun runtime och har allmänt bättre prestanda.
 
-  - ### Drizzle
+  - ### [🗄️ Drizzle](https://orm.drizzle.team/)
 
     Jag valde drizzle som min ORM för att APIn efterliknar vanlig SQL.
 
-- ## MySQL
+  - ### [👤 Jose](https://github.com/panva/jose)
 
-  Jag valde mySql som min databas dels för att lära mig någon och dels för att en e-handels hemsida är full av relationer, så att SQL passar perfekt
+    JWT signering och verifiering för att hantera authentication.
+
+- ## [🐬 MySQL](https://www.mysql.com/)
+
+  Jag valde mySql som min databas dels för att lära mig något nytt och dels för att en e-handels hemsida är full av relationer, så att SQL passar perfekt
 
 - ## Övrigt
 
-  - ### Typescript
+  - ### [🇹 Typescript](https://www.typescriptlang.org/)
 
     Majoriteten av gångerna så använder jag inte ens Typescript korrekt 😂, men ändå så är det en enorm hjälp för att förebygga buggar, speciellt på backnden, där man inte alltid är säker på vad alla funktioner returnerar
 
-  - ### Prettier + eslint
+  - ### [🅿️ Prettier](https://prettier.io/) + [eslint](https://eslint.org/)
 
     Jag vill inte spendera tid och mental energi på att formatera min kod, så jag valde att använda prettier (dock är sidoeffekten att man köttar CMD+S efter typ varje knapp tryck 😂, men det kan jag leva med). Jag använder Import-sort pluginet ifrån trivago och Tailwind-classname-sort-pluginet, de är nicee
 
     Eslint använder jag helt enkelt med default inställningarna som Nextjs kommer med.
 
-  - ### Valibot
+  - ### [🤖 Valibot](https://valibot.dev/)
 
     Inputs behöver valideras, annars så kommer användare kunna skicka all möjligt skit till backenden, det vill vi inte tillåta.
 
-    Det populäraste validerings biblioteket är nog Zod. Nackdelen med Zod är att import storleken är (onödigt) stor. Valibot kan ofta ha en import storlek som är 10x mindre än Zod. Och så föredrar jag Valibots dokumentation.
+    Det populäraste validerings biblioteket är nog [Zod](https://zod.dev/). Nackdelen med Zod är att import storleken är (onödigt) stor. Valibot kan ofta ha en import storlek som är 10x mindre än Zod. Och så föredrar jag Valibots dokumentation.
 
-  - ### Postman
+  - ### [📬 Postman](https://www.postman.com/)
 
-    Jag använde Postman mest bara för att kolla formen av min JSON
+    Jag använde Postman mest bara för att kolla formen av min JSON, det är as nice att ha det på andra skärmen.
+
+  - ### [🦫 Dbeaver](https://dbeaver.io/)
+
+    Jag använde Dbeaver för att enklare kunna hantera och visualisera min databas
+
+  - ### [🐳 Docker](https://www.docker.com/)
+
+    Jag använder docker för att förenkla hostingen av min Bun backend
 
 # Databas design
 
-Denna delen av readme:n är inte färdig
+![Bild på databas visualisering ifrån Dbeaver](/readme-assets/databasDesign.png)
+Bilden är en visualisering av databasen skapad med Dbeaver
 
 # Hosting och deployment
 
-- ## Frontend
+- ## 💻 Frontend
 
-  Jag använder bara Vercel
+  Jag använder bara [🔼 Vercel](https://vercel.com/)
 
-- ## Backend
+- ## 🌐 Backend
 
-  Jag kör min backend kod i en Docker container med Railway
+  Jag kör min backend kod i en [🐳 Docker](https://www.docker.com/) container med [🚝 Railway](https://railway.app/)
 
-- ## Databas
+- ## 💾 Databas
 
-  Här använder jag Railway igen
+  Här använder jag [🚝 Railway](https://railway.app/) igen
 
 # Namn conventioner
 
@@ -170,7 +187,9 @@ Denna delen av readme:n är inte färdig
 
 - **Client-Side Storage**: camelCase
 
-- **Types and Schema validations**: PascalCase
+- **Types och Schema validering**: PascalCase
+
+- **Enviorment variabel**: SCREAMING_SNAKE_CASE
 
 - **Extra**: Databas tabeller ska ha Tbl som suffix
 
@@ -187,7 +206,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <br>
   Detta är faktiskt andra gången jag har försökt att bygga detta för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
 
-  När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt. Så jag valde att testa Zustand, och det funkar fint tycker jag.
+  När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt. Så jag valde att testa [Zustand](https://zustand-demo.pmnd.rs/), och det funkar fint tycker jag.
   </details>
 
 - ## Behovet av en ORM
@@ -199,9 +218,9 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   Då fick jag den genialiska ideén att abstrahera bort de 7 raderna till sin egen funktion. Sen insåg jag hur efterblivet det egentligen var; jag hade skapat en helper funktion för varje stored procedure för att förekla läsbarheten av koden, men i processen så gjorde jag det mycket värre. Relativt enkela CRUD-opeationer hade sina egna helper funktioner som i sin tur kallade på stored procedures, som i sin tur faktiskt urförde CRUD-operationerna i databasen. Man kan ju inte hålla på så om man ska bygga något underhållbart.
 
-  Så jag valde att utforska lite om vilka alternativ som fanns. Jag hamnade mellan Prisma ORM och Drizzle ORM. Båda verkade vara kompetenta lösningar. Jag råkade dock radera hela min databas när jag försökte insallera Prisma (jag missupfattade vad "database migration" egentligen syftar på 😂), så frustrationen ledde mig till Drizzle 😂.
+  Så jag valde att utforska lite om vilka alternativ som fanns. Jag hamnade mellan [Prisma](https://www.prisma.io/) och [Drizzle](https://orm.drizzle.team/) ORM. Båda verkade vara kompetenta lösningar. Jag råkade dock radera hela min databas när jag försökte insallera [Prisma](https://www.prisma.io/) (jag missupfattade vad "database migration" egentligen syftar på 😂), så frustrationen ledde mig till [🗄️ Drizzle](https://orm.drizzle.team/) 😂.
 
-  Jag tycker faktiskt att Drizzle passade bättre än Prisma. pga att APIn efterliknar vanligt SQL-kod (som jag fösöker bli mer bekant med).
+  Jag tycker faktiskt att [Drizzle](https://orm.drizzle.team/) passade bättre än [Prisma](https://www.prisma.io/). pga att APIn efterliknar vanligt SQL-kod (som jag fösöker bli mer bekant med).
   </details>
 
 - ## Stateless backend och signleton design
@@ -209,15 +228,15 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
   <br>
-  State i backend är ett helt nytt koncept för mig, före detta projektet så tänke jag aldrig ens på det. API ruttarna i Nextjs är stateless, i mitt fall så är det ett problem eftersom att det betyder att vartenda rutt kommer att göra sin egen ansluting till databasen. Då hade jag min databas på RDS som hade en max-ansluting på 60, och när man har Next i dev-mode så kommer anslutningarna inte att disconnecta på hot-realods, så att de 60 anslutingarna fylldes jävligt snabbt.
+  State i backend är ett helt nytt koncept för mig, före detta projektet så tänke jag aldrig ens på det. API ruttarna i [Next](https://vercel.com/) är stateless, i mitt fall så är det ett problem eftersom att det betyder att vartenda rutt kommer att göra sin egen ansluting till databasen. Då hade jag min databas på RDS som hade en max-ansluting på 60, och när man har [Next](https://vercel.com/) i dev-mode så kommer anslutningarna inte att disconnecta på hot-realods, så att de 60 anslutingarna fylldes jävligt snabbt.
 
   Varje individuella rutt har ju sin egen state, så först tänkte jag att jag kanske skulle kunna utnytja det genom att ha någon typ av intern rutt som returnerar databas anslutnings objektet. Men det visade sig komplexa objekt (som databas anslutningar) inte kunnde skickas genom HTTP :(.
 
-  Själv tycker jag att Next borde ha någon inbyggd lösning på detta, men samtidigt så kommer de ju alldrig göra det med tankte på att de tror att man borde göra typ allt i server-komponenter.
+  Själv tycker jag att [Next](https://vercel.com/) borde ha någon inbyggd lösning på detta, men samtidigt så kommer de ju alldrig göra det med tankte på att de tror att man borde göra typ allt i server-komponenter.
 
-  Lösningen är ju att man har någon typ av "pooling". Prisma har nått magiskt rust-lager som hjälper till med det, men jag valde ju Drizzle 💀. Som tur är så kan man ju också ha pooling på databas-nivå, jag försökte fixa det i min AWS RDS panel, men det ville inte fungera, så jag bestämmde mig för att bygga-om min backend med Bun och Hono.
+  Lösningen är ju att man har någon typ av "pooling". [Prisma](https://www.prisma.io/) har nått magiskt rust-lager som hjälper till med det, men jag valde ju [Drizzle](https://orm.drizzle.team/) 💀. Som tur är så kan man ju också ha pooling på databas-nivå, jag försökte fixa det i min AWS RDS panel, men det ville inte fungera, så jag bestämmde mig för att bygga-om min backend med Bun och Hono.
 
-  Motivationen till det var dels också att jag började ogilla file-based-routing mer och mer. Jag tycker att file-based-routing fungerar fint på frontenden, men inte på backenden. Motivatinen till bygga om den var dels också att Nextjs inte har någon riktig middleware lösning för backend rutter, och jag var tvungan att ha typ 10 rader boiler-plate kod i varje "admin/" rutt bara för att checka-av om anropet faktisk komm ifrån en admin.
+  Motivationen till det var dels också att jag började ogilla file-based-routing mer och mer. Jag tycker att file-based-routing fungerar fint på frontenden, men inte på backenden. Motivatinen till bygga om den var dels också att [Next](https://vercel.com/) inte har någon riktig middleware lösning för backend rutter, och jag var tvungan att ha typ 10 rader boiler-plate kod i varje "admin/" rutt bara för att checka-av om anropet faktisk komm ifrån en admin.
   </details>
 
 - ## Client-side caching på i admin panelen
@@ -228,6 +247,9 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   Första gången jag byggde ut admin panelen så tänkte jag att jag skulle använda server-komponenter, men det visade sig vara ett rätt dumt val. Server-komponenter renderas ju på servern, när webläsaren tar emot de som cachar den de. Det betyder att trots att innehållet kan ha ändrats så kommer webläsaren visa den cachade verisonen och _inte_ be servern efter en ny. I praktiken så betyder det att man kan lägga till en artikel i admin/articles/add, och sedan när man kommer tillbaks till admin/articles så kommer den nya artiklen inte visas. Denna chachingen går inte att stänga av. Dokumnetationen säger (komiskt nog) typ bara "nej".
 
   Pga av att innehållet på admin panelen är väldigt interaktivt så är det nog smartare att bygga ut data fetchingen på clienten instället. Jag har alldrig använt react query innan, men här passar den faktiskt perfekt.
+
+  ![Bild ifrån nextjs dokumentationen](https://nextjs.org/_next/image?url=%2Fdocs%2Fdark%2Fcaching-overview.png&w=3840&q=75&dpl=dpl_48oNJS5BFcpzrgy9nvGYCkyvBDXL)
+
   </details>
 
 - ## Att hosta en bun API
@@ -235,11 +257,11 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
   <br>
-  Bun är en relativt ny grej och därmed finns det inga bra no-bulshit guider på att hosta det. Efter lite googling så kom jag fram till att jag var tvungen till att kötta ner den i en docker container. Det finns ju nån offeciel Dockerfile template på Bun:s hemsida, men jag valde att använda en ifån nån artikel på Medium för att den verkade mycket mer simpel.
+  Bun är en relativt ny grej och därmed finns det inga bra no-bulshit guider på att hosta det. Efter lite googling så kom jag fram till att jag var tvungen till att kötta ner den i en docker container. [Det finns ju nån offeciel Dockerfile template på Bun:s hemsida](https://bun.sh/guides/ecosystem/docker), men jag valde att använda en ifån nån artikel på Medium för att den verkade mycket mer simpel.
 
   Nästa steg blev då att hitta något system för att hosta dockerfilen. AWS har ju EC2 eller Lambda, men komplexiteten är jävligt hög, (jag vet inte riktigt hur det hade fungerat, men jag antar) att jag hade först behövt göra någon typ av automatisering som lyssnar på commits på github repot, sen hämtar dockerfilen och bygger en docker image ifrån den, och sedan hostar den på EC2 eller Lambda. Det låter cp-komplicerat, jag ville ha något mer simeplt.
 
-  Med Render kan man bara koppla github repot och sen _bara funkar det_, och de verkade stödja docker, men cold-startsen är brutala (typ 1min). Senare hittade jag att Railway också kunde deploya docker (där är cold-startsen helt okej).
+  Med [Render](https://render.com/) kan man bara koppla github repot och sen _bara funkar det_, och de verkade stödja docker, men cold-startsen är brutala (typ 1min). Senare hittade jag att [Railway](https://railway.app/) också kunde deploya docker (där är cold-startsen helt okej).
   </details>
 
 # Gymnasie arbete
@@ -257,25 +279,13 @@ Detta är också mitt gymnasie arbete
 - [ ] Streamline input validation and form submission
 
 - [ ] Present account info in a cleaner way, and make it ediatable
-- [ ] Maybe add favourites idk
+- [ ] Maybe add favourites
 - [ ] Add planned sales shit
-- [x] Make it so if there is only one color, or one size, don't display options (frontend)
-- [x] Fill the db with shit
-- [x] Host that shit: prolly client on AWS amplify, then backend in a docker on AWS lambda in a docker
-- [x] Fix wierd shit in admin panel. (probably need it's own state)
-- [x] Build backend for cart, and intergrate with the frontend
-- [x] Make state logic even simpler, only increment, decrement, remove and add gets handled automatically?
-- [x] Switch add to cart modal to sonner toast
-- [x] Build mobile menue n shit
-- [x] Log user loggin time
 
 ---
 
-- [ ] Maybe some "migrate cart" funcitonallity for users who fill their carts, then later decide to signup?
 - [ ] Write some tests? idk
 - [ ] Write a nice readme
-- [x] Make shopping cart pritter
-- [x] Checkout react qurey maybe?
 
 ---
 
