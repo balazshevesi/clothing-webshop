@@ -34,8 +34,10 @@ export default function Content({ listing }: { listing: any }) {
   }, [selectedArticle]);
 
   useEffect(() => {
-    // dunno why it doesen't do this my default
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    // dunno why it doesen't do this my default, also: this doesen't quite work
+    setTimeout(() => {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }, 0);
   }, []);
 
   const currentArticle = listing.articles.filter(

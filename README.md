@@ -264,11 +264,21 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   Med [Render](https://render.com/) kan man bara koppla github repot och sen _bara funkar det_, och de verkade stödja docker, men cold-startsen är brutala (typ 1min). Senare hittade jag att [Railway](https://railway.app/) också kunde deploya docker (där är cold-startsen helt okej).
   </details>
 
+- ## State initialisering innan hydration
+
+  <details>
+  <summary>Läs</summary>
+  <br>
+  "Login" knappen 
+  </details>
+
 # Gymnasie arbete
 
 Detta är också mitt gymnasie arbete
 
 # TODO
+
+- [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed
 
 - [ ] Remove zustand state from admin panel logic, just rely on react query
 
