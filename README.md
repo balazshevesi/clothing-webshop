@@ -21,7 +21,7 @@
       <img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white">
   </a>
   <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white">
+      <img src="https://img.shields.io/badge/railway-0B0D0E.svg?style=for-the-badge&logo=railway&logoColor=white">
   </a>
   <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white">
@@ -38,8 +38,17 @@
   <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white">
   </a>
-    <a href="https://www.typescriptlang.org/">
+  <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white">
+  </a>
+    <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/dbeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white" />
+  </a>
+  <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/hono-E36002?style=for-the-badge&logo=hono&logoColor=white" />
+  </a>
+  <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/drizzle-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black"/>
   </a>
 
 </div>
@@ -286,7 +295,6 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 Detta är också mitt gymnasie arbete
 
 # TODO
-
 
 - [ ] Maybe add favourites
 - [ ] Build filter/browse section of the website

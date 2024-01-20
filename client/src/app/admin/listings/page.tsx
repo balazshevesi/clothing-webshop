@@ -6,7 +6,7 @@ import Title1 from "@/components/general/Title1";
 
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-import { fetchListings } from "@/app/admin/utils/fetchFunctions";
+import { fetchListings } from "../utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {

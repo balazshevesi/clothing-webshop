@@ -1,32 +1,25 @@
 "use client";
 
-//^ NOTE: cart items addded from this component will not have images
-//^ modify enpoint to include them
 import Image from "next/image";
 import Link from "next/link";
 
 import { useEffect, useRef, useState } from "react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
+import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
+import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
+
 import Counter from "./layout/navigation/cart/Counter";
+import { useFavsSlice } from "@/state/useFavsSlice";
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { toast } from "sonner";
 
 export default function MostPopularCard({ listing }: { listing: any }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const { items, open, increment } = useShoppingCartSlice();
+  const { favArticles, toggleFav } = useFavsSlice();
+
   const itemCount = items.filter(
     (cartItem) => cartItem.id === listing.defaultArticle.id,
   )[0]
@@ -58,8 +51,23 @@ export default function MostPopularCard({ listing }: { listing: any }) {
             </div>
           </Link>
           <div className="p-2">
-            <div className="mb-4 mt-2 max-w-full overflow-auto">
-              <strong>{listing.title}</strong>
+            <div className="flex items-center">
+              <div className="mb-4 mt-2 max-w-full overflow-auto">
+                <strong>{listing.title}</strong>
+              </div>
+              <button
+                className="ml-auto"
+                onClick={() => toggleFav(listing.defaultArticle)}
+              >
+                {favArticles.filter(
+                  (articleState) =>
+                    articleState.id === listing.defaultArticle.id,
+                ).length > 0 ? (
+                  <StarIconSolid className="size-6 stroke-2" />
+                ) : (
+                  <StarIconOutline className="size-6 stroke-2" />
+                )}
+              </button>
             </div>
             <div className="mb-4 font-light">
               <strong>{listing.defaultArticle.price} SEK</strong>

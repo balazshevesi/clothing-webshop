@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-import { fetchArticles } from "@/app/admin/utils/fetchFunctions";
+import { fetchArticles } from "../utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
