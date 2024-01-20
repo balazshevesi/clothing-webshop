@@ -660,6 +660,17 @@ app.get("/guest-user/:guestUserId/cart", async (c) => {
   return c.json({ content: cart });
 });
 
+app.get("/guest-user/:guestUserId/favs", async (c) => {
+  
+  return c.json({ content: cart });
+});
+app.put("/guest-user/:guestUserId/favs", async (c) => {
+  return c.json({ content: cart });
+});
+app.delete("/guest-user/:guestUserId/favs", async (c) => {
+  return c.json({ content: cart });
+});
+
 //logging
 app.get("/log/guest-user/:guestUserId", async (c) => {
   const db = await getDatabase();

@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 
 import BrandForm from "../../BrandForm";
-import { useAdminPanel } from "@/app/admin/utils/fetchFunctions";
+import { fetchBrand } from "@/app/admin/utils/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page({ params }: { params: { brandId: string } }) {
-  const { fetchBrand } = useAdminPanel();
   const { data, isLoading } = useQuery({
     queryKey: ["brandId" + params.brandId],
     queryFn: () => fetchBrand(params.brandId),
