@@ -4,6 +4,9 @@
 <h3 align="center">
   Fullstack e-handel hemsida
 </h3>
+
+<img src="./readme-assets/showcase.gif"/>
+
 <div align="center">
   <a href="https://react.dev/">
       <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB">
@@ -49,6 +52,9 @@
   </a>
   <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/drizzle-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black"/>
+  </a>
+  <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=for-the-badge"/>
   </a>
 </div>
 
@@ -100,7 +106,7 @@ Detta repot innehåller källkoden.
 
     - #### [🔎 Nuqs](https://nuqs.47ng.com/)
 
-      Jag råkade hitta Nuqs i en github tråd när jag letade information om hur man hanterar URL qurey params i nextjs appar, och Nuqs visade sig vara den perfekta lösningen. APIn är exakt som en useState, men staten synkroniseras automagiskt med URL quries. Repot förjärnar mer stjärnor.s
+      Jag råkade hitta Nuqs i en github tråd när jag letade information om hur man hanterar URL qurey params i nextjs appar, och Nuqs visade sig vara den perfekta lösningen. APIn är exakt som en useState, men staten synkroniseras automagiskt med URL quries. [Repot förjärnar mer stjärnor](https://github.com/47ng/nuqs)
 
   - ### Styling
 
@@ -173,7 +179,19 @@ Detta repot innehåller källkoden.
 # Databas design
 
 ![Bild på databas visualisering ifrån Dbeaver](/readme-assets/databasDesign.png)
-Bilden är en visualisering av databasen skapad med Dbeaver
+Bilden är en visualisering av databasen skapad med Dbeaver.
+
+Detta var mina krav på databasen:
+
+- Kunna sälja produkter
+- Kunna ha olika märken och olika kategorier
+- Kunna sälja variationer av produkter, typ storlek och färg
+- Kunna ha rabbater på vissa variationer av produkter, men inte andra
+- Kunna belysa en viss variation av en produkt
+- Kunna ha ha unika bilder på varje variation
+- Admins ska kunna se vad alla har i kundvagnarna, tom de som inte är registrerad
+
+Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation av en produkt som en artikel, och sedan ha anonnser som innehåller flera artiklar. Anonnserna behöver därmed också ha någon typ av "default" artikel
 
 # Hosting och deployment
 
@@ -215,7 +233,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   <details>
   <summary>Läs</summary>
-  <br>
+
   Detta är faktiskt andra gången jag har försökt att bygga detta för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
 
   När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt. Så jag valde att testa [Zustand](https://zustand-demo.pmnd.rs/), och det funkar fint tycker jag.
@@ -225,7 +243,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   <details>
   <summary>Läs</summary>
-  <br>
+
   Detta är första projektet som jag använde SQL i. När jag började bygga ut backenden så tänkte jag att det skulle gå bra med att skriva rå SQL. Så jag valde att skapa stored proceduers, som jag sedan skulle anropa i koden. Jag insåg snabbt att det var ett _väldigt_ dåligt mönster, för jag var ju tvungen till att använda paramatarized qureies (för att skydda mot SQL-injections) och då blev det ju typ 7 rader kod för en enkel CRUD operation (som dessutom inte ens var type-safe), och koden blev väldigt svårläst.
 
   Då fick jag den genialiska ideén att abstrahera bort de 7 raderna till sin egen funktion. Sen insåg jag hur efterblivet det egentligen var; jag hade skapat en helper funktion för varje stored procedure för att förekla läsbarheten av koden, men i processen så gjorde jag det mycket värre. Relativt enkela CRUD-opeationer hade sina egna helper funktioner som i sin tur kallade på stored procedures, som i sin tur faktiskt urförde CRUD-operationerna i databasen. Man kan ju inte hålla på så om man ska bygga något underhållbart.
@@ -239,7 +257,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   <details>
   <summary>Läs</summary>
-  <br>
+
   State i backend är ett helt nytt koncept för mig, före detta projektet så tänke jag aldrig ens på det. API ruttarna i [Next](https://vercel.com/) är stateless, i mitt fall så är det ett problem eftersom att det betyder att vartenda rutt kommer att göra sin egen ansluting till databasen. Då hade jag min databas på RDS som hade en max-ansluting på 60, och när man har [Next](https://vercel.com/) i dev-mode så kommer anslutningarna inte att disconnecta på hot-realods, så att de 60 anslutingarna fylldes jävligt snabbt.
 
   Varje individuella rutt har ju sin egen state, så först tänkte jag att jag kanske skulle kunna utnytja det genom att ha någon typ av intern rutt som returnerar databas anslutnings objektet. Men det visade sig komplexa objekt (som databas anslutningar) inte kunnde skickas genom HTTP :(.
@@ -255,7 +273,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   <details>
   <summary>Läs</summary>
-  <br>
+
   Första gången jag byggde ut admin panelen så tänkte jag att jag skulle använda server-komponenter, men det visade sig vara ett rätt dumt val. Server-komponenter renderas ju på servern, när webläsaren tar emot de som cachar den de. Det betyder att trots att innehållet kan ha ändrats så kommer webläsaren visa den cachade verisonen och _inte_ be servern efter en ny. I praktiken så betyder det att man kan lägga till en artikel i admin/articles/add, och sedan när man kommer tillbaks till admin/articles så kommer den nya artiklen inte visas. Denna chachingen går inte att stänga av. Dokumnetationen säger (komiskt nog) typ bara "nej".
 
   Pga av att innehållet på admin panelen är väldigt interaktivt så är det nog smartare att bygga ut data fetchingen på clienten instället. Jag har alldrig använt react query innan, men här passar den faktiskt perfekt.
@@ -268,7 +286,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   <details>
   <summary>Läs</summary>
-  <br>
+
   Bun är en relativt ny grej och därmed finns det inga bra no-bulshit guider på att hosta det. Efter lite googling så kom jag fram till att jag var tvungen till att kötta ner den i en docker container. [Det finns ju nån offeciel Dockerfile template på Bun:s hemsida](https://bun.sh/guides/ecosystem/docker), men jag valde att använda en ifån nån artikel på Medium för att den verkade mycket mer simpel.
 
   Nästa steg blev då att hitta något system för att hosta dockerfilen. AWS har ju EC2 eller Lambda, men komplexiteten är jävligt hög, (jag vet inte riktigt hur det hade fungerat, men jag antar) att jag hade först behövt göra någon typ av automatisering som lyssnar på commits på github repot, sen hämtar dockerfilen och bygger en docker image ifrån den, och sedan hostar den på EC2 eller Lambda. Det låter cp-komplicerat, jag ville ha något mer simeplt.
@@ -280,8 +298,10 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   <details>
   <summary>Läs</summary>
-  <br>
+
   "Login" knappen är nogonting som är beroände av state. Om användaren är inloggad så ska det stå "view account", om den inte är inloggad så ska det stå "login". Staten går att initialisera på clienten med javascript, men om användaren inloggad så kommer det stå "login" innan sidan hydratiseras. Det ser konstigt ut, så jag initialiserade staten med en serverkomponent, sedan tar clienten över.
+
+  Lösningen är inte 100% optimal eftersom den orsakar en extra rerender, men navigationen är en väldigt viktig del av UX, så det får man ta.
 
   ![](readme-assets/stateInitPreHydration.png)
 
@@ -305,7 +325,7 @@ Detta är också mitt gymnasie arbete
 
 ---
 
-- [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed??)
+- [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed maybe??)
 - [ ] Write some tests? idk
 - [ ] Write a nice readme
 

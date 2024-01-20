@@ -34,9 +34,10 @@ export default function Content({ listing }: { listing: any }) {
   }, [selectedArticle]);
 
   useEffect(() => {
-    // dunno why it doesen't do this my default, also: this doesen't quite work
+    // dunno why it doesen't do this by default
+    //#top is in layout.tsx
     setTimeout(() => {
-      document.body.scrollTop = document.documentElement.scrollTop = 0;
+      document.getElementById("scrollToTopHelper")!.scrollIntoView();
     }, 0);
   }, []);
 

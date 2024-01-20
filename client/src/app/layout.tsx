@@ -66,6 +66,7 @@ export default async function RootLayout({
           <InitState>
             <div className="h-screen overflow-auto bg-black">
               <Navigation />
+              <div id="scrollToTopHelper" />
               {children}
               <Toaster />
               <Footer />
