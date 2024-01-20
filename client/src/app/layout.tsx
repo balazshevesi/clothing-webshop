@@ -66,13 +66,13 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark">
           <InitState>
             <div className="h-screen overflow-auto bg-black">
+              <div id="scrollToTopHelper" />
               <Navigation />
               <NextTopLoader
                 color="rgba(255, 255, 255, 0.8)"
                 height={1}
                 showSpinner={false}
               />
-              <div id="scrollToTopHelper" />
               {children}
               <Toaster />
               <Footer />

@@ -317,13 +317,22 @@ Detta är också mitt gymnasie arbete
 
 # TODO
 
+## prio 1
 - [ ] Build filter/browse section of the website
 - [ ] Build search functionallity? (dunno how, but i'll find out)
-- [ ] Find email provider and setup forgot password system
-- [ ] Streamline input validation and form submission
 
+## prio 2
 - [ ] Present account info in a cleaner way, and make it ediatable
+- [ ] Streamline input validation and form submission across the app
+
+## prio 3
 - [ ] Add planned sales shit
+- [ ] Add stastics to admin panel
+- [ ] Find email provider and setup forgot password system
+
+- [ ] Intergrate stripe
+- [ ] Make so buyers can submit reviews
+
 
 ---
 
