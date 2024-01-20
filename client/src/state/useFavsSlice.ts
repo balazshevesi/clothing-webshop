@@ -102,4 +102,7 @@ export const useFavsSlice = create<useFavsSlice>()((set) => ({
 
     set((state: any) => ({ favArticles: stateFormat }));
   },
+  resetFavs: () => {
+    set((state: any) => ({ favArticles: [] }));
+  },
 }));

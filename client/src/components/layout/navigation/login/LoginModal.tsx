@@ -18,12 +18,17 @@ import { Label } from "@/components/ui/label";
 
 import { EmailSchema, PasswordSchema } from "@/inputValidation/schema";
 import { useAuthSlice } from "@/state/useAuthSlice";
+import { useFavsSlice } from "@/state/useFavsSlice";
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { parse, flatten, safeParse } from "valibot";
 
 export default function LoginModal() {
   const fetchAndSetCart = useShoppingCartSlice(
     (state: any) => state.fetchAndSetCart,
+  ) as any;
+
+  const fetchAndSetFavs = useFavsSlice(
+    (state: any) => state.fetchAndSetFavs,
   ) as any;
 
   const loginIsOpen = useAuthSlice((state) => state.loginIsOpen);
@@ -82,6 +87,7 @@ export default function LoginModal() {
       setIsIncorrect(false);
       closeLogin();
       reset();
+      fetchAndSetFavs();
       fetchAndSetCart();
     } else setIsIncorrect(true);
 

@@ -740,6 +740,83 @@ app.delete("/guest-user/:guestUserId/favs", async (c) => {
   return c.json({});
 });
 
+
+app.get("/user/:userId/favs", async (c) => {
+  console.log("getgetgetget");
+  const db = await getDatabase();
+  const { userId } = c.req.param();
+  const userAuth = c.req.header("userAuth");
+  if (!userAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.userId, +userId));
+  const favs = await db
+    .select()
+    .from(favItemsTbl)
+    .where(eq(favItemsTbl.cartId, cart.id));
+  return c.json({ content: favs });
+});
+app.post("/user/:userId/favs", async (c) => {
+  const db = await getDatabase();
+  const body: FavBody = await c.req.json();
+  const { userId } = c.req.param();
+  const userAuth = c.req.header("userAuth");
+  if (!userAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.userId, +userId));
+  const favAlredyExists =
+    (
+      await db
+        .select()
+        .from(favItemsTbl)
+        .where(
+          and(
+            eq(favItemsTbl.cartId, cart.id),
+            eq(favItemsTbl.articleId, +body.articleId)
+          )
+        )
+    ).length > 0;
+  if (favAlredyExists) return c.json({});
+  await db.insert(favItemsTbl).values({
+    articleId: +body.articleId,
+    cartId: cart.id,
+  });
+  return c.json({});
+});
+app.delete("/user/:userId/favs", async (c) => {
+  const db = await getDatabase();
+  const body: FavBody = await c.req.json();
+  const { userId } = c.req.param();
+  const userAuth = c.req.header("userAuth");
+  if (!userAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.userId, +userId));
+  await db
+    .delete(favItemsTbl)
+    .where(
+      and(
+        eq(favItemsTbl.cartId, cart.id),
+        eq(favItemsTbl.articleId, +body.articleId)
+      )
+    );
+  return c.json({});
+});
+
+
 //logging
 app.get("/log/guest-user/:guestUserId", async (c) => {
   const db = await getDatabase();
@@ -915,6 +992,9 @@ app.post("/auth/signup", async (c) => {
 
   return c.json({ userIdJwt, userInfo });
 });
+
+
+//product search
 
 //~ export
 export default {
