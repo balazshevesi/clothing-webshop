@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
 import { cookies } from "next/headers";
+import NextTopLoader from "nextjs-toploader";
 
 import Footer from "@/components/layout/Footer";
 import Navigation from "@/components/layout/Navigation";
@@ -66,6 +67,11 @@ export default async function RootLayout({
           <InitState>
             <div className="h-screen overflow-auto bg-black">
               <Navigation />
+              <NextTopLoader
+                color="rgba(255, 255, 255, 0.8)"
+                height={1}
+                showSpinner={false}
+              />
               <div id="scrollToTopHelper" />
               {children}
               <Toaster />
