@@ -289,8 +289,6 @@ Detta är också mitt gymnasie arbete
 
 - [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed
 
-- [ ] Remove zustand state from admin panel logic, just rely on react query
-
 - [ ] Build filter/browse section of the website
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system

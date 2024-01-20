@@ -2,13 +2,29 @@ import MostPopularCard from "./MostPopularCard";
 import Container from "./general/Container";
 import Title2 from "./general/Title2";
 
-export default async function MostPopular() {
-  const response: any = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/listings/most-popular`,
-    { cache: "no-store" },
+function FetchFailed() {
+  return (
+    <Container>
+      <Title2>something went wrong</Title2>
+    </Container>
   );
+}
 
-  const products = (await response.json()).content;
+export default async function MostPopular() {
+  let products: any;
+
+  try {
+    const response: any = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/listings/most-popular`,
+      { cache: "no-store" },
+    );
+
+    if (!response.ok) return <FetchFailed />;
+    const data = await response.json();
+    products = data.content;
+  } catch {
+    return <FetchFailed />;
+  }
 
   return (
     <div>
