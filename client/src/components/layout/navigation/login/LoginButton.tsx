@@ -13,18 +13,14 @@ import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 import { useAuthSlice } from "@/state/useAuthSlice";
 
-export default function LoginButton({
-  serverAuthorization,
-}: {
-  serverAuthorization: boolean;
-}) {
+export default function LoginButton({ serverAuth }: { serverAuth: boolean }) {
   const router = useRouter();
 
-  const openLogin = useAuthSlice((state: any) => state.openLogin) as any;
+  const openLogin = useAuthSlice((state: any) => state.openLogin);
   const isLoggedIn = useAuthSlice((state) => state.isLoggedIn);
 
   //this block of code initilizes the state pre-hydration
-  const [localLoginState, setLocalLoginState] = useState(serverAuthorization);
+  const [localLoginState, setLocalLoginState] = useState(serverAuth);
   useEffect(() => {
     if (isLoggedIn) setLocalLoginState(true);
     else setLocalLoginState(false);

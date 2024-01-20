@@ -5,33 +5,35 @@ import * as schemaRelations from "../../drizzle/schemaRelations";
 
 type Schema = typeof schema & typeof schemaRelations;
 
-const connectionConfig: mysql.ConnectionOptions = {
+const poolConfig: mysql.PoolOptions = {
   host: process.env.DATABASE_URL,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DATABASE,
   port: Number(process.env.DATABASE_PORT),
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 };
 
-let dbConnection: MySql2Database<Schema> | null = null;
+const pool = mysql.createPool(poolConfig);
+console.info("Database pool created");
 
 export default async function getDatabase(): Promise<MySql2Database<Schema>> {
-  if (!dbConnection) {
-    try {
-      const connection = await mysql.createConnection(connectionConfig);
-      console.info("Database connection established");
-
-      dbConnection = drizzle<Schema>(connection, {
-        mode: "default",
-        schema: { ...schema, ...schemaRelations },
-      }) as MySql2Database<Schema>;
-    } catch (error) {
-      console.error("Error establishing database connection:", error);
-      throw error;
-    }
+  try {
+    return drizzle<Schema>(pool, {
+      mode: "default",
+      schema: { ...schema, ...schemaRelations },
+    }) as MySql2Database<Schema>;
+  } catch (error) {
+    console.error("Error in getting database connection from pool:", error);
+    throw error;
   }
-  if (!dbConnection) {
-    throw new Error("Database connection failed to be established");
-  }
-  return dbConnection;
 }
+
+// Optional: Handle clean shutdown
+process.on('SIGINT', async () => {
+  await pool.end();
+  console.log('Database pool closed');
+  process.exit(0);
+});

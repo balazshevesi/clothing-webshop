@@ -124,6 +124,10 @@ Detta repot innehåller källkoden.
 
     JWT signering och verifiering för att hantera authentication.
 
+  - ### [🔒 Bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme)
+
+    För att kryptera lösenorden.
+
 - ## [🐬 MySQL](https://www.mysql.com/)
 
   Jag valde mySql som min databas dels för att lära mig något nytt och dels för att en e-handels hemsida är full av relationer, så att SQL passar perfekt
@@ -269,7 +273,12 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
   <br>
-  "Login" knappen 
+  "Login" knappen är nogonting som är beroände av state. Om användaren är inloggad så ska det stå "view account", om den inte är inloggad så ska det stå "login". Staten går att initialisera på clienten med javascript, men om användaren inloggad så kommer det stå "login" innan sidan hydratiseras. Det ser konstigt ut, så jag initialiserade staten med en serverkomponent, sedan tar clienten över.
+
+  ![](readme-assets/stateInitPreHydration.png)
+
+  Railway app har samma problem, men de har inte löst det hah
+
   </details>
 
 # Gymnasie arbete

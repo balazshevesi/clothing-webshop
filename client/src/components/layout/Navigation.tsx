@@ -45,7 +45,7 @@ export default function Navigation() {
           </Link>
         </div>
         <div className="flex flex-1 justify-end gap-2">
-          <LoginButton serverAuthorization={!!userAuth} />
+          <LoginButton serverAuth={!!userAuth} />
           <CartSheet />
         </div>
       </Container>
