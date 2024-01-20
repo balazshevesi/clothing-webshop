@@ -69,7 +69,7 @@ export default function ViewingAllItemsCard({ item }: { item: any }) {
               </Button>
             ) : (
               <div className="flex w-full justify-center">
-                <Counter item={item} />
+                <Counter article={item} />
               </div>
             )}
           </div>

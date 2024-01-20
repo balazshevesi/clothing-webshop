@@ -75,7 +75,7 @@ export default function MostPopularCard({ listing }: { listing: any }) {
                     description: (
                       <div className=" mt-2 flex gap-2">
                         <Button>Öppna kundvagn</Button>{" "}
-                        <Counter item={listing.defaultArticle} />
+                        <Counter article={listing.defaultArticle} />
                       </div>
                     ),
                     duration: 6000,
@@ -88,7 +88,7 @@ export default function MostPopularCard({ listing }: { listing: any }) {
               </Button>
             ) : (
               <div className="flex w-full justify-center">
-                <Counter item={listing.defaultArticle} />
+                <Counter article={listing.defaultArticle} />
               </div>
             )}
           </div>

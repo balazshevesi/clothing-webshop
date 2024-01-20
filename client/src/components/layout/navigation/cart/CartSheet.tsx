@@ -69,7 +69,7 @@ function CartItem({ item }: { item: any }) {
       </div>
       <div className="flex shrink-0 flex-col gap-2">
         <div className="flex w-full"></div>
-        <Counter item={item} />
+        <Counter article={item} />
       </div>
     </div>
   );

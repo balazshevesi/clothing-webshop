@@ -287,20 +287,19 @@ Detta är också mitt gymnasie arbete
 
 # TODO
 
-- [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed
 
+- [ ] Maybe add favourites
 - [ ] Build filter/browse section of the website
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system
-- [ ] Add warining if not enough is in stock
 - [ ] Streamline input validation and form submission
 
 - [ ] Present account info in a cleaner way, and make it ediatable
-- [ ] Maybe add favourites
 - [ ] Add planned sales shit
 
 ---
 
+- [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed??)
 - [ ] Write some tests? idk
 - [ ] Write a nice readme
 

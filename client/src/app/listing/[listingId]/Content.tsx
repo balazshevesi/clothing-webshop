@@ -69,7 +69,7 @@ export default function Content({ listing }: { listing: any }) {
               listing={listing}
             />
             <div className=" mb-10 w-full">
-              <AddToCartBtn listing={listing} item={currentArticle} />
+              <AddToCartBtn listing={listing} article={currentArticle} />
             </div>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">

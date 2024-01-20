@@ -9,26 +9,22 @@ import { Input } from "@/components/ui/input";
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { toast } from "sonner";
 
-export default function AddToCartBtn({
-  item,
-  listing,
-}: {
-  item: any;
+interface AddToCartBtn {
+  article: any;
   listing: any;
-}) {
+}
+export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
   const { items, updateCount, increment, decrement, open } =
     useShoppingCartSlice();
 
-  const itemCount = items.filter((cartItem) => cartItem.id === item.id)[0]
-    ? items.filter((cartItem) => cartItem.id === item.id)[0].count
+  const itemCount = items.filter((cartItem) => cartItem.id === article.id)[0]
+    ? items.filter((cartItem) => cartItem.id === article.id)[0].count
     : 0;
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (itemCount) {
-      inputRef.current!.value = itemCount;
-    }
-  }, [items, item]);
+    if (itemCount) inputRef.current!.value = itemCount;
+  }, [items, article]);
 
   return (
     <>
@@ -36,7 +32,7 @@ export default function AddToCartBtn({
         <div className="flex w-full flex-wrap gap-2">
           <Button
             className="grow select-none"
-            onClick={() => decrement(item)}
+            onClick={() => decrement(article)}
             variant="secondary"
           >
             -
@@ -44,32 +40,32 @@ export default function AddToCartBtn({
           <Input
             ref={inputRef}
             type="number"
-            onBlur={(e) => updateCount(item, e.target.value)}
+            onBlur={(e) => updateCount(article, e.target.value)}
             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === "Enter") {
                 const target = e.target as HTMLInputElement;
-                updateCount(item, target.value);
+                updateCount(article, target.value);
               }
             }}
             className="w-14 grow text-center"
           />
           <Button
             className="grow select-none"
-            onClick={() => increment(item)}
+            onClick={() => increment(article)}
             variant="secondary"
           >
             +
           </Button>
           <Button
             className="grow select-none"
-            onClick={() => open(item)}
+            onClick={() => open(article)}
             variant="outline"
           >
             View Cart
           </Button>
           <Button
             className="grow select-none"
-            onClick={() => increment(item)}
+            onClick={() => increment(article)}
             variant="default"
           >
             To Checkout
@@ -82,17 +78,20 @@ export default function AddToCartBtn({
               description: (
                 <div className=" mt-2 flex gap-2">
                   <Button>Öppna kundvagn</Button>
-                  <Counter item={item} />
+                  <Counter article={article} />
                 </div>
               ),
               duration: 6000,
             });
-            increment(item);
+            increment(article);
           }}
           className=" w-full uppercase"
         >
           add to cart
         </Button>
+      )}
+      {+itemCount > +article.quantityInStock && (
+        <div className="text-red-400">We don't have that much in stock</div>
       )}
     </>
   );
