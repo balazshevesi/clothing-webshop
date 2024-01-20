@@ -5,56 +5,58 @@
   Fullstack e-handel hemsida
 </h3>
 
-<img src="./readme-assets/showcase.gif"/>
+<a href="https://clothing-webshop-one.vercel.app/">
+  <img src="./readme-assets/showcase.gif"/>
+</a>
 
 <div align="center">
   <a href="https://react.dev/">
-      <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB">
+    <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB">
   </a>
   <a href="https://nextjs.org/">
-      <img src="https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white">
+    <img src="https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white">
   </a>
   <a href="https://tailwindcss.com/">
-      <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white">
+    <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white">
   </a>
   <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white">
+    <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white">
+  <a href="https://vercel.com/">
+    <img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/railway-0B0D0E.svg?style=for-the-badge&logo=railway&logoColor=white">
+  <a href="https://railway.app/">
+    <img src="https://img.shields.io/badge/railway-0B0D0E.svg?style=for-the-badge&logo=railway&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white">
+  <a href="https://www.mysql.com/">
+    <img src="https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white">
+  <a href="https://www.docker.com/">
+    <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white">
+  <a href="https://bun.sh/">
+    <img src="https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
+  <a href="https://www.postman.com/">
+    <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white">
+  <a href="https://tanstack.com/query/v3/">
+    <img src="https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white">
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white">
+  <a href="https://ui.shadcn.com/">
+    <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white">
   </a>
-    <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/dbeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white" />
+    <a href="https://dbeaver.io/">
+    <img src="https://img.shields.io/badge/dbeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white" />
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/hono-E36002?style=for-the-badge&logo=hono&logoColor=white" />
+  <a href="https://hono.dev/">
+    <img src="https://img.shields.io/badge/hono-E36002?style=for-the-badge&logo=hono&logoColor=white" />
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/drizzle-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black"/>
+  <a href="https://orm.drizzle.team/">
+    <img src="https://img.shields.io/badge/drizzle-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black"/>
   </a>
-  <a href="https://www.typescriptlang.org/">
-      <img src="https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=for-the-badge"/>
+  <a href="https://jwt.io/">
+    <img src="https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=for-the-badge"/>
   </a>
 </div>
 
