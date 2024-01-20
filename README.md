@@ -50,7 +50,6 @@
   <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/drizzle-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black"/>
   </a>
-
 </div>
 
 ---
@@ -296,7 +295,6 @@ Detta är också mitt gymnasie arbete
 
 # TODO
 
-- [ ] Maybe add favourites
 - [ ] Build filter/browse section of the website
 - [ ] Build search functionallity? (dunno how, but i'll find out)
 - [ ] Find email provider and setup forgot password system

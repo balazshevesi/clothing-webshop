@@ -6,7 +6,8 @@ import getCookie from "@/utils/getCookie";
 import isBrowser from "@/utils/isBrowser";
 
 import { useAuthSlice } from "@/state/useAuthSlice";
-import { useShoppingCartSlice as shoppingCartSlice } from "@/state/useShoppingCartSlice";
+import { useFavsSlice } from "@/state/useFavsSlice";
+import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 
 const getAndsetGuestId = async () => {
   const response = await fetch(
@@ -24,8 +25,11 @@ export default function InitState({ children }: { children: ReactNode }) {
   const setLoggedinTrue = useAuthSlice(
     (state: any) => state.setLoggedinTrue,
   ) as any;
-  const fetchAndSetCart = shoppingCartSlice(
+  const fetchAndSetCart = useShoppingCartSlice(
     (state: any) => state.fetchAndSetCart,
+  ) as any;
+  const fetchAndSetFavs = useFavsSlice(
+    (state: any) => state.fetchAndSetFavs,
   ) as any;
 
   useEffect(() => {
@@ -35,6 +39,7 @@ export default function InitState({ children }: { children: ReactNode }) {
 
       const guestUserId = getCookie("guestUserId");
       if (!guestUserId) await getAndsetGuestId();
+      fetchAndSetFavs();
       fetchAndSetCart();
     };
     asyncStuffs();

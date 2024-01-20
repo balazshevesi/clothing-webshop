@@ -17,6 +17,7 @@ import {
   listings as listingsTbl,
   users as usersTbl,
   cartItems as cartItemsTbl,
+  favItems as favItemsTbl,
 } from "../drizzle/schema";
 
 import { and, eq } from "drizzle-orm";
@@ -660,15 +661,83 @@ app.get("/guest-user/:guestUserId/cart", async (c) => {
   return c.json({ content: cart });
 });
 
+//favs
+interface FavBody {
+  articleId: string;
+}
 app.get("/guest-user/:guestUserId/favs", async (c) => {
-  
-  return c.json({ content: cart });
+  console.log("getgetgetget");
+  const db = await getDatabase();
+  const { guestUserId } = c.req.param();
+  const guestUserAuth = c.req.header("guestUserAuth");
+  if (!guestUserAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.guestUserId, +guestUserId));
+  const favs = await db
+    .select()
+    .from(favItemsTbl)
+    .where(eq(favItemsTbl.cartId, cart.id));
+  return c.json({ content: favs });
 });
-app.put("/guest-user/:guestUserId/favs", async (c) => {
-  return c.json({ content: cart });
+app.post("/guest-user/:guestUserId/favs", async (c) => {
+  const db = await getDatabase();
+  const body: FavBody = await c.req.json();
+  const { guestUserId } = c.req.param();
+  const guestUserAuth = c.req.header("guestUserAuth");
+  if (!guestUserAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.guestUserId, +guestUserId));
+  const favAlredyExists =
+    (
+      await db
+        .select()
+        .from(favItemsTbl)
+        .where(
+          and(
+            eq(favItemsTbl.cartId, cart.id),
+            eq(favItemsTbl.articleId, +body.articleId)
+          )
+        )
+    ).length > 0;
+  if (favAlredyExists) return c.json({});
+  await db.insert(favItemsTbl).values({
+    articleId: +body.articleId,
+    cartId: cart.id,
+  });
+  return c.json({});
 });
 app.delete("/guest-user/:guestUserId/favs", async (c) => {
-  return c.json({ content: cart });
+  const db = await getDatabase();
+  const body: FavBody = await c.req.json();
+  const { guestUserId } = c.req.param();
+  const guestUserAuth = c.req.header("guestUserAuth");
+  if (!guestUserAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.guestUserId, +guestUserId));
+  await db
+    .delete(favItemsTbl)
+    .where(
+      and(
+        eq(favItemsTbl.cartId, cart.id),
+        eq(favItemsTbl.articleId, +body.articleId)
+      )
+    );
+  return c.json({});
 });
 
 //logging

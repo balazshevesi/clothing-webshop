@@ -83,9 +83,7 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
       return frozenArticle;
     });
 
-    set((state: any) => {
-      return { items: stateFormat };
-    });
+    set((state: any) => ({ items: stateFormat }));
   },
 
   resetCart: () => set((state: any) => ({ items: [] })),

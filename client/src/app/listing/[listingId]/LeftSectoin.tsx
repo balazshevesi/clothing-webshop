@@ -28,14 +28,14 @@ export default function LeftSectoin({ listing, currentArticle }: LeftSectoin) {
       <Carousel className="relative grow overflow-hidden rounded">
         <button
           onClick={() => toggleFav(currentArticle)}
-          className="absolute right-0 top-0 z-50"
+          className="absolute right-0 top-0 z-40 p-4 drop-shadow"
         >
           {favArticles.filter(
             (articleState) => +articleState.id === +currentArticle.id,
           ).length > 0 ? (
-            <StarIconSolid className="size-6 stroke-2" />
+            <StarIconSolid className="size-8 stroke-2" />
           ) : (
-            <StarIconOutline className="size-6 stroke-2" />
+            <StarIconOutline className="size-8 stroke-2" />
           )}
         </button>
         <CarouselContent>
