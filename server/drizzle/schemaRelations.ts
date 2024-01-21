@@ -2,6 +2,7 @@ import {
   articleListingRelations,
   cartItems,
   carts,
+  categories,
   guestUsers,
   listings,
   users,
@@ -22,7 +23,12 @@ export const articlesRelations = relations(articles, ({ one, many }) => ({
     fields: [articles.brandId],
     references: [brands.id],
   }),
+  categories: one(categories, {
+    fields: [articles.categoryId],
+    references: [categories.id],
+  }),
   articleListingRelations: many(articleListingRelations),
+  listings: many(listings),
 }));
 
 export const articleImagesRelations = relations(articleImages, ({ one }) => ({
@@ -46,8 +52,12 @@ export const brandsRelations = relations(brands, ({ many }) => ({
   articles: many(articles),
 }));
 
-export const listingsRelations = relations(listings, ({ many }) => ({
+export const listingsRelations = relations(listings, ({ many, one }) => ({
   articleListingRelations: many(articleListingRelations),
+  articles: one(articles, {
+    fields: [listings.articleIdDefault],
+    references: [articles.id],
+  }),
 }));
 
 export const articleListingRelationsRelations = relations(
@@ -85,6 +95,10 @@ export const cartItemsRelations = relations(cartItems, ({ one }) => ({
     fields: [cartItems.articleId],
     references: [articles.id],
   }),
+}));
+
+export const categoriesRelations = relations(categories, ({ one, many }) => ({
+  articles: many(articles),
 }));
 
 // export const brandsRelations = relations(brands, ({ one }) => ({

@@ -1,4 +1,5 @@
-import { cartItems } from "../drizzle/schema";
+import { articlesRelations } from "./../drizzle/schemaRelations";
+import { articles, brands, categories, listings } from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
@@ -20,7 +21,7 @@ import {
   favItems as favItemsTbl,
 } from "../drizzle/schema";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, exists, gte, like, lt, lte, or } from "drizzle-orm";
 import getDatabase from "./utils/getDatabase";
 import getTimeStamp from "./utils/getTimestamp";
 import getAndValidateUser from "./utils/getAndValidateUser";
@@ -441,6 +442,129 @@ app.get("/listing/:listingId", async (c) => {
 
   return c.json({ content });
 });
+
+//article search
+interface listingsSearch {
+  searchWords: string;
+  categoryId: number | null;
+  brandId: number | null;
+  fromPrice: number | null;
+  toPrice: number | null;
+  // color: string | null;
+  page: number;
+  showOnlyInStock: boolean | null;
+
+  brand: string;
+  category: string;
+}
+
+app.post("/articles/search", async (c) => {
+  const db = await getDatabase();
+  const body: listingsSearch = await c.req.json();
+
+  const select = await db.query.articles.findMany({
+    limit: 12,
+    offset: (body.page - 1) * 12,
+    where: and(
+      exists(
+        db
+          .select()
+          .from(articleListingRelationsTbl)
+          .where(eq(articleListingRelationsTbl.articleId, articlesTbl.id))
+      ),
+      or(
+        and(
+          ...body.searchWords
+            .split(" ")
+            .map((searchWord: string) =>
+              like(articlesTbl.name, `%${searchWord}%`)
+            )
+        ),
+        and(
+          ...body.searchWords
+            .split(" ")
+            .map((searchWord: string) =>
+              like(articlesTbl.description, `%${searchWord}%`)
+            )
+        ),
+        and(
+          ...body.searchWords
+            .split(" ")
+            .map((searchWord: string) =>
+              like(articlesTbl.garmentCare, `%${searchWord}%`)
+            )
+        ),
+        // or(
+        exists(
+          db
+            .select()
+            .from(brandsTbl)
+            .where(
+              or(
+                and(
+                  ...body.searchWords
+                    .split(" ")
+                    .map((searchWord: string) =>
+                      like(brandsTbl.name, `%${searchWord}%`)
+                    )
+                )
+              )
+            )
+        )
+        //   exists(
+        //     db
+        //       .select()
+        //       .from(brandsTbl)
+        //       .where(
+        //         and(
+        //           ...body.searchWords
+        //             .split(" ")
+        //             .map((searchWord: string) =>
+        //               like(brandsTbl.description, `%${searchWord}%`)
+        //             )
+        //         )
+        //       )
+        //   ),
+        //   exists(
+        //     db
+        //       .select()
+        //       .from(articlePropertiesTbl)
+        //       .where(
+        //         or(
+        //           ...body.searchWords
+        //             .split(" ")
+        //             .map((searchWord: string) =>
+        //               like(articlePropertiesTbl.color, `%${searchWord}%`)
+        //             )
+        //         )
+        //       )
+        //   )
+        // )
+      ),
+      body.categoryId
+        ? eq(articlesTbl.categoryId, +body.categoryId)
+        : undefined,
+      body.brandId ? eq(articlesTbl.brandId, +body.brandId) : undefined,
+      gte(articlesTbl.price, "" + body.fromPrice),
+      body.toPrice ? lte(articlesTbl.price, "" + body.toPrice) : undefined,
+      gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
+    ),
+    with: {
+      articleProperties: true,
+      brands: true,
+      categories: true,
+      articleListingRelations: { with: { listings: true } },
+    },
+  });
+  // // filter out articles that are not listed
+  // const listedArticles = select.filter(
+  //   (article) => article.articleListingRelations.length > 0
+  // );
+
+  console.log("seleselectselectct", select);
+  return c.json({ content: select });
+});
+
 app.get("/listings", async (c) => {
   const db = await getDatabase();
   const listingssSelect = await db.select().from(listingsTbl);
@@ -740,7 +864,6 @@ app.delete("/guest-user/:guestUserId/favs", async (c) => {
   return c.json({});
 });
 
-
 app.get("/user/:userId/favs", async (c) => {
   console.log("getgetgetget");
   const db = await getDatabase();
@@ -815,7 +938,6 @@ app.delete("/user/:userId/favs", async (c) => {
     );
   return c.json({});
 });
-
 
 //logging
 app.get("/log/guest-user/:guestUserId", async (c) => {
@@ -992,9 +1114,6 @@ app.post("/auth/signup", async (c) => {
 
   return c.json({ userIdJwt, userInfo });
 });
-
-
-//product search
 
 //~ export
 export default {
