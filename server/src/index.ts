@@ -493,24 +493,24 @@ app.post("/articles/search", async (c) => {
             .map((searchWord: string) =>
               like(articlesTbl.garmentCare, `%${searchWord}%`)
             )
-        ),
-        // or(
-        exists(
-          db
-            .select()
-            .from(brandsTbl)
-            .where(
-              or(
-                and(
-                  ...body.searchWords
-                    .split(" ")
-                    .map((searchWord: string) =>
-                      like(brandsTbl.name, `%${searchWord}%`)
-                    )
-                )
-              )
-            )
         )
+        // or(
+        // exists(
+        //   db
+        //     .select()
+        //     .from(brandsTbl)
+        //     .where(
+        //       or(
+        //         and(
+        //           ...body.searchWords
+        //             .split(" ")
+        //             .map((searchWord: string) =>
+        //               like(brandsTbl.name, `%${searchWord}%`)
+        //             )
+        //         )
+        //       )
+        //     )
+        // )
         //   exists(
         //     db
         //       .select()
