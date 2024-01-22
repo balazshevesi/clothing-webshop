@@ -12,14 +12,14 @@ interface Content {
   initalContent: any;
 }
 export default function Content({ initalContent }: Content) {
-  // const [category, setCategory] = useQueryState("category");
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
 
-  const { data, isLoading } = useQuery({
+  const [realData, setRealData] = useState(initalContent);
+  const { data } = useQuery({
     queryKey: ["search", fromPrice, toPrice],
-    initialData: initalContent,
     queryFn: async () => {
+      // setIsLoading(true);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
         {
@@ -38,18 +38,19 @@ export default function Content({ initalContent }: Content) {
         },
       );
       const data = await response.json();
-      return data.content;
+      const content = data.content;
+      setRealData(content);
+      return content;
     },
   });
-  if (!data) return <div>loading...</div>;
 
   return (
     <>
       <Filter />
       <div className="grid grid-cols-3 gap-4">
-        {data.map((article: any) => (
+        {realData.map((article: any) => (
           <ArticleCard key={article.id} article={article} />
-        ))}
+        ))}{" "}
       </div>
     </>
   );
