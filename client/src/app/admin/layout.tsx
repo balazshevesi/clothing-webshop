@@ -5,7 +5,6 @@ import { ReactNode } from "react";
 import Container from "@/components/general/Container";
 
 import AdminNavigation from "./AdminNavigation";
-import Provider from "./Provider";
 import { jwtVerify } from "jose";
 
 export default async function adminLayout({
@@ -50,9 +49,7 @@ export default async function adminLayout({
 
   return (
     <>
-      <Provider>
-        <AdminNavigation>{children}</AdminNavigation>
-      </Provider>
+      <AdminNavigation>{children}</AdminNavigation>
     </>
   );
 }

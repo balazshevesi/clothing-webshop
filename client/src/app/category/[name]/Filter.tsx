@@ -1,4 +1,6 @@
-import { ReactElement } from "react";
+"use client";
+
+import { ReactElement, useEffect } from "react";
 
 import {
   Accordion,
@@ -18,6 +20,9 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
+import { randomInt } from "crypto";
+import { useQueryState } from "nuqs";
+
 function FilterItem({
   children,
   title,
@@ -34,6 +39,9 @@ function FilterItem({
 }
 
 export default function Filter() {
+  const [fromPrice, setFromPrice] = useQueryState("fromPrice");
+  const [toPrice, setToPrice] = useQueryState("toPrice");
+
   return (
     <>
       <Accordion type="single" collapsible className="mb-8">
@@ -43,7 +51,7 @@ export default function Filter() {
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-4 py-2">
-              <FilterItem title="Category:">
+              {/* <FilterItem title="Category:">
                 <div className=" flex gap-2">
                   <Button
                     variant="outline"
@@ -60,11 +68,19 @@ export default function Filter() {
                     Casual Wear
                   </Button>
                 </div>
-              </FilterItem>
+              </FilterItem> */}
               <FilterItem title="Price:">
-                <Slider defaultValue={[33, 50]} max={100} step={1} />
+                <Slider
+                  defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
+                  max={4000}
+                  step={1}
+                  onValueCommit={(e: any[]) => {
+                    setFromPrice(e[0]);
+                    setToPrice(e[1]);
+                  }}
+                />
               </FilterItem>
-              <FilterItem title="Type:">
+              {/* <FilterItem title="Type:">
                 <div className=" flex gap-2">
                   <Button
                     variant="outline"
@@ -102,8 +118,8 @@ export default function Filter() {
                     Pants
                   </Button>
                 </div>
-              </FilterItem>
-              <FilterItem title="Brand:">
+              </FilterItem> */}
+              {/* <FilterItem title="Brand:">
                 <div className=" flex gap-2">
                   <Button
                     variant="outline"
@@ -127,8 +143,8 @@ export default function Filter() {
                     Puma
                   </Button>
                 </div>
-              </FilterItem>
-              <FilterItem title="Material:">
+              </FilterItem> */}
+              {/* <FilterItem title="Material:">
                 <div className=" flex gap-2">
                   <Button
                     variant="outline"
@@ -180,7 +196,7 @@ export default function Filter() {
                     Leather
                   </Button>
                 </div>
-              </FilterItem>
+              </FilterItem> */}
             </div>
           </AccordionContent>
         </AccordionItem>

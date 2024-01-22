@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { ReactElement } from "react";
+import { ReactElement, Suspense } from "react";
 
 import MostPopular from "@/components/MostPopular";
 
@@ -35,7 +35,9 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <MostPopular />
+      <Suspense>
+        <MostPopular />
+      </Suspense>
     </>
   );
 }

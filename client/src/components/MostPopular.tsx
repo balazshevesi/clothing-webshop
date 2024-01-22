@@ -27,17 +27,13 @@ export default async function MostPopular() {
   }
 
   return (
-    <div>
-      <Container>
-        <Title2>most popular</Title2>
-        <div className="flex w-full grid-cols-4 gap-8 overflow-auto py-4">
-          {products.map((item: any) => {
-            return (
-              <MostPopularCard listing={item} key={JSON.stringify(item)} />
-            );
-          })}
-        </div>
-      </Container>
-    </div>
+    <Container>
+      <Title2>most popular</Title2>
+      <div className="flex w-full grid-cols-4 gap-8 overflow-auto py-4">
+        {products.map((item: any) => {
+          return <MostPopularCard listing={item} key={JSON.stringify(item)} />;
+        })}
+      </div>
+    </Container>
   );
 }

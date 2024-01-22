@@ -560,6 +560,7 @@ app.post("/articles/search", async (c) => {
       gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
     ),
     with: {
+      articleImages: true,
       articleProperties: true,
       brands: true,
       categories: true,
@@ -795,7 +796,6 @@ interface FavBody {
   articleId: string;
 }
 app.get("/guest-user/:guestUserId/favs", async (c) => {
-  console.log("getgetgetget");
   const db = await getDatabase();
   const { guestUserId } = c.req.param();
   const guestUserAuth = c.req.header("guestUserAuth");

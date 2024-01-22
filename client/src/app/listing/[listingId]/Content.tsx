@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
@@ -24,26 +25,30 @@ import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
 
 export default function Content({ listing }: { listing: any }) {
+  const searchParams = useSearchParams();
+  const article = searchParams.get("article");
+
   const [selectedArticleParam, setSelectedArticleParam] =
     useQueryState("article");
+
   const [selectedArticle, setSelectedArticle] = useState(
-    listing.articleIdDefault,
+    article ? article : listing.articleIdDefault,
   );
   useEffect(() => {
     setSelectedArticleParam(selectedArticle);
   }, [selectedArticle]);
 
   useEffect(() => {
-    // dunno why it doesen't do this by default
-    //#top is in layout.tsx
     setTimeout(() => {
       document.getElementById("scrollToTopHelper")!.scrollIntoView();
     }, 0);
   }, []);
 
+  console.log("listinglisting", listing);
   const currentArticle = listing.articles.filter(
     (article: any) => +article.id === +selectedArticle!,
   )[0];
+  console.log("currentArticlecurrentArticle", currentArticle);
 
   return (
     <>

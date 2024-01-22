@@ -1,11 +1,5 @@
-import Image from "next/image";
-
-import MostPopular from "@/components/MostPopular";
-import MostPopularCard from "@/components/MostPopularCard";
-import Reviews from "@/components/Reviews";
 import ViewingAllItemsCard from "@/components/ViewingAllItemsCard";
 import Container from "@/components/general/Container";
-import Seperator from "@/components/general/Seperator";
 import Title1 from "@/components/general/Title1";
 
 import Filter from "./Filter";

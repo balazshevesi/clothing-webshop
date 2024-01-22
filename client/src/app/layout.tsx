@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 import InitState from "./InitState";
+import Provider from "./Provider";
 import "./global.css";
 import { GeistSans } from "geist/font/sans";
 
@@ -64,20 +65,22 @@ export default async function RootLayout({
         className={`${GeistSans.className} ${playfair_Display.variable} relative selection:bg-slate-200/50`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <InitState>
-            <div className="h-screen overflow-auto bg-black">
-              <div id="scrollToTopHelper" />
-              <Navigation />
-              <NextTopLoader
-                color="rgba(255, 255, 255, 0.8)"
-                height={1}
-                showSpinner={false}
-              />
-              {children}
-              <Toaster />
-              <Footer />
-            </div>
-          </InitState>
+          <Provider>
+            <InitState>
+              <div className="h-screen overflow-auto bg-black">
+                <div id="scrollToTopHelper" />
+                <Navigation />
+                <NextTopLoader
+                  color="rgba(255, 255, 255, 0.8)"
+                  height={1}
+                  showSpinner={false}
+                />
+                {children}
+                <Toaster />
+                <Footer />
+              </div>
+            </InitState>
+          </Provider>
         </ThemeProvider>
       </body>
     </html>
