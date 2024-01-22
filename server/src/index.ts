@@ -1,5 +1,11 @@
 import { articlesRelations } from "./../drizzle/schemaRelations";
-import { articles, brands, categories, listings } from "./../drizzle/schema";
+import {
+  articleProperties,
+  articles,
+  brands,
+  categories,
+  listings,
+} from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
@@ -450,22 +456,24 @@ interface listingsSearch {
   brandId: number | null;
   fromPrice: number | null;
   toPrice: number | null;
-  // color: string | null;
+  color: string | null;
   page: number;
   showOnlyInStock: boolean | null;
 
-  brand: string;
-  category: string;
+  // brand: string;
+  // category: string;
 }
 
 app.post("/articles/search", async (c) => {
   const db = await getDatabase();
   const body: listingsSearch = await c.req.json();
 
+  const itemsPerPage = 9;
   const select = await db.query.articles.findMany({
-    limit: 12,
-    offset: (body.page - 1) * 12,
+    limit: itemsPerPage,
+    offset: (body.page - 1) * itemsPerPage,
     where: and(
+      // makes sure only listed articles are returned
       exists(
         db
           .select()
@@ -473,6 +481,7 @@ app.post("/articles/search", async (c) => {
           .where(eq(articleListingRelationsTbl.articleId, articlesTbl.id))
       ),
       or(
+        // searches namn of the article
         and(
           ...body.searchWords
             .split(" ")
@@ -480,6 +489,7 @@ app.post("/articles/search", async (c) => {
               like(articlesTbl.name, `%${searchWord}%`)
             )
         ),
+        // searches description of the article
         and(
           ...body.searchWords
             .split(" ")
@@ -487,64 +497,64 @@ app.post("/articles/search", async (c) => {
               like(articlesTbl.description, `%${searchWord}%`)
             )
         ),
+        // searches garment care of the article
         and(
           ...body.searchWords
             .split(" ")
             .map((searchWord: string) =>
               like(articlesTbl.garmentCare, `%${searchWord}%`)
             )
+        ),
+        // searches brand name of the article
+        exists(
+          db
+            .select()
+            .from(brandsTbl)
+            .where(
+              and(
+                ...body.searchWords
+                  .split(" ")
+                  .map((searchWord: string) =>
+                    like(brandsTbl.name, `%${searchWord}%`)
+                  )
+              )
+            )
+        ),
+        // searches brand description of the article
+        exists(
+          db
+            .select()
+            .from(brandsTbl)
+            .where(
+              and(
+                ...body.searchWords
+                  .split(" ")
+                  .map((searchWord: string) =>
+                    like(brandsTbl.description, `%${searchWord}%`)
+                  )
+              )
+            )
         )
-        // or(
-        // exists(
-        //   db
-        //     .select()
-        //     .from(brandsTbl)
-        //     .where(
-        //       or(
-        //         and(
-        //           ...body.searchWords
-        //             .split(" ")
-        //             .map((searchWord: string) =>
-        //               like(brandsTbl.name, `%${searchWord}%`)
-        //             )
-        //         )
-        //       )
-        //     )
-        // )
-        //   exists(
-        //     db
-        //       .select()
-        //       .from(brandsTbl)
-        //       .where(
-        //         and(
-        //           ...body.searchWords
-        //             .split(" ")
-        //             .map((searchWord: string) =>
-        //               like(brandsTbl.description, `%${searchWord}%`)
-        //             )
-        //         )
-        //       )
-        //   ),
-        //   exists(
-        //     db
-        //       .select()
-        //       .from(articlePropertiesTbl)
-        //       .where(
-        //         or(
-        //           ...body.searchWords
-        //             .split(" ")
-        //             .map((searchWord: string) =>
-        //               like(articlePropertiesTbl.color, `%${searchWord}%`)
-        //             )
-        //         )
-        //       )
-        //   )
-        // )
       ),
       body.categoryId
         ? eq(articlesTbl.categoryId, +body.categoryId)
         : undefined,
       body.brandId ? eq(articlesTbl.brandId, +body.brandId) : undefined,
+
+      body.color
+        ? exists(
+            db
+              .select()
+              .from(articlePropertiesTbl)
+              .where(
+                and(
+                  eq(articlePropertiesTbl.id, articlesTbl.id),
+                  eq(articleProperties.color, body.color)
+                )
+              )
+          )
+        : undefined,
+
       gte(articlesTbl.price, "" + body.fromPrice),
       body.toPrice ? lte(articlesTbl.price, "" + body.toPrice) : undefined,
       gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
@@ -556,12 +566,7 @@ app.post("/articles/search", async (c) => {
       articleListingRelations: { with: { listings: true } },
     },
   });
-  // // filter out articles that are not listed
-  // const listedArticles = select.filter(
-  //   (article) => article.articleListingRelations.length > 0
-  // );
 
-  console.log("seleselectselectct", select);
   return c.json({ content: select });
 });
 
