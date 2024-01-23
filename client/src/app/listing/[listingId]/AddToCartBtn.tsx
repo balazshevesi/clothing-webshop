@@ -28,7 +28,7 @@ export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
 
   return (
     <>
-      {itemCount ? (
+      {!!itemCount && (
         <div className="flex w-full flex-wrap gap-2">
           <Button
             className="grow select-none"
@@ -71,7 +71,8 @@ export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
             To Checkout
           </Button>
         </div>
-      ) : (
+      )}
+      {!itemCount && !!article.quantityInStock && (
         <Button
           onClick={() => {
             toast(`${listing.title} ligger nu i din kundvagn`, {
@@ -90,6 +91,12 @@ export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
           add to cart
         </Button>
       )}
+      {!article.quantityInStock && (
+        <Button className=" w-full uppercase" disabled>
+          can't buy that g
+        </Button>
+      )}
+
       {+itemCount > +article.quantityInStock && (
         <div className="text-red-400">We don't have that much in stock</div>
       )}
