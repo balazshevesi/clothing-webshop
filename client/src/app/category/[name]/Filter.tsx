@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -24,7 +25,12 @@ import { CheckIcon } from "@heroicons/react/24/outline";
 
 import { useQuery } from "@tanstack/react-query";
 import { randomInt } from "crypto";
-import { parseAsArrayOf, parseAsInteger, useQueryState } from "nuqs";
+import {
+  parseAsArrayOf,
+  parseAsBoolean,
+  parseAsInteger,
+  useQueryState,
+} from "nuqs";
 
 function FilterItem({
   children,
@@ -44,6 +50,10 @@ function FilterItem({
 export default function Filter() {
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
+  const [onlyInStock, setOnlyInStock] = useQueryState(
+    "showOnlyInStock",
+    parseAsBoolean,
+  );
   const [selectedBrands, setSelectedBrands] = useQueryState(
     "brands",
     parseAsArrayOf(parseAsInteger).withDefault([]),
@@ -157,7 +167,7 @@ export default function Filter() {
                         size="sm"
                         className={
                           selectedBrands.includes(brand.id)
-                            ? "rounded-full border-white bg-white text-black hover:bg-white/80"
+                            ? "rounded-full border-white bg-white text-black hover:bg-white/50"
                             : "rounded-full border-white"
                         }
                       >
@@ -169,59 +179,21 @@ export default function Filter() {
                     ))}
                 </div>
               </FilterItem>
-              {/* <FilterItem title="Material:">
-                <div className=" flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
+              <FilterItem title="Show only if in stock:">
+                <div className=" flex items-center gap-2">
+                  <Checkbox
+                    id="terms"
+                    checked={onlyInStock ? onlyInStock : false}
+                    onCheckedChange={(e: boolean) => setOnlyInStock(e)}
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Cotton
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Whool
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Merino Wool
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Silk
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Bamboo
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Denim
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Leather
-                  </Button>
+                    Show only if in stock
+                  </label>
                 </div>
-              </FilterItem> */}
+              </FilterItem>
             </div>
           </AccordionContent>
         </AccordionItem>

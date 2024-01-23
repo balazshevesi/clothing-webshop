@@ -6,11 +6,13 @@ import ArticleCard from "@/components/ArticleCard";
 
 import Filter from "../category/[name]/Filter";
 import { useQuery } from "@tanstack/react-query";
-import { QueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { parseAsArrayOf, parseAsInteger, useQueryState } from "nuqs";
-
-const queryClient = new QueryClient();
+import {
+  parseAsArrayOf,
+  parseAsBoolean,
+  parseAsInteger,
+  useQueryState,
+} from "nuqs";
 
 interface Content {
   initalContent: any;
@@ -18,6 +20,10 @@ interface Content {
 export default function Content({ initalContent }: Content) {
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
+  const [onlyInStock, setOnlyInStock] = useQueryState(
+    "showOnlyInStock",
+    parseAsBoolean,
+  );
 
   const [selectedBrands, setSelectedBrands] = useQueryState(
     "brands",
@@ -25,10 +31,10 @@ export default function Content({ initalContent }: Content) {
   );
 
   const [realData, setRealData] = useState(initalContent);
+  //^the caching is buggy asf, idk why, but it also kinda works
   const { data, isLoading } = useQuery({
-    queryKey: ["search", fromPrice, toPrice, selectedBrands],
+    queryKey: ["search", fromPrice, toPrice, selectedBrands, onlyInStock],
     queryFn: async () => {
-      // setIsLoading(true);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
         {
@@ -42,7 +48,7 @@ export default function Content({ initalContent }: Content) {
             toPrice: toPrice || 9999999,
             color: null,
             page: 1,
-            showOnlyInStock: true,
+            showOnlyInStock: onlyInStock || false,
           }),
         },
       );
@@ -63,7 +69,7 @@ export default function Content({ initalContent }: Content) {
       <div className="grid grid-cols-3 gap-4">
         {realData.map((article: any) => (
           <ArticleCard key={article.id} article={article} />
-        ))}{" "}
+        ))}
       </div>
     </>
   );

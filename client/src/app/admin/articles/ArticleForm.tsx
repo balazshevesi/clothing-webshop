@@ -45,7 +45,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
   const [priceValidationMsg, setPriceValidationMsg] = useState("");
 
   const [quantityInStock, setQuantityInStock] = useState(
-    ArticleData ? ArticleData.quantityInStock : "",
+    ArticleData ? ArticleData.quantityInStock : 0,
   );
   const [quantityInStockValidationMsg, setQuantityInStockValidationMsg] =
     useState("");
@@ -202,7 +202,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
     const submitionData = {
       name,
       price,
-      quantityInStock,
+      quantityInStock: +quantityInStock,
       brand,
       category,
       description,
@@ -265,7 +265,7 @@ export default function ArticleForm({ ArticleData }: { ArticleData?: any }) {
         />
         <Input
           value={quantityInStock}
-          onInput={(e: any) => setQuantityInStock(e.target.value)}
+          onInput={(e: any) => setQuantityInStock(+e.target.value)}
           warningText={quantityInStockValidationMsg}
           className="w-full"
           id="quantityInStock"

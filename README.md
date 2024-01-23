@@ -336,7 +336,7 @@ Detta är också mitt gymnasie arbete
 
 ---
 
-- [ ] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed maybe??)
+- [x] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed maybe??)
 - [ ] Write some tests? idk
 - [ ] Write a nice readme
 

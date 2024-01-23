@@ -8,7 +8,7 @@ import Content from "./Content";
 
 export default async function Page({ searchParams }: { searchParams?: any }) {
   // { fromPrice: '0', toPrice: '4000', brands: '3' }
-  const { fromPrice, toPrice, brands } = searchParams;
+  const { fromPrice, toPrice, brands, showOnlyInStock } = searchParams;
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
@@ -23,7 +23,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
         toPrice: toPrice,
         color: null,
         page: 1,
-        showOnlyInStock: true,
+        showOnlyInStock: showOnlyInStock,
       }),
     },
   );
