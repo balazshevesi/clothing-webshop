@@ -6,7 +6,10 @@ import Title1 from "@/components/general/Title1";
 import Filter from "../category/[name]/Filter";
 import Content from "./Content";
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams?: any }) {
+  // { fromPrice: '0', toPrice: '4000', brands: '3' }
+  const { fromPrice, toPrice, brands } = searchParams;
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
     {
@@ -15,9 +18,9 @@ export default async function Page() {
       body: JSON.stringify({
         searchWords: "",
         categoryId: null,
-        brandId: null,
-        fromPrice: null,
-        toPrice: null,
+        brandIds: brands ? brands.split(",") : null,
+        fromPrice: fromPrice,
+        toPrice: toPrice,
         color: null,
         page: 1,
         showOnlyInStock: true,

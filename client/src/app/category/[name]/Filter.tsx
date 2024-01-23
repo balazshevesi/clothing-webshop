@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 import {
   Accordion,
@@ -20,8 +20,11 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
+import { CheckIcon } from "@heroicons/react/24/outline";
+
+import { useQuery } from "@tanstack/react-query";
 import { randomInt } from "crypto";
-import { useQueryState } from "nuqs";
+import { parseAsArrayOf, parseAsInteger, useQueryState } from "nuqs";
 
 function FilterItem({
   children,
@@ -41,6 +44,22 @@ function FilterItem({
 export default function Filter() {
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
+  const [selectedBrands, setSelectedBrands] = useQueryState(
+    "brands",
+    parseAsArrayOf(parseAsInteger).withDefault([]),
+  );
+
+  const brands = useQuery({
+    queryKey: ["brands"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/brands`,
+      );
+      const data = await response.json();
+      const content = data.content;
+      return content;
+    },
+  });
 
   return (
     <>
@@ -119,31 +138,37 @@ export default function Filter() {
                   </Button>
                 </div>
               </FilterItem> */}
-              {/* <FilterItem title="Brand:">
+              <FilterItem title="Brands:">
                 <div className=" flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Kevin Klein
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Next
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Puma
-                  </Button>
+                  {!!brands.data &&
+                    brands.data.map((brand: any) => (
+                      <Button
+                        onClick={() => {
+                          if (selectedBrands.includes(brand.id)) {
+                            setSelectedBrands(
+                              selectedBrands.filter(
+                                (brandId) => brandId !== brand.id,
+                              ),
+                            );
+                          } else
+                            setSelectedBrands([...selectedBrands, brand.id]);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        className={
+                          selectedBrands.includes(brand.id)
+                            ? "rounded-full border-white bg-white text-black hover:bg-white/80"
+                            : "rounded-full border-white"
+                        }
+                      >
+                        {selectedBrands.includes(brand.id) && (
+                          <CheckIcon className=" mr-2 size-5" />
+                        )}
+                        {brand.name}
+                      </Button>
+                    ))}
                 </div>
-              </FilterItem> */}
+              </FilterItem>
               {/* <FilterItem title="Material:">
                 <div className=" flex gap-2">
                   <Button
