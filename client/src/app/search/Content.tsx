@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
 
 import ArticleCard from "@/components/ArticleCard";
 
 import Filter from "../category/[name]/Filter";
+import PaginationComponent from "./PaginationComponent";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import {
@@ -15,25 +18,36 @@ import {
 } from "nuqs";
 
 interface Content {
-  initalContent: any;
+  initialContent: any;
 }
-export default function Content({ initalContent }: Content) {
+
+export default function Content({ initialContent }: Content) {
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
   const [onlyInStock, setOnlyInStock] = useQueryState(
     "showOnlyInStock",
     parseAsBoolean,
   );
-
   const [selectedBrands, setSelectedBrands] = useQueryState(
     "brands",
     parseAsArrayOf(parseAsInteger).withDefault([]),
   );
+  const [orderBy, setOrderBy] = useQueryState("orderBy");
+  const [page, setPage] = useQueryState("page", parseAsInteger);
 
-  const [realData, setRealData] = useState(initalContent);
+  const [realData, setRealData] = useState(initialContent);
+
   //^the caching is buggy asf, idk why, but it also kinda works
   const { data, isLoading } = useQuery({
-    queryKey: ["search", fromPrice, toPrice, selectedBrands, onlyInStock],
+    queryKey: [
+      "search",
+      fromPrice,
+      toPrice,
+      selectedBrands,
+      onlyInStock,
+      orderBy,
+      page,
+    ],
     queryFn: async () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
@@ -47,8 +61,9 @@ export default function Content({ initalContent }: Content) {
             fromPrice: fromPrice || 0,
             toPrice: toPrice || 9999999,
             color: null,
-            page: 1,
+            page: page || 1,
             showOnlyInStock: onlyInStock || false,
+            orderBy: orderBy,
           }),
         },
       );
@@ -62,15 +77,17 @@ export default function Content({ initalContent }: Content) {
   return (
     <>
       <Filter />
-      {/* 200iq code right here. if realData is not holding a pointer to initalContent it means that the data has been fetched by react query */}
-      {isLoading && realData !== initalContent && (
+      {/* 200iq code right here. if realData is not holding a pointer to initialContent it means that the data has been fetched by react query */}
+      {isLoading && realData !== initialContent && (
         <Loader2 className="size-4 animate-spin" />
       )}
-      <div className="grid grid-cols-3 gap-4">
+      <PaginationComponent />
+      <div className="mx-auto my-10 grid max-w-5xl grid-cols-3 gap-4">
         {realData.map((article: any) => (
           <ArticleCard key={article.id} article={article} />
         ))}
       </div>
+      <PaginationComponent />
     </>
   );
 }

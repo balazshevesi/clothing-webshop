@@ -1,14 +1,12 @@
-import ArticleCard from "@/components/ArticleCard";
-import ViewingAllItemsCard from "@/components/ViewingAllItemsCard";
 import Container from "@/components/general/Container";
 import Title1 from "@/components/general/Title1";
 
-import Filter from "../category/[name]/Filter";
 import Content from "./Content";
 
 export default async function Page({ searchParams }: { searchParams?: any }) {
   // { fromPrice: '0', toPrice: '4000', brands: '3' }
-  const { fromPrice, toPrice, brands, showOnlyInStock } = searchParams;
+  const { fromPrice, toPrice, brands, showOnlyInStock, orderBy, page } =
+    searchParams;
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
@@ -22,8 +20,9 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
         fromPrice: fromPrice,
         toPrice: toPrice,
         color: null,
-        page: 1,
+        page: page || 1,
         showOnlyInStock: showOnlyInStock,
+        orderBy: orderBy,
       }),
     },
   );
@@ -33,7 +32,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
   return (
     <Container>
       <Title1>Search for items</Title1>
-      <Content initalContent={content}></Content>
+      <Content initialContent={content}></Content>
     </Container>
   );
 }

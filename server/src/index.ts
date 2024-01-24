@@ -27,7 +27,18 @@ import {
   favItems as favItemsTbl,
 } from "../drizzle/schema";
 
-import { and, eq, exists, gte, like, lt, lte, or } from "drizzle-orm";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  exists,
+  gte,
+  like,
+  lt,
+  lte,
+  or,
+} from "drizzle-orm";
 import getDatabase from "./utils/getDatabase";
 import getTimeStamp from "./utils/getTimestamp";
 import getAndValidateUser from "./utils/getAndValidateUser";
@@ -459,6 +470,7 @@ interface listingsSearch {
   color: string | null;
   page: number;
   showOnlyInStock: boolean | null;
+  orderBy: null | "name" | "priceLowToHigh" | "priceHighToLow";
 
   // brand: string;
   // category: string;
@@ -563,6 +575,14 @@ app.post("/articles/search", async (c) => {
       body.toPrice ? lte(articlesTbl.price, "" + body.toPrice) : undefined,
       gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
     ),
+    orderBy:
+      body.orderBy === "name"
+        ? asc(articlesTbl.name)
+        : body.orderBy === "priceLowToHigh"
+        ? asc(articlesTbl.price)
+        : body.orderBy === "priceHighToLow"
+        ? desc(articlesTbl.price)
+        : undefined,
     with: {
       articleImages: true,
       articleProperties: true,
