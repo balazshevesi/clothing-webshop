@@ -30,6 +30,7 @@ import {
 import {
   and,
   asc,
+  count,
   desc,
   eq,
   exists,
@@ -598,6 +599,12 @@ app.post("/articles/search", async (c) => {
   });
 
   return c.json({ content: select });
+});
+
+app.get("/articles/count", async (c) => {
+  const db = await getDatabase();
+  const articlesSelect = await db.select({ value: count() }).from(articlesTbl);
+  return c.json({ content: articlesSelect });
 });
 
 app.get("/listings", async (c) => {

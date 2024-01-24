@@ -29,10 +29,16 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
   const data = await response.json();
   const content = data.content;
 
+  const countResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/count`,
+  );
+  const countData = await countResponse.json();
+  const count = countData.content[0].value;
+
   return (
     <Container>
       <Title1>Search for items</Title1>
-      <Content initialContent={content}></Content>
+      <Content articleCount={count} initialContent={content}></Content>
     </Container>
   );
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import ArticleCard from "@/components/ArticleCard";
+import { Input } from "@/components/ui/input";
 
 import Filter from "../category/[name]/Filter";
 import PaginationComponent from "./PaginationComponent";
@@ -19,11 +20,13 @@ import {
 
 interface Content {
   initialContent: any;
+  articleCount: number;
 }
 
-export default function Content({ initialContent }: Content) {
+export default function Content({ initialContent, articleCount }: Content) {
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
+
   const [onlyInStock, setOnlyInStock] = useQueryState(
     "showOnlyInStock",
     parseAsBoolean,
@@ -42,9 +45,20 @@ export default function Content({ initialContent }: Content) {
   const [page, setPage] = useQueryState("page", parseAsInteger);
 
   const [realData, setRealData] = useState(initialContent);
+  const [searchWords, setSearchWords] = useQueryState("searchWords");
+  const [debouncedSearchWords, setDebouncedSearchWords] = useState(searchWords);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchWords(searchWords);
+    }, 300);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchWords]);
 
   //^the caching is buggy asf, idk why, but it also kinda works
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [
       "search",
       fromPrice,
@@ -54,6 +68,7 @@ export default function Content({ initialContent }: Content) {
       orderBy,
       page,
       selectedCategories,
+      debouncedSearchWords,
     ],
     queryFn: async () => {
       const response = await fetch(
@@ -62,7 +77,7 @@ export default function Content({ initialContent }: Content) {
           method: "post",
           cache: "no-store",
           body: JSON.stringify({
-            searchWords: "",
+            searchWords: debouncedSearchWords || "",
             categoryIds: selectedCategories || null,
             brandIds: selectedBrands || null,
             fromPrice: fromPrice || 0,
@@ -83,6 +98,12 @@ export default function Content({ initialContent }: Content) {
 
   return (
     <>
+      <Input
+        className="mb-5"
+        placeholder={`Sök bland ${articleCount} artiklar`}
+        value={searchWords || ""}
+        onInput={(e: any) => setSearchWords(e.target.value)}
+      />
       <Filter />
       <PaginationComponent />
       {/* 200iq code right here. if realData is not holding a pointer to initialContent it means that the data has been fetched by react query */}
