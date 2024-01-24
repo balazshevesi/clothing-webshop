@@ -463,7 +463,7 @@ app.get("/listing/:listingId", async (c) => {
 //article search
 interface listingsSearch {
   searchWords: string;
-  categoryId: number | null;
+  categoryIds: number[] | null;
   brandIds: number[] | null;
   fromPrice: number | null;
   toPrice: number | null;
@@ -548,9 +548,14 @@ app.post("/articles/search", async (c) => {
             )
         )
       ),
-      body.categoryId
-        ? eq(articlesTbl.categoryId, +body.categoryId)
+      body.categoryIds
+        ? or(
+            ...body.categoryIds.map((categoryId) =>
+              eq(articlesTbl.categoryId, +categoryId)
+            )
+          )
         : undefined,
+
       body.brandIds
         ? or(
             ...body.brandIds.map((brandId) => eq(articlesTbl.brandId, +brandId))

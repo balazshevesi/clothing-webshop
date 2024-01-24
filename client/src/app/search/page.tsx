@@ -21,7 +21,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
         toPrice: toPrice,
         color: null,
         page: page || 1,
-        showOnlyInStock: showOnlyInStock,
+        showOnlyInStock: !!showOnlyInStock && JSON.parse(showOnlyInStock),
         orderBy: orderBy,
       }),
     },

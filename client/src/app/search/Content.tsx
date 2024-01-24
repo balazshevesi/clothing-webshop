@@ -32,6 +32,12 @@ export default function Content({ initialContent }: Content) {
     "brands",
     parseAsArrayOf(parseAsInteger).withDefault([]),
   );
+
+  const [selectedCategories, setSelectedCategories] = useQueryState(
+    "categories",
+    parseAsArrayOf(parseAsInteger).withDefault([]),
+  );
+
   const [orderBy, setOrderBy] = useQueryState("orderBy");
   const [page, setPage] = useQueryState("page", parseAsInteger);
 
@@ -47,6 +53,7 @@ export default function Content({ initialContent }: Content) {
       onlyInStock,
       orderBy,
       page,
+      selectedCategories,
     ],
     queryFn: async () => {
       const response = await fetch(
@@ -56,8 +63,8 @@ export default function Content({ initialContent }: Content) {
           cache: "no-store",
           body: JSON.stringify({
             searchWords: "",
-            categoryId: null,
-            brandIds: selectedBrands,
+            categoryIds: selectedCategories || null,
+            brandIds: selectedBrands || null,
             fromPrice: fromPrice || 0,
             toPrice: toPrice || 9999999,
             color: null,
@@ -77,11 +84,11 @@ export default function Content({ initialContent }: Content) {
   return (
     <>
       <Filter />
+      <PaginationComponent />
       {/* 200iq code right here. if realData is not holding a pointer to initialContent it means that the data has been fetched by react query */}
       {isLoading && realData !== initialContent && (
         <Loader2 className="size-4 animate-spin" />
       )}
-      <PaginationComponent />
       <div className="mx-auto my-10 grid max-w-5xl grid-cols-3 gap-4">
         {realData.map((article: any) => (
           <ArticleCard key={article.id} article={article} />

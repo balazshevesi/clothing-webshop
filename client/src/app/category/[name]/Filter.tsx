@@ -58,6 +58,11 @@ export default function Filter() {
     "brands",
     parseAsArrayOf(parseAsInteger).withDefault([]),
   );
+  const [selectedCategories, setSelectedCategories] = useQueryState(
+    "categories",
+    parseAsArrayOf(parseAsInteger).withDefault([]),
+  );
+
   const [orderBy, setOrderBy] = useQueryState("orderBy");
   const [page, setPage] = useQueryState("page");
 
@@ -66,6 +71,18 @@ export default function Filter() {
     queryFn: async () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_HOST}/brands`,
+      );
+      const data = await response.json();
+      const content = data.content;
+      return content;
+    },
+  });
+
+  const categories = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`,
       );
       const data = await response.json();
       const content = data.content;
@@ -82,76 +99,52 @@ export default function Filter() {
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-4 py-2">
-              {/* <FilterItem title="Category:">
-                <div className=" flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Gym Wear
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Casual Wear
-                  </Button>
+              <Slider
+                defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
+                max={4000}
+                step={1}
+                onValueCommit={(e: any[]) => {
+                  setFromPrice(e[0]);
+                  setToPrice(e[1]);
+                }}
+              />
+              <FilterItem title="Categories:">
+                <div className="flex gap-2">
+                  {!!categories.data &&
+                    categories.data.map((brand: any) => (
+                      <Button
+                        onClick={() => {
+                          if (selectedCategories.includes(brand.id)) {
+                            setSelectedCategories(
+                              selectedCategories.filter(
+                                (brandId) => brandId !== brand.id,
+                              ),
+                            );
+                          } else
+                            setSelectedCategories([
+                              ...selectedCategories,
+                              brand.id,
+                            ]);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        className={
+                          selectedCategories.includes(brand.id)
+                            ? "rounded-full border-white bg-white text-black hover:bg-white/50"
+                            : "rounded-full border-white"
+                        }
+                      >
+                        {selectedCategories.includes(brand.id) && (
+                          <CheckIcon className=" mr-2 size-5" />
+                        )}
+                        {brand.name}
+                      </Button>
+                    ))}
                 </div>
-              </FilterItem> */}
-              <FilterItem title="Price:">
-                <Slider
-                  defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
-                  max={4000}
-                  step={1}
-                  onValueCommit={(e: any[]) => {
-                    setFromPrice(e[0]);
-                    setToPrice(e[1]);
-                  }}
-                />
               </FilterItem>
-              {/* <FilterItem title="Type:">
-                <div className=" flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Hoodie
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    T-shirt
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Tank Top
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Sweater
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" rounded-full border-white"
-                  >
-                    Pants
-                  </Button>
-                </div>
-              </FilterItem> */}
+
               <FilterItem title="Brands:">
-                <div className=" flex gap-2">
+                <div className="flex gap-2">
                   {!!brands.data &&
                     brands.data.map((brand: any) => (
                       <Button
