@@ -100,7 +100,7 @@ export default function Content({ initialContent, articleCount }: Content) {
     <>
       <Input
         className="mb-5"
-        placeholder={`Sök bland ${articleCount} artiklar`}
+        placeholder={`Search ${articleCount} articles`}
         value={searchWords || ""}
         onInput={(e: any) => setSearchWords(e.target.value)}
       />

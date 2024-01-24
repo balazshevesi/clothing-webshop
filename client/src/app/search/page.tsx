@@ -5,8 +5,15 @@ import Content from "./Content";
 
 export default async function Page({ searchParams }: { searchParams?: any }) {
   // { fromPrice: '0', toPrice: '4000', brands: '3' }
-  const { fromPrice, toPrice, brands, showOnlyInStock, orderBy, page } =
-    searchParams;
+  const {
+    fromPrice,
+    toPrice,
+    brands,
+    showOnlyInStock,
+    orderBy,
+    page,
+    searchWords,
+  } = searchParams;
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
@@ -14,7 +21,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
       method: "post",
       cache: "no-store",
       body: JSON.stringify({
-        searchWords: "",
+        searchWords: searchWords || "",
         categoryId: null,
         brandIds: brands ? brands.split(",") : null,
         fromPrice: fromPrice,
