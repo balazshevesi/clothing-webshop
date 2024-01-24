@@ -1,5 +1,5 @@
 <h1 align="center">
-  Clothing Webshop 🛍️
+  Clothing Webbshop 🛍️
 </h1>
 <h3 align="center">
   Fullstack e-handel hemsida
@@ -86,13 +86,13 @@ Detta repot innehåller källkoden.
 
   - ### [🔼 Next](https://nextjs.org/)
 
-    Eftersom att jag bygger en webshop så kommer jag behöva bra SEO. Bra SEO är inte något som en standard SPA erbjuder, så därför blir man tjungen till att antingen server rendera den eller skriva typ rå HTML. Server rendering låter ju trevligare.
+    Eftersom att jag bygger en webbshop så kommer jag behöva bra SEO. Bra SEO är inte något som en standard SPA erbjuder, så därför blir man tvungen till att antingen server rendera den eller skriva typ rå HTML. Server rendering låter ju trevligare.
 
-    Jag valde att använda mig av nextjs då det typ är det enda sättet att server rendera React och samtidigt använda de nya server komponent mönstrerna.
+    Jag valde att använda mig av nextjs då det typ är det enda sättet att server rendera React och samtidigt använda de nya server komponent mönsterna.
 
   - ### [🌐 Server komponenter](https://react.dev/learn/start-a-new-react-project#bleeding-edge-react-frameworks)
 
-    Server komponenter är det självklara sättet att göra server rendering och data fetching på. Jag använder de så mycker jag kan.
+    Server komponenter är det självklara sättet att göra server rendering och data fetching på. Jag använder de så mycket jag kan.
 
   - ### State management
 
@@ -100,15 +100,15 @@ Detta repot innehåller källkoden.
 
       Jag tycker om konceptet med unidirectional data flow och global state som Redux populariserade. Men jag ogillar all setup, boilerplate, och komplexitet som kommer med Redux.
 
-      Jag valde Zustand för att konceptet är identiskt till Redux, men implemtationen är beydligt enklare.
+      Jag valde Zustand för att konceptet är identiskt till Redux, men implantationen är betydligt enklare.
 
     - #### [🔬 Tanstack Query](https://tanstack.com/query/latest)
 
-      Jag valde att använda Tanstack Query i admin panelen för att hantera dels data fetching, och dels caching av datan.
+      Jag valde att använda Tanstack Query i admin panelen för att hantera dels data fetching, och dels caching av data.
 
     - #### [🔎 Nuqs](https://nuqs.47ng.com/)
 
-      Jag råkade hitta Nuqs i en github tråd när jag letade information om hur man hanterar URL qurey params i nextjs appar, och Nuqs visade sig vara den perfekta lösningen. APIn är exakt som en useState, men staten synkroniseras automagiskt med URL quries. [Repot förjärnar mer stjärnor](https://github.com/47ng/nuqs)
+      Jag råkade hitta Nuqs i en github tråd när jag letade information om hur man hanterar URL query params i nextjs appar, och Nuqs visade sig vara den perfekta lösningen. APIn är exakt som en useState, men staten synkroniseras automagiskt med URL quires. [Repot förtjänar mer stjärnor](https://github.com/47ng/nuqs)
 
   - ### Styling
 
@@ -124,7 +124,7 @@ Detta repot innehåller källkoden.
 
       Om man redan använder React och Tailwind så är Shadcn ett självklart val.
 
-      Det som sklijer Shadcn/ui åt all de andra komponent biblioteken är att du själv äger äger komponenterna. Om du vill ändra någonting på de så kan du helt enkelt bara öppna komponenten och ändra det sjäv.
+      Det som skiljer Shadcn/ui åt all de andra komponent biblioteken är att du själv äger äger komponenterna. Om du vill ändra någonting på de så kan du helt enkelt bara öppna komponenten och ändra det själv.
 
 - ## [🧄 Bun](https://bun.sh/)
 
@@ -152,7 +152,7 @@ Detta repot innehåller källkoden.
 
   - ### [🇹 Typescript](https://www.typescriptlang.org/)
 
-    Majoriteten av gångerna så använder jag inte ens Typescript korrekt 😂, men ändå så är det en enorm hjälp för att förebygga buggar, speciellt på backnden, där man inte alltid är säker på vad alla funktioner returnerar
+    Majoriteten av gångerna så använder jag inte ens Typescript korrekt 😂, men ändå så är det en enorm hjälp för att förebygga buggar, speciellt på backenden, där man inte alltid är säker på vad alla funktioner returnerar
 
   - ### [🅿️ Prettier](https://prettier.io/) + [eslint](https://eslint.org/)
 
@@ -188,12 +188,12 @@ Detta var mina krav på databasen:
 - Kunna sälja produkter
 - Kunna ha olika märken och olika kategorier
 - Kunna sälja variationer av produkter, typ storlek och färg
-- Kunna ha rabbater på vissa variationer av produkter, men inte andra
+- Kunna ha rabatter på vissa variationer av produkter, men inte andra
 - Kunna belysa en viss variation av en produkt
 - Kunna ha ha unika bilder på varje variation
 - Admins ska kunna se vad alla har i kundvagnarna, tom de som inte är registrerad
 
-Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation av en produkt som en artikel, och sedan ha anonnser som innehåller flera artiklar. Anonnserna behöver därmed också ha någon typ av "default" artikel
+Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation av en produkt som en artikel, och sedan ha anonnser som innehåller flera artiklar. Annonserna behöver därmed också ha någon typ av "default" artikel
 
 # Hosting och deployment
 
@@ -225,7 +225,7 @@ Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation 
 
 - **Extra**: Databas tabeller ska ha Tbl som suffix
 
-Jag valde dessa conventioner för att simplifiera och streamlina utvecklings processen och samtidigt föja best-practices. Tanken bakom de är ju att jag som utvecklare inte ska behöva funder på triviala grejer som namn givning, samt att man inte ska behöver tänka typ "fan, vad hetter den endpointen igen?".
+Jag valde dessa conventioner för att simplifiera och streamlina utvecklings processen och samtidigt följa best-practices. Tanken bakom de är ju att jag som utvecklare inte ska behöva fundera på triviala grejer som namn givning, samt att man inte ska behöver tänka typ "fan, vad heter den endpointen igen?".
 
 # Problem, problemlösning och lärdomar
 
@@ -238,7 +238,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   Detta är faktiskt andra gången jag har försökt att bygga detta för fösta gången så blev det kaos pga min state management lösning inte var genomtänkt. _Hela_ Kundvagnen var lagrad i sin egen komponent som låg relativt långt in i DOM trädet, så det blev väldigt svårt för andra komponenter (som köp-knappen) att komma åt den. Jag insåg det rätt snabbt att jag borde ha använt mig av (i alla fall) en context run hela skiten. Men hela dev-ex:en (och därmed min motivation 😂) hann gå till bajs innan jag faktiskt bytte den till en context.
 
-  När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state managment på något genomtänkt men samtidigt simpelt sätt. Så jag valde att testa [Zustand](https://zustand-demo.pmnd.rs/), och det funkar fint tycker jag.
+  När jag byggde-om den så viste jag ifrån första början att jag var tvungen att lösa state management på något genomtänkt men samtidigt simpelt sätt. Så jag valde att testa [Zustand](https://zustand-demo.pmnd.rs/), och det funkar fint tycker jag.
   </details>
 
 - ## Behovet av en ORM
@@ -246,29 +246,29 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
 
-  Detta är första projektet som jag använde SQL i. När jag började bygga ut backenden så tänkte jag att det skulle gå bra med att skriva rå SQL. Så jag valde att skapa stored proceduers, som jag sedan skulle anropa i koden. Jag insåg snabbt att det var ett _väldigt_ dåligt mönster, för jag var ju tvungen till att använda paramatarized qureies (för att skydda mot SQL-injections) och då blev det ju typ 7 rader kod för en enkel CRUD operation (som dessutom inte ens var type-safe), och koden blev väldigt svårläst.
+  Detta är första projektet som jag använde SQL i. När jag började bygga ut backenden så tänkte jag att det skulle gå bra med att skriva rå SQL. Så jag valde att skapa stored procedures, som jag sedan skulle anropa i koden. Jag insåg snabbt att det var ett _väldigt_ dåligt mönster, för jag var ju tvungen till att använda parametrized queries (för att skydda mot SQL-injections) och då blev det ju typ 7 rader kod för en enkel CRUD operation (som dessutom inte ens var type-safe), och koden blev väldigt svårläst.
 
-  Då fick jag den genialiska ideén att abstrahera bort de 7 raderna till sin egen funktion. Sen insåg jag hur efterblivet det egentligen var; jag hade skapat en helper funktion för varje stored procedure för att förekla läsbarheten av koden, men i processen så gjorde jag det mycket värre. Relativt enkela CRUD-opeationer hade sina egna helper funktioner som i sin tur kallade på stored procedures, som i sin tur faktiskt urförde CRUD-operationerna i databasen. Man kan ju inte hålla på så om man ska bygga något underhållbart.
+  Då fick jag den genialiska idén att abstrahera bort de 7 raderna till sin egen funktion. Sen insåg jag hur efterblivet det egentligen var; jag hade skapat en helper funktion för varje stored procedure för att förenkla läsbarheten av koden, men i processen så gjorde jag det mycket värre. Relativt enkla CRUD-operationer hade sina egna helper funktioner som i sin tur kallade på stored procedures, som i sin tur faktiskt utförde CRUD-operationerna i databasen. Man kan ju inte hålla på så om man ska bygga något underhållbart.
 
-  Så jag valde att utforska lite om vilka alternativ som fanns. Jag hamnade mellan [Prisma](https://www.prisma.io/) och [Drizzle](https://orm.drizzle.team/) ORM. Båda verkade vara kompetenta lösningar. Jag råkade dock radera hela min databas när jag försökte insallera [Prisma](https://www.prisma.io/) (jag missupfattade vad "database migration" egentligen syftar på 😂), så frustrationen ledde mig till [🗄️ Drizzle](https://orm.drizzle.team/) 😂.
+  Så jag valde att utforska lite om vilka alternativ som fanns. Jag hamnade mellan [Prisma](https://www.prisma.io/) och [Drizzle](https://orm.drizzle.team/) ORM. Båda verkade vara kompetenta lösningar. Jag råkade dock radera hela min databas när jag försökte insallera [Prisma](https://www.prisma.io/) (jag missuppfattade vad "database migration" egentligen syftar på 😂), så frustrationen ledde mig till [🗄️ Drizzle](https://orm.drizzle.team/) 😂.
 
   Jag tycker faktiskt att [Drizzle](https://orm.drizzle.team/) passade bättre än [Prisma](https://www.prisma.io/). pga att APIn efterliknar vanligt SQL-kod (som jag fösöker bli mer bekant med).
   </details>
 
-- ## Stateless backend och signleton design
+- ## Stateless backend och singleton(-ish) design
 
   <details>
   <summary>Läs</summary>
 
-  State i backend är ett helt nytt koncept för mig, före detta projektet så tänke jag aldrig ens på det. API ruttarna i [Next](https://vercel.com/) är stateless, i mitt fall så är det ett problem eftersom att det betyder att vartenda rutt kommer att göra sin egen ansluting till databasen. Då hade jag min databas på RDS som hade en max-ansluting på 60, och när man har [Next](https://vercel.com/) i dev-mode så kommer anslutningarna inte att disconnecta på hot-realods, så att de 60 anslutingarna fylldes jävligt snabbt.
+  State i backend är ett helt nytt koncept för mig, före detta projektet så tänkte jag aldrig ens på det. API ruttarna i [Next](https://vercel.com/) är stateless, i mitt fall så är det ett problem eftersom att det betyder att vartenda rutt kommer att göra sin egen anslutning till databasen. Då hade jag min databas på RDS som hade en max-anslutning på 60, och när man har [Next](https://vercel.com/) i dev-mode så kommer anslutningarna inte att disconnecta på hot-realods, så att de 60 anslutningarna fylldes jävligt snabbt.
 
   Varje individuella rutt har ju sin egen state, så först tänkte jag att jag kanske skulle kunna utnytja det genom att ha någon typ av intern rutt som returnerar databas anslutnings objektet. Men det visade sig komplexa objekt (som databas anslutningar) inte kunnde skickas genom HTTP :(.
 
   Själv tycker jag att [Next](https://vercel.com/) borde ha någon inbyggd lösning på detta, men samtidigt så kommer de ju alldrig göra det med tankte på att de tror att man borde göra typ allt i server-komponenter.
 
-  Lösningen är ju att man har någon typ av "pooling". [Prisma](https://www.prisma.io/) har nått magiskt rust-lager som hjälper till med det, men jag valde ju [Drizzle](https://orm.drizzle.team/) 💀. Som tur är så kan man ju också ha pooling på databas-nivå, jag försökte fixa det i min AWS RDS panel, men det ville inte fungera, så jag bestämmde mig för att bygga-om min backend med Bun och Hono.
+  Lösningen är ju att man har någon typ av "pooling". [Prisma](https://www.prisma.io/) har nått magiskt rust-lager som hjälper till med det, men jag valde ju [Drizzle](https://orm.drizzle.team/) 💀. Som tur är så kan man ju också ha pooling på databas-nivå, jag försökte fixa det i min AWS RDS panel, men det ville inte fungera, så jag bestämde mig för att bygga-om min backend med Bun och Hono.
 
-  Motivationen till det var dels också att jag började ogilla file-based-routing mer och mer. Jag tycker att file-based-routing fungerar fint på frontenden, men inte på backenden. Motivatinen till bygga om den var dels också att [Next](https://vercel.com/) inte har någon riktig middleware lösning för backend rutter, och jag var tvungan att ha typ 10 rader boiler-plate kod i varje "admin/" rutt bara för att checka-av om anropet faktisk komm ifrån en admin.
+  Motivationen till det var dels också att jag började ogilla file-based-routing mer och mer. Jag tycker att file-based-routing fungerar fint på frontenden, men inte på backenden. Motivatinen till bygga om den var dels också att [Next](https://vercel.com/) inte har någon riktig middleware lösning för backend rutter, och jag var tvungen att ha typ 10 rader boiler-plate kod i varje "admin/" rutt bara för att checka-av om anropet faktisk kom ifrån en admin.
   </details>
 
 - ## Client-side caching på i admin panelen
@@ -276,9 +276,9 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
 
-  Första gången jag byggde ut admin panelen så tänkte jag att jag skulle använda server-komponenter, men det visade sig vara ett rätt dumt val. Server-komponenter renderas ju på servern, när webläsaren tar emot de som cachar den de. Det betyder att trots att innehållet kan ha ändrats så kommer webläsaren visa den cachade verisonen och _inte_ be servern efter en ny. I praktiken så betyder det att man kan lägga till en artikel i admin/articles/add, och sedan när man kommer tillbaks till admin/articles så kommer den nya artiklen inte visas. Denna chachingen går inte att stänga av. Dokumnetationen säger (komiskt nog) typ bara "nej".
+  Första gången jag byggde ut admin panelen så tänkte jag att jag skulle använda server-komponenter, men det visade sig vara ett rätt dumt val. Server-komponenter renderas ju på servern, när webbläsaren tar emot de som cachar den de. Det betyder att trots att innehållet kan ha ändrats så kommer webbläsaren visa den cachade verisonen och _inte_ be servern efter en ny. I praktiken så betyder det att man kan lägga till en artikel i admin/articles/add, och sedan när man kommer tillbaks till admin/articles så kommer den nya artikeln inte visas. Denna chachingen går inte att stänga av. Dokumentationen säger (komiskt nog) typ bara "nej".
 
-  Pga av att innehållet på admin panelen är väldigt interaktivt så är det nog smartare att bygga ut data fetchingen på clienten instället. Jag har alldrig använt react query innan, men här passar den faktiskt perfekt.
+  Pga av att innehållet på admin panelen är väldigt interaktivt så är det nog smartare att bygga ut data fetchingen på clienten istället. Jag har aldrig använt react query innan, men här passar den faktiskt perfekt.
 
   ![Bild ifrån nextjs dokumentationen](https://nextjs.org/_next/image?url=%2Fdocs%2Fdark%2Fcaching-overview.png&w=3840&q=75&dpl=dpl_48oNJS5BFcpzrgy9nvGYCkyvBDXL)
 
@@ -289,9 +289,9 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
 
-  Bun är en relativt ny grej och därmed finns det inga bra no-bulshit guider på att hosta det. Efter lite googling så kom jag fram till att jag var tvungen till att kötta ner den i en docker container. [Det finns ju nån offeciel Dockerfile template på Bun:s hemsida](https://bun.sh/guides/ecosystem/docker), men jag valde att använda en ifån nån artikel på Medium för att den verkade mycket mer simpel.
+  Bun är en relativt ny grej och därmed finns det inga bra no-bullshit guider på att hosta det. Efter lite googling så kom jag fram till att jag var tvungen till att kötta ner den i en docker container. [Det finns ju nån officiala Dockerfile template på Bun:s hemsida](https://bun.sh/guides/ecosystem/docker), men jag valde att använda en ifån nån artikel på Medium för att den verkade mycket mer simpel.
 
-  Nästa steg blev då att hitta något system för att hosta dockerfilen. AWS har ju EC2 eller Lambda, men komplexiteten är jävligt hög, (jag vet inte riktigt hur det hade fungerat, men jag antar) att jag hade först behövt göra någon typ av automatisering som lyssnar på commits på github repot, sen hämtar dockerfilen och bygger en docker image ifrån den, och sedan hostar den på EC2 eller Lambda. Det låter cp-komplicerat, jag ville ha något mer simeplt.
+  Nästa steg blev då att hitta något system för att hosta dockerfilen. AWS har ju EC2 eller Lambda, men komplexiteten är jävligt hög, (jag vet inte riktigt hur det hade fungerat, men jag antar) att jag hade först behövt göra någon typ av automatisering som lyssnar på commits på github repot, sen hämtar dockerfilen och bygger en docker image ifrån den, och sedan hostar den på EC2 eller Lambda. Det låter cp-komplicerat, jag ville ha något mer simpelt.
 
   Med [Render](https://render.com/) kan man bara koppla github repot och sen _bara funkar det_, och de verkade stödja docker, men cold-startsen är brutala (typ 1min). Senare hittade jag att [Railway](https://railway.app/) också kunde deploya docker (där är cold-startsen helt okej).
   </details>
@@ -301,7 +301,7 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
   <details>
   <summary>Läs</summary>
 
-  "Login" knappen är nogonting som är beroände av state. Om användaren är inloggad så ska det stå "view account", om den inte är inloggad så ska det stå "login". Staten går att initialisera på clienten med javascript, men om användaren inloggad så kommer det stå "login" innan sidan hydratiseras. Det ser konstigt ut, så jag initialiserade staten med en serverkomponent, sedan tar clienten över.
+  "Login" knappen är någonting som är beroände av state. Om användaren är inloggad så ska det stå "view account", om den inte är inloggad så ska det stå "login". Staten går att initialisera på clienten med javascript, men om användaren inloggad så kommer det stå "login" innan sidan hydratisera. Det ser konstigt ut, så jag initialiserade staten med en serverkomponent, sedan tar clienten över.
 
   Lösningen är inte 100% optimal eftersom den orsakar en extra rerender, men navigationen är en väldigt viktig del av UX, så det får man ta.
 
@@ -319,10 +319,10 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 - [ ] Build filter/browse section of the website
-- [ ] Build search functionallity? (dunno how, but i'll find out)
+- [ ] Build search functionality? (dunno how, but i'll find out)
 
 ## prio 2
-- [ ] Present account info in a cleaner way, and make it ediatable
+- [ ] Present account info in a cleaner way, and make it editable
 - [ ] Streamline input validation and form submission across the app
 
 ## prio 3
@@ -330,7 +330,7 @@ Detta är också mitt gymnasie arbete
 - [ ] Add stastics to admin panel
 - [ ] Find email provider and setup forgot password system
 
-- [ ] Intergrate stripe
+- [ ] Integrate stripe
 - [ ] Make so buyers can submit reviews
 
 
