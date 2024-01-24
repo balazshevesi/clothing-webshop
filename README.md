@@ -114,11 +114,11 @@ Detta repot innehåller källkoden.
 
     - #### [🌊 Tailwind](https://tailwindcss.com/)
 
-      I min (begränsade) erfarenhet så är Tailwind det absolut enklaste sättet är göra styling på.
+      I min erfarenhet så är Tailwind det absolut enklaste sättet är göra styling på.
 
     - #### [⭐ Heroicons](https://heroicons.com/)
 
-      Heroicons brukar vara min go-to för ikoner. De har inte den största urvalet, men alla av ikonerna ser bra ut, och dessutom har de outlineade verisioner.
+      Heroicons brukar vara min go-to för ikoner. De har inte den största urvalet, men alla av ikonerna ser bra ut, och dessutom har de outlineade versioner.
 
     - #### [🔘 Shadcn/ui](https://ui.shadcn.com/)
 
@@ -199,7 +199,7 @@ Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation 
 
 - ## 💻 Frontend
 
-  Jag använder bara [🔼 Vercel](https://vercel.com/)
+  Jag använder [🔼 Vercel](https://vercel.com/)
 
 - ## 🌐 Backend
 

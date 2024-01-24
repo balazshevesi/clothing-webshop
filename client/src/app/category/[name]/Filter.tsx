@@ -202,7 +202,10 @@ export default function Filter() {
       </Accordion>
       <div className="mb-10 flex items-center gap-2 border-b border-dashed border-white/80 pb-4 font-medium">
         <div className=" uppercase">order by</div>
-        <Select defaultValue="name" onValueChange={(e) => setOrderBy(e)}>
+        <Select
+          defaultValue={orderBy ? orderBy : "name"}
+          onValueChange={(e) => setOrderBy(e)}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="light" />
           </SelectTrigger>

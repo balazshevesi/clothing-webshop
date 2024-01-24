@@ -27,7 +27,7 @@ export default function PaginationComponent() {
           return (
             <PaginationItem>
               <PaginationLink
-                isActive={++i === page}
+                isActive={page ? ++i === page : ++i === 1}
                 className="cursor-pointer"
                 onClick={() => setPage(i)}
               >
