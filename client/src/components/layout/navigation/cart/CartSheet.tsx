@@ -31,15 +31,20 @@ function CartItem({ item }: { item: any }) {
   const decrement = useShoppingCartSlice(
     (state: any) => state.decrement,
   ) as any;
+  const items = useShoppingCartSlice((state: any) => state.items) as any;
 
   const [itemCount, setItemCount] = useState(item.count);
 
   useEffect(() => {
+    //don't let it go below 1
     if (itemCount <= 0) setItemCount(1);
-    updateCount(item, itemCount);
+    //only update the count if it has actually changed (useEffect always runs on mount)
+    if (
+      itemCount !==
+      items.filter((itemState: any) => itemState.id === item.id)[0].count
+    )
+      updateCount(item, itemCount);
   }, [itemCount]);
-
-  console.log("itemitem", item);
 
   return (
     <div

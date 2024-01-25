@@ -318,14 +318,16 @@ Detta är också mitt gymnasie arbete
 # TODO
 
 ## prio 1
+
 - [ ] Build filter/browse section of the website
-- [ ] Build search functionality? (dunno how, but i'll find out)
 
 ## prio 2
+
 - [ ] Present account info in a cleaner way, and make it editable
 - [ ] Streamline input validation and form submission across the app
 
 ## prio 3
+
 - [ ] Add planned sales shit
 - [ ] Add stastics to admin panel
 - [ ] Find email provider and setup forgot password system
@@ -336,9 +338,12 @@ Detta är också mitt gymnasie arbete
 
 ---
 
+- [x] Fix weird (race condition?) bug with cart state syncing (probably caused by incorrect implementation of debouncing, would probably be fixed by removing debouncing entierly)
+- [x] Build search functionality? (dunno how, but i'll find out)
 - [x] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed maybe??)
 - [ ] Write some tests? idk
 - [ ] Write a nice readme
+- [ ] Translate readme
 
 ---
 

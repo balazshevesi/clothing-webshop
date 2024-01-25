@@ -16,18 +16,6 @@ interface UseShoppingCart {
   fetchAndSetCart: Function;
 }
 
-const debounce = (func: Function, wait: number) => {
-  let timeout: any;
-  return (...args: any) => {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-};
-
 const sendUpdatedItem = async (item: any, newCount: number) => {
   const userInfoCookie = getCookie("userInfo");
   const guestUserIdCookie = getCookie("guestUserId");
@@ -51,7 +39,6 @@ const sendUpdatedItem = async (item: any, newCount: number) => {
     },
   );
 };
-const debouncedSendUpdatedItem = debounce(sendUpdatedItem, 750); // Adjust 500 to your preferred debounce time in ms
 
 export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
   items: [],
@@ -90,7 +77,7 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
 
   updateCount: (item: any, newCount: number) =>
     set((state: any) => {
-      debouncedSendUpdatedItem(item, newCount);
+      sendUpdatedItem(item, newCount);
       const updatedItems = state.items.map((stateItem: any) => {
         if (item.id === stateItem.id) stateItem.count = newCount;
         return stateItem;
@@ -111,7 +98,7 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
 
   increment: (item: any) =>
     set((state: any) => {
-      debouncedSendUpdatedItem(item, item.count ? item.count + 1 : 1);
+      sendUpdatedItem(item, item.count ? item.count + 1 : 1);
       const updatedCount = state.items.map((stateItem: any) => {
         if (stateItem.id === item.id) stateItem.count++;
         return stateItem;
@@ -127,7 +114,7 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
     }),
   decrement: (item: any) =>
     set((state: any) => {
-      debouncedSendUpdatedItem(item, +item.count - 1);
+      sendUpdatedItem(item, +item.count - 1);
       const updatedCount = state.items.map((stateItem: any) => {
         if (stateItem.id === item.id) stateItem.count--;
         return stateItem;

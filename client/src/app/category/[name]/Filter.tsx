@@ -41,7 +41,7 @@ function FilterItem({
   title?: string;
 }) {
   return (
-    <div className=" border-t border-dashed border-white/30 py-5">
+    <div className=" overflow-auto border-t border-dashed border-white/30 py-5">
       <div className="mb-3">{title}</div>
       {children}
     </div>
@@ -100,15 +100,17 @@ export default function Filter() {
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-4 py-2">
-              <Slider
-                defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
-                max={4000}
-                step={1}
-                onValueCommit={(e: any[]) => {
-                  setFromPrice(e[0]);
-                  setToPrice(e[1]);
-                }}
-              />
+              <FilterItem title="Price:">
+                <Slider
+                  defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
+                  max={4000}
+                  step={1}
+                  onValueCommit={(e: any[]) => {
+                    setFromPrice(e[0]);
+                    setToPrice(e[1]);
+                  }}
+                />
+              </FilterItem>
               <FilterItem title="Categories:">
                 <div className="flex gap-2">
                   {!!categories.data &&
