@@ -55,6 +55,10 @@ export default function Filter() {
     "showOnlyInStock",
     parseAsBoolean,
   );
+  const [showListings, setShowListings] = useQueryState(
+    "showListings",
+    parseAsBoolean,
+  );
   const [selectedBrands, setSelectedBrands] = useQueryState(
     "brands",
     parseAsArrayOf(parseAsInteger).withDefault([]),
@@ -189,6 +193,21 @@ export default function Filter() {
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     Show only if in stock
+                  </label>
+                </div>
+              </FilterItem>
+              <FilterItem title="Show listings instead of articles:">
+                <div className=" flex items-center gap-2">
+                  <Checkbox
+                    id="showListings"
+                    checked={showListings ? showListings : false}
+                    onCheckedChange={(e: boolean) => setShowListings(e)}
+                  />
+                  <label
+                    htmlFor="showListings"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Show listings instead of articles
                   </label>
                 </div>
               </FilterItem>

@@ -13,6 +13,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
     orderBy,
     page,
     searchWords,
+    showListings,
   } = searchParams;
 
   const response = await fetch(
@@ -26,15 +27,15 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
         brandIds: brands ? brands.split(",") : null,
         fromPrice: fromPrice,
         toPrice: toPrice,
-        color: null,
         page: page || 1,
         showOnlyInStock: !!showOnlyInStock && JSON.parse(showOnlyInStock),
+        showListings: !!showListings && JSON.parse(showListings),
         orderBy: orderBy,
+        color: null,
       }),
     },
   );
   const data = await response.json();
-  const content = data.content;
 
   const countResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/count`,
@@ -45,7 +46,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
   return (
     <Container>
       <Title1>Search for items</Title1>
-      <Content articleCount={count} initialContent={content}></Content>
+      <Content articleCount={count} initialContent={data}></Content>
     </Container>
   );
 }

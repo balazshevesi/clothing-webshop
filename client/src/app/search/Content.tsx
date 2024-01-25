@@ -48,6 +48,11 @@ export default function Content({ initialContent, articleCount }: Content) {
   const [searchWords, setSearchWords] = useQueryState("searchWords");
   const [debouncedSearchWords, setDebouncedSearchWords] = useState(searchWords);
 
+  const [showListings, setShowListings] = useQueryState(
+    "showListings",
+    parseAsBoolean,
+  );
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchWords(searchWords);
@@ -69,6 +74,7 @@ export default function Content({ initialContent, articleCount }: Content) {
       page,
       selectedCategories,
       debouncedSearchWords,
+      showListings,
     ],
     queryFn: async () => {
       const response = await fetch(
@@ -82,17 +88,17 @@ export default function Content({ initialContent, articleCount }: Content) {
             brandIds: selectedBrands || null,
             fromPrice: fromPrice || 0,
             toPrice: toPrice || 9999999,
-            color: null,
             page: page || 1,
             showOnlyInStock: onlyInStock || false,
+            showListings: showListings || false,
             orderBy: orderBy,
+            color: null,
           }),
         },
       );
       const data = await response.json();
-      const content = data.content;
-      setRealData(content);
-      return content;
+      setRealData(data);
+      return data;
     },
   });
 
@@ -111,9 +117,31 @@ export default function Content({ initialContent, articleCount }: Content) {
         <Loader2 className="size-4 animate-spin" />
       )}
       <div className="mx-auto my-10 grid max-w-5xl grid-cols-3 gap-4">
-        {realData.map((article: any) => (
-          <ArticleCard key={article.id} article={article} />
-        ))}
+        {!realData.showingListings
+          ? realData.content.map((article: any) => {
+              return (
+                <ArticleCard
+                  key={article.id}
+                  title={article.name}
+                  price={article.price}
+                  image={article.articleImages[0].imagePath}
+                  href={`/listing/${article.articleListingRelations[0].listings.id}?article=${article.id}`}
+                  article={article}
+                />
+              );
+            })
+          : realData.content.map((listing: any) => {
+              return (
+                <ArticleCard
+                  key={listing.id}
+                  title={listing.name}
+                  price={listing.articles.price}
+                  image={listing.imagePath}
+                  href={`/listing/${listing.id}?article=${listing.articleIdDefault}`}
+                  article={listing.articles}
+                />
+              );
+            })}
       </div>
       <PaginationComponent />
     </>

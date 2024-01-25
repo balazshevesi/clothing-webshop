@@ -15,13 +15,26 @@ import { useFavsSlice } from "@/state/useFavsSlice";
 import { useShoppingCartSlice } from "@/state/useShoppingCartSlice";
 import { toast } from "sonner";
 
-export default function ArticleCard({ article }: { article: any }) {
+interface ArticleCard {
+  title: string;
+  image: string;
+  price: string | number;
+  href: string;
+  article: any;
+}
+export default function ArticleCard({
+  title,
+  image,
+  price,
+  href,
+  article,
+}: ArticleCard) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const { items, open, increment } = useShoppingCartSlice();
   const { favArticles, toggleFav } = useFavsSlice();
 
   const articleCount = items.filter((cartItem) => cartItem.id === article.id)[0]
-    ? items.filter((cartItem) => cartItem.id === article.id)[0]
+    ? items.filter((cartItem) => cartItem.id === +article.id)[0]
     : 0;
 
   return (
@@ -30,20 +43,21 @@ export default function ArticleCard({ article }: { article: any }) {
         className="absolute left-0 top-0 z-0 h-full w-full opacity-40 blur-xl"
         width={200}
         height={200}
-        src={article.articleImages[0].imagePath}
+        src={image}
         alt=""
       />
       <div className="relative z-10 flex w-full flex-col">
         <div className="p-4">
           <Link
-            href={`/listing/${article.articleListingRelations[0].listings.id}?article=${article.id}`}
+            href={href || ""}
+            // href={`/listing/${article.articleListingRelations[0].listings.id}?article=${article.id}`}
           >
             <div className="flex aspect-square items-center justify-center overflow-hidden rounded">
               <Image
                 className="relative z-10 w-full"
                 width={200}
                 height={200}
-                src={article.articleImages[0].imagePath}
+                src={image}
                 alt=""
               />
             </div>
@@ -64,7 +78,7 @@ export default function ArticleCard({ article }: { article: any }) {
               </button>
             </div>
             <div className="mb-4 font-light">
-              <strong>{article.price} SEK</strong>
+              <strong>{price} SEK</strong>
             </div>
           </div>
           <div className="mt-auto w-full">
@@ -73,7 +87,7 @@ export default function ArticleCard({ article }: { article: any }) {
                 className="w-full"
                 onClick={() => {
                   // setModalIsOpen(true);
-                  toast(`${article.name} ligger nu i din kundvagn`, {
+                  toast(`${title} ligger nu i din kundvagn`, {
                     description: (
                       <div className=" mt-2 flex gap-2">
                         <Button>Öppna kundvagn</Button>{" "}
@@ -95,27 +109,6 @@ export default function ArticleCard({ article }: { article: any }) {
             )}
           </div>
         </div>
-        {/* <AlertDialog
-          open={modalIsOpen}
-          onOpenChange={() => {
-            setModalIsOpen(false);
-          }}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                {listing.title} ligger nu i din kundvagn!
-              </AlertDialogTitle>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Fortsätt handla</AlertDialogCancel>
-              <AlertDialogCancel onClick={() => open()}>
-                Öppna kundvagn
-              </AlertDialogCancel>
-              <AlertDialogAction>Till kassan</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog> */}
       </div>
     </div>
   );

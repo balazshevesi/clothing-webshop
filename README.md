@@ -319,7 +319,7 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 
-- [ ] Build filter/browse section of the website
+- [ ] get nav links from the backend, also put in so that the "listing view page" has a link to view the brand, and a link to view the category
 
 ## prio 2
 
@@ -338,6 +338,7 @@ Detta är också mitt gymnasie arbete
 
 ---
 
+- [x] Build filter/browse section of the website
 - [x] Fix weird (race condition?) bug with cart state syncing (probably caused by incorrect implementation of debouncing, would probably be fixed by removing debouncing entierly)
 - [x] Build search functionality? (dunno how, but i'll find out)
 - [x] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed maybe??)

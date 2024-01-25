@@ -1,4 +1,7 @@
-import { articlesRelations } from "./../drizzle/schemaRelations";
+import {
+  articleImagesRelations,
+  articlesRelations,
+} from "./../drizzle/schemaRelations";
 import {
   articleProperties,
   articles,
@@ -468,10 +471,11 @@ interface listingsSearch {
   brandIds: number[] | null;
   fromPrice: number | null;
   toPrice: number | null;
-  color: string | null;
   page: number;
   showOnlyInStock: boolean | null;
   orderBy: null | "name" | "priceLowToHigh" | "priceHighToLow";
+  showListings: boolean | null;
+  color: string | null;
 
   // brand: string;
   // category: string;
@@ -482,123 +486,186 @@ app.post("/articles/search", async (c) => {
   const body: listingsSearch = await c.req.json();
 
   const itemsPerPage = 9;
-  const select = await db.query.articles.findMany({
-    limit: itemsPerPage,
-    offset: (body.page - 1) * itemsPerPage,
-    where: and(
-      // makes sure only listed articles are returned
-      exists(
-        db
-          .select()
-          .from(articleListingRelationsTbl)
-          .where(eq(articleListingRelationsTbl.articleId, articlesTbl.id))
-      ),
-      or(
-        // searches namn of the article
-        and(
-          ...body.searchWords
-            .split(" ")
-            .map((searchWord: string) =>
-              like(articlesTbl.name, `%${searchWord}%`)
-            )
-        ),
-        // searches description of the article
-        and(
-          ...body.searchWords
-            .split(" ")
-            .map((searchWord: string) =>
-              like(articlesTbl.description, `%${searchWord}%`)
-            )
-        ),
-        // searches garment care of the article
-        and(
-          ...body.searchWords
-            .split(" ")
-            .map((searchWord: string) =>
-              like(articlesTbl.garmentCare, `%${searchWord}%`)
-            )
-        ),
-        // searches brand name of the article
+  const articleSelect =
+    !body.showListings &&
+    (await db.query.articles.findMany({
+      limit: itemsPerPage,
+      offset: (body.page - 1) * itemsPerPage,
+      where: and(
+        // makes sure only listed articles are returned
         exists(
           db
             .select()
-            .from(brandsTbl)
-            .where(
-              and(
-                ...body.searchWords
-                  .split(" ")
-                  .map((searchWord: string) =>
-                    like(brandsTbl.name, `%${searchWord}%`)
-                  )
-              )
-            )
+            .from(articleListingRelationsTbl)
+            .where(eq(articleListingRelationsTbl.articleId, articlesTbl.id))
         ),
-        // searches brand description of the article
-        exists(
-          db
-            .select()
-            .from(brandsTbl)
-            .where(
-              and(
-                ...body.searchWords
-                  .split(" ")
-                  .map((searchWord: string) =>
-                    like(brandsTbl.description, `%${searchWord}%`)
-                  )
+        or(
+          // searches namn of the article
+          and(
+            ...body.searchWords
+              .split(" ")
+              .map((searchWord: string) =>
+                like(articlesTbl.name, `%${searchWord}%`)
               )
-            )
-        )
-      ),
-      body.categoryIds
-        ? or(
-            ...body.categoryIds.map((categoryId) =>
-              eq(articlesTbl.categoryId, +categoryId)
-            )
-          )
-        : undefined,
-
-      body.brandIds
-        ? or(
-            ...body.brandIds.map((brandId) => eq(articlesTbl.brandId, +brandId))
-          )
-        : undefined,
-
-      body.color
-        ? exists(
+          ),
+          // searches description of the article
+          and(
+            ...body.searchWords
+              .split(" ")
+              .map((searchWord: string) =>
+                like(articlesTbl.description, `%${searchWord}%`)
+              )
+          ),
+          // searches garment care of the article
+          and(
+            ...body.searchWords
+              .split(" ")
+              .map((searchWord: string) =>
+                like(articlesTbl.garmentCare, `%${searchWord}%`)
+              )
+          ),
+          // searches brand name of the article
+          exists(
             db
               .select()
-              .from(articlePropertiesTbl)
+              .from(brandsTbl)
               .where(
                 and(
-                  eq(articlePropertiesTbl.id, articlesTbl.id),
-                  eq(articleProperties.color, body.color)
+                  ...body.searchWords
+                    .split(" ")
+                    .map((searchWord: string) =>
+                      like(brandsTbl.name, `%${searchWord}%`)
+                    )
+                )
+              )
+          ),
+          // searches brand description of the article
+          exists(
+            db
+              .select()
+              .from(brandsTbl)
+              .where(
+                and(
+                  ...body.searchWords
+                    .split(" ")
+                    .map((searchWord: string) =>
+                      like(brandsTbl.description, `%${searchWord}%`)
+                    )
                 )
               )
           )
-        : undefined,
+        ),
+        body.categoryIds
+          ? or(
+              ...body.categoryIds.map((categoryId) =>
+                eq(articlesTbl.categoryId, +categoryId)
+              )
+            )
+          : undefined,
 
-      gte(articlesTbl.price, "" + body.fromPrice),
-      body.toPrice ? lte(articlesTbl.price, "" + body.toPrice) : undefined,
-      gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
-    ),
-    orderBy:
-      body.orderBy === "name"
-        ? asc(articlesTbl.name)
-        : body.orderBy === "priceLowToHigh"
-        ? asc(articlesTbl.price)
-        : body.orderBy === "priceHighToLow"
-        ? desc(articlesTbl.price)
-        : undefined,
-    with: {
-      articleImages: true,
-      articleProperties: true,
-      brands: true,
-      categories: true,
-      articleListingRelations: { with: { listings: true } },
-    },
+        body.brandIds
+          ? or(
+              ...body.brandIds.map((brandId) =>
+                eq(articlesTbl.brandId, +brandId)
+              )
+            )
+          : undefined,
+
+        body.color
+          ? exists(
+              db
+                .select()
+                .from(articlePropertiesTbl)
+                .where(
+                  and(
+                    eq(articlePropertiesTbl.id, articlesTbl.id),
+                    eq(articleProperties.color, body.color)
+                  )
+                )
+            )
+          : undefined,
+
+        gte(articlesTbl.price, "" + body.fromPrice),
+        body.toPrice ? lte(articlesTbl.price, "" + body.toPrice) : undefined,
+        gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
+      ),
+      orderBy:
+        body.orderBy === "name"
+          ? asc(articlesTbl.name)
+          : body.orderBy === "priceLowToHigh"
+          ? asc(articlesTbl.price)
+          : body.orderBy === "priceHighToLow"
+          ? desc(articlesTbl.price)
+          : undefined,
+      with: {
+        articleImages: true,
+        articleProperties: true,
+        brands: true,
+        categories: true,
+        articleListingRelations: { with: { listings: true } },
+      },
+    }));
+
+  //^ not very pretty, it would slow down as the database grows, but whatever
+  const initialListingsSelect =
+    !!body.showListings &&
+    (await db.query.listings.findMany({
+      with: {
+        articles: true,
+        // where: (articles) => articles.categoryId.in(body.categoryIds),
+      },
+      where: and(
+        // If you need to search by listings' title or description
+        or(
+          ...body.searchWords
+            .split(" ")
+            .map((searchWord: string) =>
+              like(listingsTbl.title, `%${searchWord}%`)
+            ),
+          ...body.searchWords
+            .split(" ")
+            .map((searchWord: string) =>
+              like(listingsTbl.description, `%${searchWord}%`)
+            )
+        )
+      ),
+    }));
+  const listingSelectFilteredForBrands = initialListingsSelect.filter(
+    (listing) => {
+      if (body.brandIds && body.brandIds.length > 0)
+        return body.brandIds?.includes(listing.articles?.brandId!);
+      return true;
+    }
+  );
+  const listingSelectFilteredForBrandsAndCategory =
+    listingSelectFilteredForBrands
+      .filter((listing) => {
+        if (body.categoryIds && body.categoryIds.length > 0)
+          return body.categoryIds?.includes(listing.articles?.categoryId!);
+        return true;
+      })
+      .filter(
+        (listing) =>
+          +listing.articles!.price >= (body.fromPrice || 0) &&
+          +listing.articles!.price <= (body.toPrice || 99999999)
+      )
+      //@ts-ignore
+      .sort((a, b) => {
+        if (body.orderBy === "priceLowToHigh")
+          return +a.articles!.price - +b.articles!.price;
+        else if (body.orderBy === "priceHighToLow")
+          return +b.articles!.price - +a.articles!.price;
+        else if (body.orderBy === "name" || !body.orderBy)
+          a.title > b.title ? 1 : -1;
+      })
+      .slice(body.page * itemsPerPage - itemsPerPage, body.page * itemsPerPage);
+
+  return c.json({
+    content: body.showListings
+      ? listingSelectFilteredForBrandsAndCategory
+      : articleSelect,
+    showingListings: body.showListings,
   });
-
-  return c.json({ content: select });
 });
 
 app.get("/articles/count", async (c) => {
