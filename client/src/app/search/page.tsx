@@ -31,7 +31,7 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
     orderBy: orderBy,
     color: null,
   };
-  console.log("bodybody", body);
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
     {
@@ -41,7 +41,16 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
     },
   );
   const data = await response.json();
-  console.log("datadatadata", data);
+
+  const categoriesResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`,
+  );
+  const categoriesData = (await categoriesResponse.json()).content;
+
+  const brandsResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/brands`,
+  );
+  const brandsData = (await brandsResponse.json()).content;
 
   const countResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/count`,
@@ -51,8 +60,12 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
 
   return (
     <Container>
-      <Title1>Search for items</Title1>
-      <Content articleCount={count} initialContent={data}></Content>
+      <Content
+        articleCount={count}
+        initialContent={data}
+        categoriesData={categoriesData}
+        brandsData={brandsData}
+      ></Content>
     </Container>
   );
 }

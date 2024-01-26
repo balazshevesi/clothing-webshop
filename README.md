@@ -319,6 +319,7 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 
+- [ ] Add planned sales shit
 
 ## prio 2
 
@@ -327,7 +328,6 @@ Detta är också mitt gymnasie arbete
 
 ## prio 3
 
-- [ ] Add planned sales shit
 - [ ] Add stastics to admin panel
 - [ ] Find email provider and setup forgot password system
 

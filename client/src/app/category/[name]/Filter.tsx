@@ -105,15 +105,29 @@ export default function Filter() {
           <AccordionContent>
             <div className="space-y-4 py-2">
               <FilterItem title="Price:">
-                <Slider
-                  defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
-                  max={4000}
-                  step={1}
-                  onValueCommit={(e: any[]) => {
-                    setFromPrice(e[0]);
-                    setToPrice(e[1]);
-                  }}
-                />
+                <>
+                  <Slider
+                    defaultValue={[+(fromPrice || 0), +(toPrice || 4000)]}
+                    max={4000}
+                    step={1}
+                    onValueCommit={(e: any[]) => {
+                      setFromPrice(e[0]);
+                      setToPrice(e[1]);
+                    }}
+                  />
+                  <div className="flex justify-between gap-4 p-4">
+                    <Input
+                      disabled
+                      value={fromPrice || 0}
+                      className="text-left"
+                    />
+                    <Input
+                      disabled
+                      value={toPrice || 4000}
+                      className="text-right"
+                    />
+                  </div>
+                </>
               </FilterItem>
               <FilterItem title="Categories:">
                 <div className="flex gap-2">

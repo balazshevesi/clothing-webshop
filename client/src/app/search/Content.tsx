@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { useEffect, useState } from "react";
 
 import ArticleCard from "@/components/ArticleCard";
+import Title1 from "@/components/general/Title1";
 import { Input } from "@/components/ui/input";
 
 import Filter from "../category/[name]/Filter";
@@ -21,9 +23,16 @@ import {
 interface Content {
   initialContent: any;
   articleCount: number;
+  categoriesData: any[];
+  brandsData: any[];
 }
 
-export default function Content({ initialContent, articleCount }: Content) {
+export default function Content({
+  initialContent,
+  articleCount,
+  categoriesData,
+  brandsData,
+}: Content) {
   const [fromPrice, setFromPrice] = useQueryState("fromPrice");
   const [toPrice, setToPrice] = useQueryState("toPrice");
 
@@ -52,6 +61,12 @@ export default function Content({ initialContent, articleCount }: Content) {
     "showListings",
     parseAsBoolean,
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      document.getElementById("scrollToTopHelper")!.scrollIntoView();
+    }, 0);
+  }, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -102,8 +117,51 @@ export default function Content({ initialContent, articleCount }: Content) {
     },
   });
 
+  const currentCategory =
+    selectedCategories.length === 1 && selectedBrands.length === 0
+      ? categoriesData.find(
+          (category) => category.id === +selectedCategories[0],
+        )
+      : null;
+
+  const currentBrand =
+    selectedBrands.length === 1 && selectedCategories.length === 0
+      ? brandsData.find((brand) => brand.id === +selectedBrands[0])
+      : null;
+
   return (
     <>
+      <Title1 className="mb-5">
+        {currentCategory
+          ? currentCategory.name
+          : currentBrand
+            ? currentBrand.name
+            : "Search for items"}
+      </Title1>
+      <p className="mb-2">
+        {currentCategory
+          ? currentCategory.description
+          : currentBrand
+            ? currentBrand.description
+            : ""}
+      </p>
+
+      {currentCategory || currentBrand ? (
+        <Image
+          className="mb-6 h-24 w-full rounded-lg object-cover"
+          alt=""
+          width={2000}
+          height={1000}
+          src={
+            currentCategory
+              ? currentCategory.image
+              : currentBrand
+                ? currentBrand.image
+                : ""
+          }
+        />
+      ) : null}
+
       <Input
         className="mb-5"
         placeholder={`Search ${articleCount} articles`}
