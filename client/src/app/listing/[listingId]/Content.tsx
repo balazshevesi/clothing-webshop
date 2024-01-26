@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
@@ -60,11 +61,24 @@ export default function Content({ listing }: { listing: any }) {
         </div> */}
 
         <div className="flex flex-col items-stretch gap-8 lg:flex-row">
-          <LeftSectoin currentArticle={currentArticle!} listing={listing} />
+          <LeftSectoin currentArticle={currentArticle} listing={listing} />
           <div className="w-full shrink-0 lg:w-[22rem]">
             <div className="mb-10">
               <Title1 className="mb-4">{listing.title}</Title1>
-              {/* <Title1 className="mb-4">{currentArticle.brands.name}</Title1> */}
+              <div className="flex gap-4 text-slate-400">
+                <Link
+                  href={`/search?showListings=true&brands=${currentArticle.brands.id}`}
+                  className="mb-4 hover:underline"
+                >
+                  {currentArticle.brands.name}
+                </Link>
+                <Link
+                  href={`/search?showListings=true&categories=${currentArticle.categories.id}`}
+                  className="mb-4 hover:underline"
+                >
+                  {currentArticle.categories.name}
+                </Link>
+              </div>
               <p className="mb-6 text-xl">{currentArticle.price} SEK</p>
               <p>{listing.description}</p>
             </div>

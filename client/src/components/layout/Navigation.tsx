@@ -23,21 +23,35 @@ function Logo() {
   );
 }
 
-export default function Navigation() {
+export default async function Navigation() {
   const cookieStore = cookies();
   const userAuth = cookieStore.get("userAuth");
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`,
+  );
+  const categories = (await response.json()).content;
 
   return (
     <nav className="sticky left-0 top-0 z-50 w-full border-b border-dashed border-white/50 bg-black p-2 shadow">
       {/* desktop */}
       <Container className="hidden py-1 lg:flex">
         <div className="flex flex-1 justify-start gap-2">
-          <Button variant="link" className="uppercase">
+          {/* <Button variant="link" className="uppercase">
             <Link href={"/category/casual-wear"}>casual wear</Link>
           </Button>
           <Button variant="link" className="uppercase">
             <Link href={"/category/gym-wear"}>gym wear</Link>
-          </Button>
+          </Button> */}
+          {categories.map((category: any) => (
+            <Button variant="link" className="uppercase">
+              <Link
+                href={`/search?showListings=true&categories=${category.id}`}
+              >
+                {category.name}
+              </Link>
+            </Button>
+          ))}
         </div>
         <div className="flex flex-1 items-center justify-center text-lg font-bold uppercase tracking-wider">
           <Link href={"/"}>
@@ -53,10 +67,7 @@ export default function Navigation() {
       <Container className="flex flex-col gap-4 px-0 py-1 lg:hidden">
         <div className=" flex">
           <div className="flex flex-1 justify-start gap-2">
-            <NavigationDropdown />
-            {/* 
-            
-            */}
+            <NavigationDropdown categories={categories} />
           </div>
           <div className="flex flex-1 shrink items-center justify-center text-sm font-bold uppercase tracking-wider sm:text-lg">
             <Link

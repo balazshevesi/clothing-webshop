@@ -319,7 +319,6 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 
-- [ ] get nav links from the backend, also put in so that the "listing view page" has a link to view the brand, and a link to view the category
 
 ## prio 2
 
@@ -335,9 +334,9 @@ Detta är också mitt gymnasie arbete
 - [ ] Integrate stripe
 - [ ] Make so buyers can submit reviews
 
-
 ---
 
+- [x] get nav links from the backend, also put in so that the "listing view page" has a link to view the brand, and a link to view the category
 - [x] Build filter/browse section of the website
 - [x] Fix weird (race condition?) bug with cart state syncing (probably caused by incorrect implementation of debouncing, would probably be fixed by removing debouncing entierly)
 - [x] Build search functionality? (dunno how, but i'll find out)

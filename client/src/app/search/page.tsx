@@ -13,29 +13,35 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
     orderBy,
     page,
     searchWords,
+    categories,
     showListings,
   } = searchParams;
 
+  const body = {
+    searchWords: searchWords || "",
+    categoryIds: categories
+      ? categories.split(",").map((id: number) => +id)
+      : null,
+    brandIds: brands ? brands.split(",").map((id: number) => +id) : null,
+    fromPrice: fromPrice || 0,
+    toPrice: toPrice || 9999999,
+    page: page || 1,
+    showOnlyInStock: showOnlyInStock ? JSON.parse(showOnlyInStock) : false,
+    showListings: showListings ? JSON.parse(showListings) : false,
+    orderBy: orderBy,
+    color: null,
+  };
+  console.log("bodybody", body);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/search`,
     {
       method: "post",
       cache: "no-store",
-      body: JSON.stringify({
-        searchWords: searchWords || "",
-        categoryId: null,
-        brandIds: brands ? brands.split(",") : null,
-        fromPrice: fromPrice,
-        toPrice: toPrice,
-        page: page || 1,
-        showOnlyInStock: !!showOnlyInStock && JSON.parse(showOnlyInStock),
-        showListings: !!showListings && JSON.parse(showListings),
-        orderBy: orderBy,
-        color: null,
-      }),
+      body: JSON.stringify(body),
     },
   );
   const data = await response.json();
+  console.log("datadatadata", data);
 
   const countResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/articles/count`,

@@ -642,15 +642,16 @@ app.post("/articles/search", async (c) => {
         )
       ),
     }));
-  //@ts-ignore
-  const listingSelectFilteredForBrands = initialListingsSelect.filter(
-    (listing: any) => {
+  const listingSelectFilteredForBrands =
+    !!body.showListings &&
+    //@ts-ignore
+    initialListingsSelect.filter((listing: any) => {
       if (body.brandIds && body.brandIds.length > 0)
         return body.brandIds?.includes(listing.articles?.brandId!);
       return true;
-    }
-  );
+    });
   const listingSelectFilteredForBrandsAndCategory =
+    !!body.showListings &&
     listingSelectFilteredForBrands
       .filter((listing: any) => {
         if (body.categoryIds && body.categoryIds.length > 0)
