@@ -10,50 +10,77 @@ import { size } from "valibot";
 
 interface SelectArticle {
   listing: any;
-  selectedArticle: any;
+  selectedArticleId: number;
   setSelectedArticle: Function;
 }
 
 export default function SelectArticle({
   listing,
-  selectedArticle,
+  selectedArticleId,
   setSelectedArticle,
 }: SelectArticle) {
   const router = useRouter();
 
   // const [viewingColor, setViewingColor] = useQueryState("vc");
 
+  // const colors: any = [];
+  // listing.articles.forEach((article: any) => {
+  //   const currentColor = article.articleProperties[0].color;
+  //   if (colors.filter((color: any) => color.color === currentColor).length > 0)
+  //     return;
+  //   colors.push({
+  //     color: currentColor,
+  //     articles: listing.articles.filter(
+  //       (article: any) => article.articleProperties[0].color === currentColor,
+  //     ),
+  //   });
+  // });
   const colors: any = [];
-  listing.articles.forEach((article: any) => {
-    const currentColor = article.articleProperties[0].color;
+  listing.articleListingRelations.forEach((articleListingRelation: any) => {
+    const currentColor =
+      articleListingRelation.articles.articleProperties[0].color;
     if (colors.filter((color: any) => color.color === currentColor).length > 0)
       return;
     colors.push({
       color: currentColor,
-      articles: listing.articles.filter(
-        (article: any) => article.articleProperties[0].color === currentColor,
-      ),
+      articles: listing.articleListingRelations
+        .filter(
+          (articleListingRelation: any) =>
+            articleListingRelation.articles.articleProperties[0].color ===
+            currentColor,
+        )
+        .map(
+          (articlesListingRelation: any) => articlesListingRelation.articles,
+        ),
     });
   });
+  console.log("colorcolor", JSON.stringify(colors));
 
-  let articlesAvailableForSelectedColor: any;
+  let articlesAvailableForSelectedColor: any = colors[0].articles;
+  console.log(colors);
   colors.forEach((colorObj: any) => {
+    console.log(
+      colorObj.articles.filter(
+        (article: any) => +article.id === +selectedArticleId,
+      ),
+    );
+
     if (
       colorObj.articles.filter(
-        (article: any) => article.id === +selectedArticle!,
+        (article: any) => +article.id === +selectedArticleId,
       ).length > 0
     )
       articlesAvailableForSelectedColor = colorObj.articles;
   });
 
-  const sizeOrder = ["XS", "S", "M", "L", "XL"];
-  articlesAvailableForSelectedColor.sort((a: any, b: any) => {
-    let sizeA = a.articleProperties[0]?.size;
-    let sizeB = b.articleProperties[0]?.size;
-    let indexA = sizeOrder.indexOf(sizeA);
-    let indexB = sizeOrder.indexOf(sizeB);
-    return indexA - indexB;
-  });
+  // const sizeOrder = ["XS", "S", "M", "L", "XL"];
+  // articlesAvailableForSelectedColor.sort((a: any, b: any) => {
+  //   let sizeA = a.articleProperties[0]?.size;
+  //   let sizeB = b.articleProperties[0]?.size;
+  //   let indexA = sizeOrder.indexOf(sizeA);
+  //   let indexB = sizeOrder.indexOf(sizeB);
+  //   return indexA - indexB;
+  // });
 
   return (
     <div>
@@ -62,7 +89,7 @@ export default function SelectArticle({
           colors.map((colorObj: any) => {
             if (
               colorObj.articles.filter(
-                (article: any) => article.id === +selectedArticle!,
+                (article: any) => article.id === +selectedArticleId!,
               ).length > 0
             )
               return (
@@ -86,11 +113,10 @@ export default function SelectArticle({
               );
           })}
       </div>
-
       <div className="mb-4 flex gap-2">
         {articlesAvailableForSelectedColor.length > 1 &&
           articlesAvailableForSelectedColor.map((article: any) => {
-            if (article.id === +selectedArticle!)
+            if (article.id === +selectedArticleId!)
               return (
                 <Button
                   variant="outline"
@@ -113,13 +139,14 @@ export default function SelectArticle({
               );
           })}
       </div>
-      <div className=" mb-8">
+      <div className="mb-8">
         <span className="">In Stock: </span>
         <span>
           {
-            listing.articles.filter(
-              (article: any) => +article.id === +selectedArticle,
-            )[0].quantityInStock
+            listing.articleListingRelations.filter(
+              (articleListingRelation: any) =>
+                +articleListingRelation.articles.id === +selectedArticleId,
+            )[0].articles.quantityInStock
           }
         </span>
       </div>

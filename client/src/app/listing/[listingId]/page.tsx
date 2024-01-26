@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+
 import MostPopular from "@/components/MostPopular";
 import Container from "@/components/general/Container";
 import Title2 from "@/components/general/Title2";
@@ -20,7 +22,12 @@ export default async function Page({ params }: Page) {
   try {
     const response: any = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST}/listing/${params.listingId}`,
-      { cache: "no-store" },
+      {
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
     if (!response.ok) return <FetchFailed />;
     listing = (await response.json()).content;

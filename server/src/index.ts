@@ -438,28 +438,40 @@ app.get("/listing/:listingId", async (c) => {
   const content = await db.query.listings.findFirst({
     where: (listings, { eq }) => eq(listings.id, +listingId),
     with: {
-      articleListingRelations: true,
+      articles: true,
+      articleListingRelations: {
+        with: {
+          articles: {
+            with: {
+              brands: true,
+              categories: true,
+              articleImages: true,
+              articleProperties: true,
+            },
+          },
+        },
+      },
     },
   });
-  const listOfArticleIds = content?.articleListingRelations.map(
-    (listingRelation: any) => listingRelation.articleId
-  );
+  // const listOfArticleIds = content?.articleListingRelations.map(
+  //   (listingRelation: any) => listingRelation.articleId
+  // );
 
-  //^not a preformant soulution, this could've been one query, but whatever
-  const listOfArticlesPromises = listOfArticleIds!.map(
-    async (articleId: number) =>
-      // (await db.select().from(articles).where(eq(articles.id, articleId)))[0],
-      await db.query.articles.findFirst({
-        where: eq(articlesTbl.id, articleId),
-        with: {
-          articleImages: true,
-          articleProperties: true,
-        },
-      })
-  );
-  const listOfArticles = await Promise.all(listOfArticlesPromises);
-  //@ts-ignore
-  content.articles = listOfArticles;
+  // //^not a preformant soulution, this could've been one query, but whatever
+  // const listOfArticlesPromises = listOfArticleIds!.map(
+  //   async (articleId: number) =>
+  //     // (await db.select().from(articles).where(eq(articles.id, articleId)))[0],
+  //     await db.query.articles.findFirst({
+  //       where: eq(articlesTbl.id, articleId),
+  //       with: {
+  //         articleImages: true,
+  //         articleProperties: true,
+  //       },
+  //     })
+  // );
+  // const listOfArticles = await Promise.all(listOfArticlesPromises);
+  // //@ts-ignore
+  // content.articles = listOfArticles;
 
   return c.json({ content });
 });
@@ -630,8 +642,9 @@ app.post("/articles/search", async (c) => {
         )
       ),
     }));
+  //@ts-ignore
   const listingSelectFilteredForBrands = initialListingsSelect.filter(
-    (listing) => {
+    (listing: any) => {
       if (body.brandIds && body.brandIds.length > 0)
         return body.brandIds?.includes(listing.articles?.brandId!);
       return true;
@@ -639,13 +652,13 @@ app.post("/articles/search", async (c) => {
   );
   const listingSelectFilteredForBrandsAndCategory =
     listingSelectFilteredForBrands
-      .filter((listing) => {
+      .filter((listing: any) => {
         if (body.categoryIds && body.categoryIds.length > 0)
           return body.categoryIds?.includes(listing.articles?.categoryId!);
         return true;
       })
       .filter(
-        (listing) =>
+        (listing: any) =>
           +listing.articles!.price >= (body.fromPrice || 0) &&
           +listing.articles!.price <= (body.toPrice || 99999999)
       )
@@ -676,8 +689,8 @@ app.get("/articles/count", async (c) => {
 
 app.get("/listings", async (c) => {
   const db = await getDatabase();
-  const listingssSelect = await db.select().from(listingsTbl);
-  return c.json({ content: listingssSelect });
+  const listingsSelect = await db.select().from(listingsTbl);
+  return c.json({ content: listingsSelect });
 });
 app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();

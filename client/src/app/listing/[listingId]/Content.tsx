@@ -31,12 +31,12 @@ export default function Content({ listing }: { listing: any }) {
   const [selectedArticleParam, setSelectedArticleParam] =
     useQueryState("article");
 
-  const [selectedArticle, setSelectedArticle] = useState(
-    article ? article : listing.articleIdDefault,
+  const [selectedArticleId, setSelectedArticleId] = useState(
+    article ? article : listing.articles.id,
   );
   useEffect(() => {
-    setSelectedArticleParam(selectedArticle);
-  }, [selectedArticle]);
+    setSelectedArticleParam(selectedArticleId);
+  }, [selectedArticleId]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -44,11 +44,10 @@ export default function Content({ listing }: { listing: any }) {
     }, 0);
   }, []);
 
-  console.log("listinglisting", listing);
-  const currentArticle = listing.articles.filter(
-    (article: any) => +article.id === +selectedArticle!,
-  )[0];
-  console.log("currentArticlecurrentArticle", currentArticle);
+  const currentArticle = listing.articleListingRelations.filter(
+    (articleListingRelation: any) =>
+      +articleListingRelation.articles.id === +selectedArticleId!,
+  )[0].articles;
 
   return (
     <>
@@ -64,14 +63,15 @@ export default function Content({ listing }: { listing: any }) {
           <LeftSectoin currentArticle={currentArticle!} listing={listing} />
           <div className="w-full shrink-0 lg:w-[22rem]">
             <div className="mb-10">
-              <Title1 className=" mb-4">{listing.title}</Title1>
-              <p className=" mb-6 text-xl">{currentArticle.price} SEK</p>
+              <Title1 className="mb-4">{listing.title}</Title1>
+              {/* <Title1 className="mb-4">{currentArticle.brands.name}</Title1> */}
+              <p className="mb-6 text-xl">{currentArticle.price} SEK</p>
               <p>{listing.description}</p>
             </div>
             {/* <div className=" mb-6">S</div> */}
             <SelectArticle
-              selectedArticle={selectedArticle}
-              setSelectedArticle={setSelectedArticle}
+              selectedArticleId={selectedArticleId}
+              setSelectedArticle={setSelectedArticleId}
               listing={listing}
             />
             <div className=" mb-10 w-full">
