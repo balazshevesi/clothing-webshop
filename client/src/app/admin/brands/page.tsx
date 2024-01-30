@@ -14,7 +14,7 @@ export default function Page() {
     queryKey: ["brands"],
     queryFn: () => fetchBrands(),
   });
-  if (!data || data.length === 0) return <div>loading...</div>;
+  if (!data) return <div>loading...</div>;
 
   return (
     <div>

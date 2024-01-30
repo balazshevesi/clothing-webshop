@@ -18,7 +18,7 @@ export default function Page() {
     queryKey: ["articles"],
     queryFn: () => fetchArticles(),
   });
-  if (!data || data.length === 0) return <div>loading...</div>;
+  if (!data) return <div>loading...</div>;
 
   return (
     <div>

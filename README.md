@@ -58,6 +58,10 @@
   <a href="https://jwt.io/">
     <img src="https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=for-the-badge"/>
   </a>
+  <a href="https://prettier.io/">
+    <img src="https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=fff&style=for-the-badge"/>
+  </a>
+
 </div>
 
 ---
@@ -264,11 +268,13 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   Varje individuella rutt har ju sin egen state, så först tänkte jag att jag kanske skulle kunna utnytja det genom att ha någon typ av intern rutt som returnerar databas anslutnings objektet. Men det visade sig komplexa objekt (som databas anslutningar) inte kunnde skickas genom HTTP :(.
 
-  Själv tycker jag att [Next](https://vercel.com/) borde ha någon inbyggd lösning på detta, men samtidigt så kommer de ju alldrig göra det med tankte på att de tror att man borde göra typ allt i server-komponenter.
+  Själv tycker jag att [Next](https://vercel.com/) borde ha någon inbyggd lösning på detta, men samtidigt så kommer de ju aldrig göra det med tankte på att de tror att man borde göra typ allt i server-komponenter.
 
   Lösningen är ju att man har någon typ av "pooling". [Prisma](https://www.prisma.io/) har nått magiskt rust-lager som hjälper till med det, men jag valde ju [Drizzle](https://orm.drizzle.team/) 💀. Som tur är så kan man ju också ha pooling på databas-nivå, jag försökte fixa det i min AWS RDS panel, men det ville inte fungera, så jag bestämde mig för att bygga-om min backend med Bun och Hono.
 
-  Motivationen till det var dels också att jag började ogilla file-based-routing mer och mer. Jag tycker att file-based-routing fungerar fint på frontenden, men inte på backenden. Motivatinen till bygga om den var dels också att [Next](https://vercel.com/) inte har någon riktig middleware lösning för backend rutter, och jag var tvungen att ha typ 10 rader boiler-plate kod i varje "admin/" rutt bara för att checka-av om anropet faktisk kom ifrån en admin.
+  Motivationen till det var dels också att jag började ogilla file-based-routing mer och mer. Jag tycker att file-based-routing fungerar fint på frontenden, men inte på backenden. Motivationen till bygga om den var dels också att [Next](https://vercel.com/) inte har någon riktig middleware lösning för backend rutter, och jag var tvungen att ha typ 10 rader boiler-plate kod i varje "admin/" rutt bara för att checka-av om anropet faktisk kom ifrån en admin.
+
+  Rent tekniskt så är väll anslutningen inte riktigt singelton eftersom jag använder "mysql.createPool". Jag gör det pga att jag stötte på någon typ av timeout-bug där anslutningen stängdes efter någon timme, men det var omöjligt att detektera det (förutom om man vill wrappa varje endpoint i en try-catch, vilket man ju inte vill). mysql.createPool hanterar sådana grejer åt mig.
   </details>
 
 - ## Client-side caching på i admin panelen

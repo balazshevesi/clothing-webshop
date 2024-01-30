@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, foreignKey, primaryKey, int, text, varchar, unique, mysqlEnum, decimal, smallint, timestamp, datetime, tinyint } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, foreignKey, primaryKey, int, text, varchar, unique, decimal, mysqlEnum, smallint, timestamp, datetime, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 
@@ -26,14 +26,15 @@ export const articleListingRelations = mysqlTable("article_listing_relations", {
 	}
 });
 
-export const articlePlannedSalesRelation = mysqlTable("article_planned_sales_relation", {
+export const articlePlannedSalesRelations = mysqlTable("article_planned_sales_relations", {
 	id: int("id").autoincrement().notNull(),
 	articleId: int("article_id").notNull().references(() => articles.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	plannedSaleId: int("planned_sale_id").notNull().references(() => plannedSales.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	newPrice: decimal("new_price", { precision: 10, scale: 2 }).notNull(),
 },
 (table) => {
 	return {
-		articlePlannedSalesRelationId: primaryKey({ columns: [table.id], name: "article_planned_sales_relation_id"}),
+		articlePlannedSalesRelationsId: primaryKey({ columns: [table.id], name: "article_planned_sales_relations_id"}),
 		articlePlannedSalesRelationUn: unique("article_planned_sales_relation_UN").on(table.articleId, table.plannedSaleId),
 	}
 });

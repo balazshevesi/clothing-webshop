@@ -14,7 +14,7 @@ export default function Page() {
     queryKey: ["listings"],
     queryFn: () => fetchListings(),
   });
-  if (!data || data.length === 0) return <div>loading...</div>;
+  if (!data) return <div>loading...</div>;
   return (
     <div>
       <Title1>Listings</Title1>

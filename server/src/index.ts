@@ -2,13 +2,7 @@ import {
   articleImagesRelations,
   articlesRelations,
 } from "./../drizzle/schemaRelations";
-import {
-  articleProperties,
-  articles,
-  brands,
-  categories,
-  listings,
-} from "./../drizzle/schema";
+import { articleProperties } from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
@@ -28,6 +22,8 @@ import {
   users as usersTbl,
   cartItems as cartItemsTbl,
   favItems as favItemsTbl,
+  plannedSales as plannedSalesTbl,
+  articlePlannedSalesRelations as articlePlannedSalesRelationsTbl,
 } from "../drizzle/schema";
 
 import {
@@ -47,6 +43,7 @@ import getDatabase from "./utils/getDatabase";
 import getTimeStamp from "./utils/getTimestamp";
 import getAndValidateUser from "./utils/getAndValidateUser";
 import getAndValidateGuestUser from "./utils/getAndValidateGuestUser";
+import convertToTimestamp from "./utils/convertToTimestamp";
 
 const app = new Hono();
 
@@ -338,7 +335,36 @@ adminRoutes.delete("/listing/:listingId", async (c) => {
   return c.json({});
 });
 
+interface plannedSaleArticle {
+  articleId: number;
+  newPrice: number;
+}
+interface PlannedSales {
+  startTime: Date;
+  endTime: Date;
+  name: string;
+  announcementTitle: string;
+  includedArticleIds: plannedSaleArticle[];
+}
+adminRoutes.post("/planned-sale", async (c) => {
+  const db = await getDatabase();
+  const body: PlannedSales = await c.req.json();
+  const [insertedPlannedSale] = await db.insert(plannedSalesTbl).values({
+    startTime: convertToTimestamp(body.startTime),
+    endTime: convertToTimestamp(body.endTime),
+    name: body.name,
+    announcementTitle: body.announcementTitle,
+  });
+  const plannedSalesRelations = body.includedArticleIds.map((article) => ({
+    plannedSaleId: +insertedPlannedSale.insertId,
+    newPrice: "" + article.newPrice,
+    articleId: +article.articleId,
+  }));
+  db.insert(articlePlannedSalesRelationsTbl).values(plannedSalesRelations);
+});
+
 adminRoutes.get("/", (c) => c.json({}));
+
 app.route("/admin", adminRoutes);
 
 //articles
@@ -693,6 +719,7 @@ app.get("/listings", async (c) => {
   const listingsSelect = await db.select().from(listingsTbl);
   return c.json({ content: listingsSelect });
 });
+
 app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();
   const listingsContent = await db.select().from(listingsTbl).limit(5);
@@ -712,6 +739,14 @@ app.get("/listings/most-popular", async (c) => {
   }));
 
   return c.json({ content: contentWithArticles });
+});
+
+//planned-sales
+
+app.get("/planned-sales", async (c) => {
+  const db = await getDatabase();
+  const plannedSalesSelect = await db.select().from(plannedSalesTbl);
+  return c.json({ content: plannedSalesSelect });
 });
 
 //users
@@ -1237,7 +1272,6 @@ app.post("/auth/signup", async (c) => {
   return c.json({ userIdJwt, userInfo });
 });
 
-//~ export
 export default {
   port: process.env.PORT,
   fetch: app.fetch,

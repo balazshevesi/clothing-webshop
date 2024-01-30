@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
   const { data, isLoading } = useQuery({
-    queryKey: ["brands"],
+    queryKey: ["categories"],
     queryFn: () => fetchCategories(),
   });
   if (!data || data.length === 0) return <div>loading...</div>;
