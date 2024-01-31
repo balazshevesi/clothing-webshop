@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import AddToCartBtn from "./AddToCartBtn";
 import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
+import CountDown from "@/components/CountDown";
 
 export default function Content({ listing }: { listing: any }) {
   const searchParams = useSearchParams();
@@ -105,7 +106,7 @@ export default function Content({ listing }: { listing: any }) {
                       %
                     </span>
                     <span className="ml-1">
-                      <Countdown
+                      <CountDown
                         date={
                           new Date(
                             currentArticle.articlePlannedSalesRelations[0].plannedSales.endTime,

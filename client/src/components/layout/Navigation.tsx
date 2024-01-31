@@ -7,7 +7,7 @@ import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 
 import Container from "../general/Container";
 import NavigationDropdown from "./NavigationDropdown";
-import CountDown from "./navigation/CountDown";
+import CountDown from "../CountDown";
 import CartSheet from "./navigation/cart/CartSheet";
 import LoginButton from "./navigation/login/LoginButton";
 
