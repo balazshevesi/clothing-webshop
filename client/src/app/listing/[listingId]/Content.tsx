@@ -50,6 +50,10 @@ export default function Content({ listing }: { listing: any }) {
       +articleListingRelation.articles.id === +selectedArticleId!,
   )[0].articles;
 
+  const currentArticleIsOnSale = !!(
+    currentArticle.articlePlannedSalesRelations &&
+    currentArticle.articlePlannedSalesRelations.length > 0
+  );
   return (
     <>
       <Container className="pt-14">
@@ -79,7 +83,32 @@ export default function Content({ listing }: { listing: any }) {
                   {currentArticle.categories.name}
                 </Link>
               </div>
-              <p className="mb-6 text-xl">{currentArticle.price} SEK</p>
+              {!currentArticleIsOnSale && (
+                <p className="mb-6 text-xl">{currentArticle.price} SEK</p>
+              )}{" "}
+              {currentArticleIsOnSale && (
+                <>
+                  <p className="text-md mb-1 flex font-medium opacity-80">
+                    <span className=" mb-0 flex line-through">
+                      {currentArticle.price} SEK
+                    </span>
+                    <span className="ml-1 rounded bg-white px-2 text-black">
+                      {/* 90% */}
+                      {Math.round(
+                        (currentArticle.articlePlannedSalesRelations[0]
+                          .newPrice /
+                          currentArticle.price) *
+                          100,
+                      )}
+                      % sale
+                    </span>
+                  </p>
+                  <p className="mb-6 text-xl">
+                    {currentArticle.articlePlannedSalesRelations[0].newPrice}{" "}
+                    SEK
+                  </p>
+                </>
+              )}{" "}
               <p>{listing.description}</p>
             </div>
             {/* <div className=" mb-6">S</div> */}

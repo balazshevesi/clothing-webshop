@@ -505,11 +505,16 @@ app.get("/categories", async (c) => {
 app.get("/listing/:listingId", async (c) => {
   const db = await getDatabase();
   const { listingId } = c.req.param();
+  const now = new Date();
 
   const content = await db.query.listings.findFirst({
     where: (listings, { eq }) => eq(listings.id, +listingId),
     with: {
-      articles: true,
+      articles: {
+        with: {
+          articleImages: true,
+        },
+      },
       articleListingRelations: {
         with: {
           articles: {
@@ -518,6 +523,18 @@ app.get("/listing/:listingId", async (c) => {
               categories: true,
               articleImages: true,
               articleProperties: true,
+              articlePlannedSalesRelations: {
+                with: {
+                  plannedSales: {
+                    //@ts-ignore ts gives error, but it actually works just fine, dunno
+                    where: and(
+                      lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
+                      gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                    ),
+                    // where: ((users, { eq }) => eq(users.id, 1)),
+                  },
+                },
+              },
             },
           },
         },
@@ -768,11 +785,26 @@ app.get("/listings", async (c) => {
 app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();
   const listingsContent = await db.select().from(listingsTbl).limit(5);
+  const now = new Date();
 
   const defaultArticlePromises = listingsContent.map((listing) =>
     db.query.articles.findFirst({
       where: (article, { eq }) => eq(article.id, +listing.articleIdDefault!),
-      with: { articleImages: true },
+      with: {
+        articleImages: true,
+        articlePlannedSalesRelations: {
+          with: {
+            plannedSales: {
+              // @ts-ignore ts gives error, but it actually works just fine, dunno
+              where: and(
+                lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
+                gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+              ),
+              // where: ((users, { eq }) => eq(users.id, 1)),
+            },
+          },
+        },
+      },
     })
   );
 
@@ -805,6 +837,20 @@ app.get("/planned-sale/:plannedSaleId", async (c) => {
     },
   });
   return c.json({ content: plannedSalesSelect });
+});
+app.get("/running-sales", async (c) => {
+  const db = await getDatabase();
+  const now = new Date();
+  const runningsSalesSelect = await db
+    .select()
+    .from(plannedSalesTbl)
+    .where(
+      and(
+        lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
+        gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+      )
+    );
+  return c.json({ content: runningsSalesSelect });
 });
 
 //users
