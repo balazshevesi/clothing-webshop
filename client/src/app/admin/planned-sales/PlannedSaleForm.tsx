@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-import SelectArticlesModal from "../listings/SelectArticlesModal";
+import SelectArticlesModal from "./SelectArticlesModal";
 import { GenericInputSchema } from "@/inputValidation/schema";
 import { safeParse } from "valibot";
 
@@ -29,21 +29,28 @@ export default function PlannedSaleForm({
   const [nameValidationMsg, setNameValidationMsg] = useState("");
 
   const [announcementTitle, setAnnouncementTitle] = useState(
-    saleData ? saleData.image : "",
+    saleData ? saleData.announcementTitle : "",
   );
   const [announcementTitleValidationMsg, setAnnouncementTitleValidationMsg] =
     useState("");
 
   const [startDate, setStartDate] = useState<Date>(
-    saleData ? saleData.image : new Date(),
+    saleData ? new Date(saleData.startTime) : new Date(),
   );
 
   const [endDate, setEndDate] = useState<Date>(
-    saleData ? saleData.image : new Date(),
+    saleData ? new Date(saleData.endTime) : new Date(),
   );
 
   const [includedArticles, setIncludedArticles] = useState(
-    saleData ? saleData.articles : [],
+    saleData
+      ? saleData.articlePlannedSalesRelations.map(
+          (plannedSaleRelation: any) => ({
+            ...plannedSaleRelation.articles,
+            price: plannedSaleRelation.newPrice,
+          }),
+        )
+      : [],
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -70,70 +77,84 @@ export default function PlannedSaleForm({
   //   router.push("/admin/categories");
   // };
 
-  // const handleCategory = async (e: any) => {
-  //   e.preventDefault();
+  const handlePlannedSale = async (e: any) => {
+    e.preventDefault();
 
-  //   let validInput = true;
-  //   const nameValStatus = safeParse(GenericInputSchema, name);
-  //   if (!nameValStatus.success) {
-  //     setNameValidationMsg(nameValStatus.issues[0].message);
-  //     validInput = false;
-  //   } else setNameValidationMsg("");
+    // let validInput = true;
+    // const nameValStatus = safeParse(GenericInputSchema, name);
+    // if (!nameValStatus.success) {
+    //   setNameValidationMsg(nameValStatus.issues[0].message);
+    //   validInput = false;
+    // } else setNameValidationMsg("");
 
-  //   const imageValStatus = safeParse(GenericInputSchema, image);
-  //   if (!imageValStatus.success) {
-  //     setImageValidationMsg(imageValStatus.issues[0].message);
-  //     validInput = false;
-  //   } else setImageValidationMsg("");
+    // const imageValStatus = safeParse(GenericInputSchema, image);
+    // if (!imageValStatus.success) {
+    //   setImageValidationMsg(imageValStatus.issues[0].message);
+    //   validInput = false;
+    // } else setImageValidationMsg("");
 
-  //   const descriptionValStatus = safeParse(GenericInputSchema, description);
-  //   if (!descriptionValStatus.success) {
-  //     setDescriptionValidationMsg(descriptionValStatus.issues[0].message);
-  //     validInput = false;
-  //   } else setDescriptionValidationMsg("");
-  //   if (!validInput) return;
+    // const descriptionValStatus = safeParse(GenericInputSchema, description);
+    // if (!descriptionValStatus.success) {
+    //   setDescriptionValidationMsg(descriptionValStatus.issues[0].message);
+    //   validInput = false;
+    // } else setDescriptionValidationMsg("");
+    // if (!validInput) return;
 
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BACKEND_HOST}/admin/category${
-  //         saleData ? `/${saleData.id}` : ""
-  //       }`,
-  //       {
-  //         method: saleData ? "put" : "post",
-  //         body: JSON.stringify({ name, image, description }),
-  //         headers: {
-  //           userAuth: getCookie("userAuth")!,
-  //         },
-  //       },
-  //     );
-  //     if (!response.ok) {
-  //       setServerError(true);
-  //       return;
-  //     } else setServerError(false);
-  //     const data = await response.json();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  //   setIsLoading(false);
+    const body = {
+      startTime: startDate,
+      endTime: endDate,
+      name: name,
+      announcementTitle: announcementTitle,
+      includedArticleIds: includedArticles.map((articleObj: any) => {
+        const frozenArticle: any = {};
+        frozenArticle.articleId = articleObj.id;
+        frozenArticle.newPrice = articleObj.price;
+        return frozenArticle;
+      }),
+    } as const;
 
-  //   if (!saleData) {
-  //     setName("");
-  //     setImage("");
-  //     setDescription("");
-  //   }
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/admin/planned-sale${
+          saleData ? `/${saleData.id}` : ""
+        }`,
+        {
+          method: saleData ? "put" : "post",
+          body: JSON.stringify(body),
+          headers: {
+            userAuth: getCookie("userAuth")!,
+          },
+        },
+      );
+      if (!response.ok) {
+        setServerError(true);
+        return;
+      } else setServerError(false);
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
 
-  //   setSuccess(true);
-  //   setTimeout(() => {
-  //     setSuccess(false);
-  //   }, 2000);
-  // };
+    if (!saleData) {
+      setName("");
+      // setImage("");
+      // setDescription("");
+    }
+
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+    }, 2000);
+  };
+
   return (
     <div className=" max-w-xl">
       <Title2>
         {saleData ? `Edit ${saleData.name} ` : "Add new planned sale"}
       </Title2>
-      <form className="space-y-4">
+      <form onSubmit={handlePlannedSale} className="space-y-4">
         <Input
           value={name}
           onInput={(e: any) => setName(e.target.value)}

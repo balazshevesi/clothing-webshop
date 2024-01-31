@@ -339,6 +339,7 @@ Detta är också mitt gymnasie arbete
 
 - [ ] Integrate stripe
 - [ ] Make so buyers can submit reviews
+- [ ] Ai integration??? like talk with the cart? let the ai modify the cart??
 
 ---
 

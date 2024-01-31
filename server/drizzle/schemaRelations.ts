@@ -1,10 +1,12 @@
 import {
   articleListingRelations,
+  articlePlannedSalesRelations,
   cartItems,
   carts,
   categories,
   guestUsers,
   listings,
+  plannedSales,
   users,
 } from "./schema";
 //! NOTE TO FUTURE SELF: THIS FILE IS NOT GENERATED (UNLIKE schema.ts) BY DRIZZLE, SO DON'T DELTE IT PLS
@@ -19,6 +21,7 @@ export const articlesRelations = relations(articles, ({ one, many }) => ({
   articleImages: many(articleImages),
   articleProperties: many(articleProperties),
   cartItems: many(cartItems),
+  articlePlannedSalesRelations: many(articlePlannedSalesRelations),
   brands: one(brands, {
     fields: [articles.brandId],
     references: [brands.id],
@@ -101,9 +104,23 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
   articles: many(articles),
 }));
 
-// export const brandsRelations = relations(brands, ({ one }) => ({
-//   articles: one(articles, {
-//     fields: [articleProperties.articleId], // foreign key in articleImages
-//     references: [articles.id], // primary key in articles
-//   }),
-// }));
+export const plannedSalesRelationsSchema = relations(
+  plannedSales,
+  ({ one, many }) => ({
+    articlePlannedSalesRelations: many(articlePlannedSalesRelations),
+  })
+);
+
+export const plannedSalesRelationsRelations = relations(
+  articlePlannedSalesRelations,
+  ({ one, many }) => ({
+    plannedSales: one(plannedSales, {
+      fields: [articlePlannedSalesRelations.plannedSaleId],
+      references: [plannedSales.id],
+    }),
+    articles: one(articles, {
+      fields: [articlePlannedSalesRelations.articleId],
+      references: [articles.id],
+    }),
+  })
+);

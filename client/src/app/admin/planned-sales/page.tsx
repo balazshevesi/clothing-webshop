@@ -31,7 +31,7 @@ export default function Page() {
             >
               {sale.name}
               <Link
-                href={`/admin/listings/edit/${sale.id}`}
+                href={`/admin/planned-sales/edit/${sale.id}`}
                 className="rounded bg-slate-700 p-2"
               >
                 <PencilIcon className="size-5" />

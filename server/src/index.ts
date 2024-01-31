@@ -2,7 +2,7 @@ import {
   articleImagesRelations,
   articlesRelations,
 } from "./../drizzle/schemaRelations";
-import { articleProperties } from "./../drizzle/schema";
+import { articleImages, articleProperties } from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
@@ -349,18 +349,54 @@ interface PlannedSales {
 adminRoutes.post("/planned-sale", async (c) => {
   const db = await getDatabase();
   const body: PlannedSales = await c.req.json();
+  console.log("bodybodybody", body);
+
   const [insertedPlannedSale] = await db.insert(plannedSalesTbl).values({
     startTime: convertToTimestamp(body.startTime),
     endTime: convertToTimestamp(body.endTime),
     name: body.name,
     announcementTitle: body.announcementTitle,
   });
+  console.log("insertedPlannedSale.insertId", insertedPlannedSale.insertId);
   const plannedSalesRelations = body.includedArticleIds.map((article) => ({
     plannedSaleId: +insertedPlannedSale.insertId,
     newPrice: "" + article.newPrice,
     articleId: +article.articleId,
   }));
-  db.insert(articlePlannedSalesRelationsTbl).values(plannedSalesRelations);
+  await db
+    .insert(articlePlannedSalesRelationsTbl)
+    .values(plannedSalesRelations);
+  return c.json({});
+});
+
+adminRoutes.put("/planned-sale/:plannedSaleId", async (c) => {
+  const db = await getDatabase();
+  const body: PlannedSales = await c.req.json();
+  const { plannedSaleId } = c.req.param();
+
+  const [updatedPlannedSale] = await db
+    .update(plannedSalesTbl)
+    .set({
+      startTime: convertToTimestamp(body.startTime),
+      endTime: convertToTimestamp(body.endTime),
+      name: body.name,
+      announcementTitle: body.announcementTitle,
+    })
+    .where(eq(plannedSalesTbl.id, +plannedSaleId));
+
+  const plannedSalesRelations = body.includedArticleIds.map((article) => ({
+    plannedSaleId: +plannedSaleId,
+    newPrice: "" + article.newPrice,
+    articleId: +article.articleId,
+  }));
+  await db
+    .delete(articlePlannedSalesRelationsTbl)
+    .where(eq(articlePlannedSalesRelationsTbl.plannedSaleId, +plannedSaleId));
+  await db
+    .insert(articlePlannedSalesRelationsTbl)
+    .values(plannedSalesRelations);
+
+  return c.json({});
 });
 
 adminRoutes.get("/", (c) => c.json({}));
@@ -746,6 +782,19 @@ app.get("/listings/most-popular", async (c) => {
 app.get("/planned-sales", async (c) => {
   const db = await getDatabase();
   const plannedSalesSelect = await db.select().from(plannedSalesTbl);
+  return c.json({ content: plannedSalesSelect });
+});
+app.get("/planned-sale/:plannedSaleId", async (c) => {
+  const db = await getDatabase();
+  const { plannedSaleId } = c.req.param();
+  const plannedSalesSelect = await db.query.plannedSales.findFirst({
+    where: eq(plannedSalesTbl.id, +plannedSaleId),
+    with: {
+      articlePlannedSalesRelations: {
+        with: { articles: { with: { articleImages: true } } },
+      },
+    },
+  });
   return c.json({ content: plannedSalesSelect });
 });
 
