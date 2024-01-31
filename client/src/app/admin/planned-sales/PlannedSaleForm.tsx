@@ -35,11 +35,23 @@ export default function PlannedSaleForm({
     useState("");
 
   const [startDate, setStartDate] = useState<Date>(
-    saleData ? new Date(saleData.startTime) : new Date(),
+    saleData
+      ? new Date(
+          new Date(saleData.startTime).setHours(
+            new Date(saleData.startTime).getHours() + 1,
+          ),
+        )
+      : new Date(),
   );
 
   const [endDate, setEndDate] = useState<Date>(
-    saleData ? new Date(saleData.endTime) : new Date(),
+    saleData
+      ? new Date(
+          new Date(saleData.endTime).setHours(
+            new Date(saleData.endTime).getHours() + 2,
+          ),
+        )
+      : new Date(),
   );
 
   const [includedArticles, setIncludedArticles] = useState(
@@ -57,25 +69,25 @@ export default function PlannedSaleForm({
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState(false);
 
-  // const handleDelete = async () => {
-  //   const isSure = confirm(`Are you sure you want to delete ${saleData.name}?`);
-  //   if (!isSure) return;
-  //   const response = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_HOST}/admin/category/${saleData.id}`,
-  //     {
-  //       method: "delete",
-  //       headers: {
-  //         userAuth: getCookie("userAuth")!,
-  //       },
-  //     },
-  //   );
-  //   const data = await response.json();
-  //   if (!response.ok) {
-  //     setServerError(true);
-  //     return;
-  //   }
-  //   router.push("/admin/categories");
-  // };
+  const handleDelete = async () => {
+    const isSure = confirm(`Are you sure you want to delete ${saleData.name}?`);
+    if (!isSure) return;
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/admin/planned-sale/${saleData.id}`,
+      {
+        method: "delete",
+        headers: {
+          userAuth: getCookie("userAuth")!,
+        },
+      },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      setServerError(true);
+      return;
+    }
+    router.push("/admin/planned-sales");
+  };
 
   const handlePlannedSale = async (e: any) => {
     e.preventDefault();
@@ -257,7 +269,7 @@ export default function PlannedSaleForm({
               variant="destructive"
               size="icon"
               type="button"
-              // onClick={handleDelete}
+              onClick={handleDelete}
             >
               <TrashIcon className="size-5" />
             </Button>

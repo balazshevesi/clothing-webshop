@@ -368,7 +368,6 @@ adminRoutes.post("/planned-sale", async (c) => {
     .values(plannedSalesRelations);
   return c.json({});
 });
-
 adminRoutes.put("/planned-sale/:plannedSaleId", async (c) => {
   const db = await getDatabase();
   const body: PlannedSales = await c.req.json();
@@ -384,18 +383,28 @@ adminRoutes.put("/planned-sale/:plannedSaleId", async (c) => {
     })
     .where(eq(plannedSalesTbl.id, +plannedSaleId));
 
-  const plannedSalesRelations = body.includedArticleIds.map((article) => ({
-    plannedSaleId: +plannedSaleId,
-    newPrice: "" + article.newPrice,
-    articleId: +article.articleId,
-  }));
-  await db
-    .delete(articlePlannedSalesRelationsTbl)
-    .where(eq(articlePlannedSalesRelationsTbl.plannedSaleId, +plannedSaleId));
-  await db
-    .insert(articlePlannedSalesRelationsTbl)
-    .values(plannedSalesRelations);
+  if (body.includedArticleIds.length > 0) {
+    const plannedSalesRelations = body.includedArticleIds.map((article) => ({
+      plannedSaleId: +plannedSaleId,
+      newPrice: "" + article.newPrice,
+      articleId: +article.articleId,
+    }));
+    await db
+      .delete(articlePlannedSalesRelationsTbl)
+      .where(eq(articlePlannedSalesRelationsTbl.plannedSaleId, +plannedSaleId));
+    await db
+      .insert(articlePlannedSalesRelationsTbl)
+      .values(plannedSalesRelations);
+  }
 
+  return c.json({});
+});
+adminRoutes.delete("/planned-sale/:plannedSaleId", async (c) => {
+  const db = await getDatabase();
+  const { plannedSaleId } = c.req.param();
+  await db
+    .delete(plannedSalesTbl)
+    .where(eq(plannedSalesTbl.id, +plannedSaleId));
   return c.json({});
 });
 
