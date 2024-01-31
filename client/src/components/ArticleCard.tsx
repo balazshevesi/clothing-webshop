@@ -38,7 +38,7 @@ export default function ArticleCard({
     : 0;
 
   return (
-    <div className="relative overflow-hidden whitespace-nowrap rounded">
+    <div className="relative min-w-56 max-w-xs overflow-hidden whitespace-nowrap rounded">
       <Image
         className="absolute left-0 top-0 z-0 h-full w-full opacity-40 blur-xl"
         width={200}
