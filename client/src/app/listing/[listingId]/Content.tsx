@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
+import Countdown from "react-countdown";
 
 import MostPopular from "@/components/MostPopular";
 import Reviews from "@/components/Reviews";
@@ -92,15 +93,25 @@ export default function Content({ listing }: { listing: any }) {
                     <span className=" mb-0 flex line-through">
                       {currentArticle.price} SEK
                     </span>
-                    <span className="ml-1 rounded bg-white px-2 text-black">
-                      {/* 90% */}
-                      {Math.round(
-                        (currentArticle.articlePlannedSalesRelations[0]
-                          .newPrice /
-                          currentArticle.price) *
-                          100,
-                      )}
-                      % sale
+                    <span className="ml-1 rounded bg-white px-2 uppercase text-black">
+                      save{" "}
+                      {100 -
+                        Math.round(
+                          (currentArticle.articlePlannedSalesRelations[0]
+                            .newPrice /
+                            currentArticle.price) *
+                            100,
+                        )}
+                      %
+                    </span>
+                    <span className="ml-1">
+                      <Countdown
+                        date={
+                          new Date(
+                            currentArticle.articlePlannedSalesRelations[0].plannedSales.endTime,
+                          )
+                        }
+                      />
                     </span>
                   </p>
                   <p className="mb-6 text-xl">

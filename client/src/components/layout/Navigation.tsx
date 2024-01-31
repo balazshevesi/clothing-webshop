@@ -7,6 +7,7 @@ import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 
 import Container from "../general/Container";
 import NavigationDropdown from "./NavigationDropdown";
+import CountDown from "./navigation/CountDown";
 import CartSheet from "./navigation/cart/CartSheet";
 import LoginButton from "./navigation/login/LoginButton";
 
@@ -41,7 +42,10 @@ export default async function Navigation() {
     <div className="sticky left-0 top-0 z-50">
       {runningSales.length > 0 && (
         <div className="border-b border-dashed border-white/50 bg-red-500 p-1 text-center font-semibold">
-          {runningSales[0].announcementTitle}
+          <span>{runningSales[0].announcementTitle}</span>{" "}
+          <span>
+            <CountDown date={new Date(runningSales[0].endTime)}></CountDown>
+          </span>
         </div>
       )}
       <nav className="w-full border-b border-dashed border-white/50 bg-black p-2 shadow">
