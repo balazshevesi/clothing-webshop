@@ -35,9 +35,9 @@ export default async function MostPopular() {
             <ArticleCard
               title={listing.title}
               image={listing.imagePath}
-              price={listing.defaultArticle.price}
-              href={`/listing/${listing.id}?article=${listing.defaultArticle.id}`}
-              article={listing.defaultArticle}
+              price={listing.articles.price}
+              href={`/listing/${listing.id}?article=${listing.articles.id}`}
+              article={listing.articles}
               key={JSON.stringify(listing)}
             />
           );

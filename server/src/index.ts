@@ -2,7 +2,11 @@ import {
   articleImagesRelations,
   articlesRelations,
 } from "./../drizzle/schemaRelations";
-import { articleImages, articleProperties } from "./../drizzle/schema";
+import {
+  articleImages,
+  articleProperties,
+  articles,
+} from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
 import { Hono } from "hono";
@@ -784,38 +788,34 @@ app.get("/listings", async (c) => {
 
 app.get("/listings/most-popular", async (c) => {
   const db = await getDatabase();
-  const listingsContent = await db.select().from(listingsTbl).limit(5);
   const now = new Date();
 
-  const defaultArticlePromises = listingsContent.map((listing) =>
-    db.query.articles.findFirst({
-      where: (article, { eq }) => eq(article.id, +listing.articleIdDefault!),
-      with: {
-        articleImages: true,
-        articlePlannedSalesRelations: {
-          with: {
-            plannedSales: {
-              // @ts-ignore ts gives error, but it actually works just fine, dunno
-              where: and(
-                lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
-                gte(plannedSalesTbl.endTime, convertToTimestamp(now))
-              ),
-              // where: ((users, { eq }) => eq(users.id, 1)),
+  const content = await db.query.listings.findMany({
+    limit: 5,
+    with: {
+      articles: {
+        with: {
+          articleImages: true,
+          articlePlannedSalesRelations: {
+            with: {
+              plannedSales: {
+                // @ts-ignore ts gives error, but it actually works just fine, dunno
+                where: and(
+                  lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
+                  gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                ),
+              },
             },
           },
         },
       },
-    })
-  );
+      articleListingRelations: {
+        with: { articles: { with: { articleImages: true } } },
+      },
+    },
+  });
 
-  const defaultArticles = await Promise.all(defaultArticlePromises);
-
-  const contentWithArticles = listingsContent.map((item, index) => ({
-    ...item,
-    defaultArticle: defaultArticles[index],
-  }));
-
-  return c.json({ content: contentWithArticles });
+  return c.json({ content });
 });
 
 //planned-sales

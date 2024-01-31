@@ -38,7 +38,7 @@ export default function Reviews() {
   return (
     <Container>
       <Title2>reviews</Title2>
-      <div className="flex w-full items-stretch gap-8 overflow-auto overflow-auto py-4">
+      <div className="flex w-full items-stretch gap-8 overflow-auto py-4">
         <Review
           title="Fantastic Experience"
           name="Alex Johnson"
