@@ -2,7 +2,6 @@
 
 import { StarIcon } from "@heroicons/react/24/solid";
 
-import MostPopularCard from "./MostPopularCard";
 import Container from "./general/Container";
 import Title2 from "./general/Title2";
 

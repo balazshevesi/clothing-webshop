@@ -1,5 +1,4 @@
 import ArticleCard from "./ArticleCard";
-import MostPopularCard from "./MostPopularCard";
 import Container from "./general/Container";
 import Title2 from "./general/Title2";
 
