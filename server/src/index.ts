@@ -6,6 +6,7 @@ import {
   articleImages,
   articleProperties,
   articles,
+  plannedSales,
 } from "./../drizzle/schema";
 import bcrypt from "bcrypt";
 
@@ -993,10 +994,31 @@ app.get("/user/:userId/cart", async (c) => {
     return c.json({});
   }
   const user = await getAndValidateUser(userId, userAuth, db);
+
+  const now = new Date();
   const cart = await db.query.carts.findFirst({
     where: (cart, { eq }) => eq(cart.userId, +userId),
     with: {
-      cartItems: { with: { articles: { with: { articleImages: true } } } },
+      cartItems: {
+        with: {
+          articles: {
+            with: {
+              articleImages: true,
+              articlePlannedSalesRelations: {
+                with: {
+                  plannedSales: {
+                    //@ts-ignore
+                    where: and(
+                      lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
+                      gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                    ),
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
   return c.json({ content: cart });

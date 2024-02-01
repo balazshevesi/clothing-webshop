@@ -85,7 +85,13 @@ export default function CartSheet() {
   const cartWorth = useMemo(() => {
     let worth = 0;
     cart.forEach((item: any) => {
-      worth = worth + item.price * item.count;
+      const itemPrice =
+        item.articlePlannedSalesRelations &&
+        item.articlePlannedSalesRelations.length > 0
+          ? item.articlePlannedSalesRelations[0].newPrice
+          : item.price;
+      console.log(item);
+      worth = worth + itemPrice * item.count;
     });
     return worth;
   }, [cart]);
