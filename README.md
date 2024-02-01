@@ -326,6 +326,7 @@ Detta är också mitt gymnasie arbete
 ## prio 1
 
 - [ ] Add planned sales shit
+- [ ] Fix bug with red hoodie, 
 
 ## prio 2
 

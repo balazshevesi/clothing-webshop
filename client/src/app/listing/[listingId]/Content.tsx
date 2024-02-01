@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Countdown from "react-countdown";
 
+import CountDown from "@/components/CountDown";
 import MostPopular from "@/components/MostPopular";
 import Reviews from "@/components/Reviews";
 import SelectArticle from "@/components/SelectArticle";
@@ -25,7 +26,6 @@ import { Button } from "@/components/ui/button";
 import AddToCartBtn from "./AddToCartBtn";
 import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
-import CountDown from "@/components/CountDown";
 
 export default function Content({ listing }: { listing: any }) {
   const searchParams = useSearchParams();
@@ -54,8 +54,10 @@ export default function Content({ listing }: { listing: any }) {
 
   const currentArticleIsOnSale = !!(
     currentArticle.articlePlannedSalesRelations &&
-    currentArticle.articlePlannedSalesRelations.length > 0
+    currentArticle.articlePlannedSalesRelations.length > 0 &&
+    currentArticle.articlePlannedSalesRelations[0].plannedSales
   );
+
   return (
     <>
       <Container className="pt-14">

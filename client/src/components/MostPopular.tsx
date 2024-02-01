@@ -29,7 +29,7 @@ export default async function MostPopular() {
   return (
     <Container>
       <Title2>most popular</Title2>
-      <div className="flex w-full grid-cols-4 gap-8 overflow-auto py-4">
+      <div className="flex w-full gap-8 overflow-auto py-4">
         {products.map((listing: any) => {
           return (
             <ArticleCard

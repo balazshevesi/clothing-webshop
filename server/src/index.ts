@@ -517,6 +517,34 @@ app.get("/listing/:listingId", async (c) => {
       articles: {
         with: {
           articleImages: true,
+          articleListingRelations: {
+            with: {
+              articles: {
+                with: {
+                  brands: true,
+                  categories: true,
+                  articleImages: true,
+                  articleProperties: true,
+                  articlePlannedSalesRelations: {
+                    //! BUG , fix this
+                    with: {
+                      plannedSales: {
+                        //@ts-ignore ts gives error, but it actually works just fine, dunno
+                        where: and(
+                          lte(
+                            plannedSalesTbl.startTime,
+                            convertToTimestamp(now)
+                          ),
+                          gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                        ),
+                        // where: ((users, { eq }) => eq(users.id, 1)),
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
       articleListingRelations: {
@@ -707,6 +735,7 @@ app.post("/articles/search", async (c) => {
         brands: true,
         categories: true,
         articleListingRelations: { with: { listings: true } },
+        articlePlannedSalesRelations: { with: { plannedSales: true } },
       },
     }));
 
@@ -715,7 +744,12 @@ app.post("/articles/search", async (c) => {
     !!body.showListings &&
     (await db.query.listings.findMany({
       with: {
-        articles: true,
+        articles: {
+          with: {
+            articlePlannedSalesRelations: { with: { plannedSales: true } },
+          },
+        },
+
         // where: (articles) => articles.categoryId.in(body.categoryIds),
       },
       where: and(
