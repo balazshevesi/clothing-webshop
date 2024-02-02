@@ -325,18 +325,15 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 
-- [ ] Add planned sales shit
-- [ ] Fix bug with red hoodie, 
-
-## prio 2
-
 - [ ] Present account info in a cleaner way, and make it editable
 - [ ] Streamline input validation and form submission across the app
 
-## prio 3
+## prio 2
 
 - [ ] Add stastics to admin panel
 - [ ] Find email provider and setup forgot password system
+
+## prio 3
 
 - [ ] Integrate stripe
 - [ ] Make so buyers can submit reviews
@@ -344,6 +341,8 @@ Detta är också mitt gymnasie arbete
 
 ---
 
+- [x] Add planned sales shit
+- [x] Fix bug with red hoodie,
 - [x] get nav links from the backend, also put in so that the "listing view page" has a link to view the brand, and a link to view the category
 - [x] Build filter/browse section of the website
 - [x] Fix weird (race condition?) bug with cart state syncing (probably caused by incorrect implementation of debouncing, would probably be fixed by removing debouncing entierly)

@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 
 import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 
+import CountDown from "../CountDown";
 import Container from "../general/Container";
 import NavigationDropdown from "./NavigationDropdown";
-import CountDown from "../CountDown";
 import CartSheet from "./navigation/cart/CartSheet";
 import LoginButton from "./navigation/login/LoginButton";
 
@@ -28,15 +28,24 @@ export default async function Navigation() {
   const cookieStore = cookies();
   const userAuth = cookieStore.get("userAuth");
 
-  const categoryResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`,
-  );
-  const categories = (await categoryResponse.json()).content;
+  const categoriesUrl = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`;
+  const runningSalesUrl = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/running-sales`;
 
-  const runningSalesResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST}/running-sales`,
-  );
-  const runningSales = (await runningSalesResponse.json()).content;
+  // Start both fetch requests in parallel
+  const [categoryResponse, runningSalesResponse] = await Promise.all([
+    fetch(categoriesUrl),
+    fetch(runningSalesUrl),
+  ]);
+
+  // Once both requests have completed, parse the JSON
+  const [categoriesJson, runningSalesJson] = await Promise.all([
+    categoryResponse.json(),
+    runningSalesResponse.json(),
+  ]);
+
+  // Access the content property from the responses
+  const categories = categoriesJson.content;
+  const runningSales = runningSalesJson.content;
 
   return (
     <div className="sticky left-0 top-0 z-50">
