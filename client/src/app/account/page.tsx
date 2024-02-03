@@ -4,6 +4,7 @@ import Link from "next/link";
 import Container from "@/components/general/Container";
 import Title1 from "@/components/general/Title1";
 
+import Edit from "./Edit";
 import SignOut from "./SignOut";
 
 export default async function Page() {
@@ -26,7 +27,7 @@ export default async function Page() {
   return (
     <Container>
       <Title1>Viewing Account</Title1>
-      {JSON.stringify(data)}
+      <Edit initialData={data.userInfo} />
       <div className=" flex gap-2">
         <SignOut />
         {!!data.userInfo && !!data.userInfo.isAdmin && (

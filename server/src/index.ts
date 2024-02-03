@@ -917,6 +917,31 @@ app.get("/user/:userId", async (c) => {
   return c.json({ userInfo });
 });
 
+interface UpdateUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
+app.put("/user/:userId", async (c) => {
+  const db = await getDatabase();
+  const { userId } = c.req.param();
+  const body: UpdateUser = await c.req.json();
+  const authHeader = c.req.header("userAuth");
+  if (!authHeader) return c.status(401);
+
+  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+  await jose.jwtVerify(authHeader, encodedKey);
+
+  const [userInfo] = await db
+    .update(usersTbl)
+    .set(body)
+    .where(eq(usersTbl.id, +userId));
+
+  return c.json({ userInfo });
+});
+
 //cart
 interface CartBody {
   articleId: string;
