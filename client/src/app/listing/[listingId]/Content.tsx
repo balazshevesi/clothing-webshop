@@ -28,6 +28,7 @@ import LeftSectoin from "./LeftSectoin";
 import { useQueryState } from "nuqs";
 
 export default function Content({ listing }: { listing: any }) {
+
   const searchParams = useSearchParams();
   const article = searchParams.get("article");
 

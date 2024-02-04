@@ -325,7 +325,6 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 
-- [ ] Present account info in a cleaner way, and make it editable
 - [ ] Streamline input validation and form submission across the app
 
 ## prio 2
@@ -336,11 +335,15 @@ Detta är också mitt gymnasie arbete
 ## prio 3
 
 - [ ] Integrate stripe
+- [ ] probably shouldn't store user info (apart from userId) on the client
+- [ ] fix error on editing listing, dunno why
+- [ ] remove a bunch of unsused console logs
 - [ ] Make so buyers can submit reviews
 - [ ] Ai integration??? like talk with the cart? let the ai modify the cart??
 
 ---
 
+- [x] Present account info in a cleaner way, and make it editable
 - [x] Add planned sales shit
 - [x] Fix bug with red hoodie,
 - [x] get nav links from the backend, also put in so that the "listing view page" has a link to view the brand, and a link to view the category

@@ -24,6 +24,7 @@ export default function ListingForm({
   listingContent?: any;
 }) {
   const router = useRouter();
+  console.log("listingContentlistingContent", listingContent);
 
   const [title, setTitle] = useState(
     listingContent ? listingContent.title : "",
@@ -41,15 +42,15 @@ export default function ListingForm({
   const [descriptionValidationMsg, setDescriptionValidationMsg] = useState("");
 
   const [includedArticles, setIncludedArticles] = useState(
-    listingContent ? listingContent.articles : [],
+    listingContent
+      ? listingContent.articleListingRelations.map(
+          (relation: any) => relation.articles,
+        )
+      : [],
   );
 
   const [defaultArticle, setDefaultArticle] = useState<any>(
-    listingContent
-      ? listingContent.articles.filter(
-          (article: any) => article.id === listingContent.articleIdDefault,
-        )
-      : [],
+    listingContent ? [listingContent.articles] : [],
   );
 
   const [isLoading, setIsLoading] = useState(false);

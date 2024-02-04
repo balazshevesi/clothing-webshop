@@ -90,7 +90,6 @@ export default function CartSheet() {
         item.articlePlannedSalesRelations.length > 0
           ? item.articlePlannedSalesRelations[0].newPrice
           : item.price;
-      console.log(item);
       worth = worth + itemPrice * item.count;
     });
     return worth;
