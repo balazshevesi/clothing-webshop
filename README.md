@@ -336,13 +336,13 @@ Detta är också mitt gymnasie arbete
 
 - [ ] Integrate stripe
 - [ ] probably shouldn't store user info (apart from userId) on the client
-- [ ] fix error on editing listing, dunno why
 - [ ] remove a bunch of unsused console logs
 - [ ] Make so buyers can submit reviews
 - [ ] Ai integration??? like talk with the cart? let the ai modify the cart??
 
 ---
 
+- [x] fix error on editing listing, dunno why
 - [x] Present account info in a cleaner way, and make it editable
 - [x] Add planned sales shit
 - [x] Fix bug with red hoodie,
