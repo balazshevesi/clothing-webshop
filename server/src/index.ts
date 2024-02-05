@@ -1486,26 +1486,28 @@ app.post("/create-checkout-session", async (c) => {
   });
 
   //docs for: https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items-price_data
-  const lineItems = cartItems.map((cartItem) => {
-    const lineItem: any = { price_data: {} };
-    lineItem.price_data.unit_amount =
-      cartItem.articles.articlePlannedSalesRelations.length === 0
-        ? Math.round(+cartItem.articles.price * 100)
-        : Math.round(
-            +cartItem.articles.articlePlannedSalesRelations[0].newPrice * 100
-          );
-    lineItem.price_data.currency = "sek";
-    lineItem.price_data.product_data = {
-      name: cartItem.articles.name,
-      description: cartItem.articles.description,
-      images: cartItem.articles.articleImages
-        .map((articleImage) => articleImage.imagePath)
-        .slice(0, 8),
-    };
-    lineItem.quantity = cartItem.quantity;
+  const lineItems = cartItems.map(({ articles, quantity }) => {
+    const hasSale = articles.articlePlannedSalesRelations.length > 0;
+    const price = hasSale
+      ? articles.articlePlannedSalesRelations[0].newPrice
+      : articles.price;
 
-    return lineItem;
+    return {
+      price_data: {
+        currency: "sek",
+        unit_amount: Math.round(+price * 100),
+        product_data: {
+          name: articles.name,
+          description: articles.description,
+          images: articles.articleImages
+            .slice(0, 8)
+            .map(({ imagePath }) => imagePath),
+        },
+      },
+      quantity,
+    };
   });
+
   console.log("lineItemslineItemslineItems", lineItems);
 
   const session = await stripe.checkout.sessions.create({
