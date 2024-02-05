@@ -8,7 +8,8 @@
     "drizzle-orm": "^0.29.3",
     "hono": "^3.12.3",
     "jose": "^5.2.0",
-    "mysql2": "^3.7.0"
+    "mysql2": "^3.7.0",
+    "stripe": "^14.15.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

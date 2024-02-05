@@ -58,6 +58,9 @@
   <a href="https://jwt.io/">
     <img src="https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=for-the-badge"/>
   </a>
+  <a href="https://stripe.com/">
+    <img src="https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white"/>
+  </a>
   <a href="https://prettier.io/">
     <img src="https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=fff&style=for-the-badge"/>
   </a>
@@ -329,12 +332,13 @@ Detta är också mitt gymnasie arbete
 
 ## prio 2
 
+- [ ] Add success screen after payment?
+- [ ] Add to orders table after successful payment??
 - [ ] Add stastics to admin panel
 - [ ] Find email provider and setup forgot password system
 
 ## prio 3
 
-- [ ] Integrate stripe
 - [ ] probably shouldn't store user info (apart from userId) on the client
 - [ ] remove a bunch of unsused console logs
 - [ ] Make so buyers can submit reviews
@@ -342,6 +346,7 @@ Detta är också mitt gymnasie arbete
 
 ---
 
+- [x] Integrate stripe
 - [x] fix error on editing listing, dunno why
 - [x] Present account info in a cleaner way, and make it editable
 - [x] Add planned sales shit

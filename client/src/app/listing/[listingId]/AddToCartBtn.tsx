@@ -14,7 +14,7 @@ interface AddToCartBtn {
   listing: any;
 }
 export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
-  const { items, updateCount, increment, decrement, open } =
+  const { items, updateCount, increment, decrement, open, goToCheckout } =
     useShoppingCartSlice();
 
   const itemCount = items.filter((cartItem) => cartItem.id === article.id)[0]
@@ -65,7 +65,7 @@ export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
           </Button>
           <Button
             className="grow select-none"
-            onClick={() => increment(article)}
+            onClick={() => goToCheckout()}
             variant="default"
           >
             To Checkout

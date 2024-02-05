@@ -105,6 +105,7 @@ export default function CartSheet() {
   const isOpen = useShoppingCartSlice((state: any) => state.isOpen);
   const open = useShoppingCartSlice((state: any) => state.open);
   const close = useShoppingCartSlice((state: any) => state.close);
+  const { goToCheckout } = useShoppingCartSlice();
 
   return (
     <div>
@@ -134,7 +135,7 @@ export default function CartSheet() {
                   <div>Värde:</div>
                   <div>{cartWorth}:-</div>
                 </div>
-                <Button>Gå till kassan</Button>
+                <Button onClick={() => goToCheckout()}>Gå till kassan</Button>
               </div>
             </SheetFooter>
           </div>

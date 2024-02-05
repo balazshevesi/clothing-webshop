@@ -1,8 +1,4 @@
 import {
-  articleImagesRelations,
-  articlesRelations,
-} from "./../drizzle/schemaRelations";
-import {
   articleImages,
   articleProperties,
   articles,
@@ -13,6 +9,7 @@ import bcrypt from "bcrypt";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import * as jose from "jose";
+const stripe = require("stripe")(process.env.STRIPE_TEST_SECRET_API_KEY);
 
 import {
   articleImages as articleImagesTbl,
@@ -1455,6 +1452,71 @@ app.post("/auth/signup", async (c) => {
     .sign(secret);
 
   return c.json({ userIdJwt, userInfo });
+});
+
+interface createCheckoutSessionBody {}
+
+app.post("/create-checkout-session", async (c) => {
+  const db = await getDatabase();
+
+  const userAuth = c.req.header("userAuth");
+  const guestUserAuth = c.req.header("guestUserAuth");
+
+  if (!userAuth) {
+    c.status(401);
+    return c.json({});
+  }
+  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+  const { payload } = JSON.parse(
+    JSON.stringify(await jose.jwtVerify(userAuth, encodedKey))
+  );
+
+  const [cart] = await db
+    .select()
+    .from(cartsTbl)
+    .where(eq(cartsTbl.userId, +payload.userId));
+  const cartItems = await db.query.cartItems.findMany({
+    where: eq(cartItemsTbl.cartId, cart.id),
+    with: {
+      articles: {
+        //! potential bug with articlePlannedSalesRelations since later in the code im accessing [0], with could be wrong
+        with: { articleImages: true, articlePlannedSalesRelations: true },
+      },
+    },
+  });
+
+  //docs for: https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items-price_data
+  const lineItems = cartItems.map((cartItem) => {
+    const lineItem: any = { price_data: {} };
+    lineItem.price_data.unit_amount =
+      cartItem.articles.articlePlannedSalesRelations.length === 0
+        ? Math.round(+cartItem.articles.price * 100)
+        : Math.round(
+            +cartItem.articles.articlePlannedSalesRelations[0].newPrice * 100
+          );
+    lineItem.price_data.currency = "sek";
+    lineItem.price_data.product_data = {
+      name: cartItem.articles.name,
+      description: cartItem.articles.description,
+      images: cartItem.articles.articleImages
+        .map((articleImage) => articleImage.imagePath)
+        .slice(0, 8),
+    };
+    lineItem.quantity = cartItem.quantity;
+
+    return lineItem;
+  });
+  console.log("lineItemslineItemslineItems", lineItems);
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: lineItems,
+
+    mode: "payment",
+    success_url: `${process.env.FRONTEND_HOST}/`,
+    cancel_url: `${process.env.FRONTEND_HOST}/`,
+  });
+
+  return c.json({ session });
 });
 
 export default {

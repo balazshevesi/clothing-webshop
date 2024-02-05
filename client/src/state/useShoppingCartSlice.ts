@@ -14,6 +14,7 @@ interface UseShoppingCart {
   close: Function;
   resetCart: Function;
   fetchAndSetCart: Function;
+  goToCheckout: Function;
 }
 
 const sendUpdatedItem = async (item: any, newCount: number) => {
@@ -133,4 +134,20 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
     set((state: any) => {
       return { isOpen: false };
     }),
+
+  goToCheckout: async () => {
+    const response = await fetch(
+      "http://localhost:3002/create-checkout-session",
+      {
+        method: "post",
+        headers: {
+          userAuth: getCookie("userAuth")!,
+          guestUserAuth: getCookie("guestUserAuth")!,
+        },
+      },
+    );
+    const data = await response.json();
+    const paymentUrl = data.session.url;
+    location.replace(paymentUrl);
+  },
 }));
