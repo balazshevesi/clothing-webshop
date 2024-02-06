@@ -332,15 +332,18 @@ Detta är också mitt gymnasie arbete
 
 ## prio 2
 
-- [ ] Add success screen after payment?
+- [ ] Add success screen after payment, and whipe cart items
+- [ ] Fix checkout for guest users
+- [ ] Make so that the cancel button on the stripe page brings you back to the prevous page that you were on. pretty much just need to add an argument to the goToCheckout function
 - [ ] Add to orders table after successful payment??
-- [ ] Add stastics to admin panel
+- [ ] Add statistics to admin panel
 - [ ] Find email provider and setup forgot password system
+- [ ] Fix behavior if only one color/size is available
 
 ## prio 3
 
 - [ ] probably shouldn't store user info (apart from userId) on the client
-- [ ] remove a bunch of unsused console logs
+- [ ] remove a bunch of unused console logs
 - [ ] Make so buyers can submit reviews
 - [ ] Ai integration??? like talk with the cart? let the ai modify the cart??
 
@@ -353,7 +356,7 @@ Detta är också mitt gymnasie arbete
 - [x] Fix bug with red hoodie,
 - [x] get nav links from the backend, also put in so that the "listing view page" has a link to view the brand, and a link to view the category
 - [x] Build filter/browse section of the website
-- [x] Fix weird (race condition?) bug with cart state syncing (probably caused by incorrect implementation of debouncing, would probably be fixed by removing debouncing entierly)
+- [x] Fix weird (race condition?) bug with cart state syncing (probably caused by incorrect implementation of debouncing, would probably be fixed by removing debouncing entirely)
 - [x] Build search functionality? (dunno how, but i'll find out)
 - [x] FIX BUG where the backend tries to send commands to the database, even though the connection is closed (kinda fixed maybe??)
 - [ ] Write some tests? idk
