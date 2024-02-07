@@ -24,7 +24,6 @@ export default function ListingForm({
   listingContent?: any;
 }) {
   const router = useRouter();
-  console.log("listingContentlistingContent", listingContent);
 
   const [title, setTitle] = useState(
     listingContent ? listingContent.title : "",

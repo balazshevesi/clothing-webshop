@@ -54,17 +54,9 @@ export default function SelectArticle({
         ),
     });
   });
-  console.log("colorcolor", JSON.stringify(colors));
 
   let articlesAvailableForSelectedColor: any = colors[0].articles;
-  console.log(colors);
   colors.forEach((colorObj: any) => {
-    console.log(
-      colorObj.articles.filter(
-        (article: any) => +article.id === +selectedArticleId,
-      ),
-    );
-
     if (
       colorObj.articles.filter(
         (article: any) => +article.id === +selectedArticleId,

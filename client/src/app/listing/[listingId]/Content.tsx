@@ -132,7 +132,7 @@ export default function Content({ listing }: { listing: any }) {
               setSelectedArticle={setSelectedArticleId}
               listing={listing}
             />
-            <div className=" mb-10 w-full">
+            <div className="mb-10 w-full">
               <AddToCartBtn listing={listing} article={currentArticle} />
             </div>
             <Accordion type="single" collapsible>

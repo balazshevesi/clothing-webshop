@@ -20,6 +20,5 @@ export default function Page({
   });
 
   if (isLoading || !data) return <div>Loading...</div>;
-  console.log(data);
   return <PlannedSaleForm saleData={data} />;
 }

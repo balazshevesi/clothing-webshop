@@ -351,7 +351,6 @@ interface PlannedSales {
 adminRoutes.post("/planned-sale", async (c) => {
   const db = await getDatabase();
   const body: PlannedSales = await c.req.json();
-  console.log("bodybodybody", body);
 
   const [insertedPlannedSale] = await db.insert(plannedSalesTbl).values({
     startTime: convertToTimestamp(body.startTime),
@@ -359,7 +358,6 @@ adminRoutes.post("/planned-sale", async (c) => {
     name: body.name,
     announcementTitle: body.announcementTitle,
   });
-  console.log("insertedPlannedSale.insertId", insertedPlannedSale.insertId);
   const plannedSalesRelations = body.includedArticleIds.map((article) => ({
     plannedSaleId: +insertedPlannedSale.insertId,
     newPrice: "" + article.newPrice,
@@ -1204,7 +1202,6 @@ app.delete("/guest-user/:guestUserId/favs", async (c) => {
 });
 
 app.get("/user/:userId/favs", async (c) => {
-  console.log("getgetgetget");
   const db = await getDatabase();
   const { userId } = c.req.param();
   const userAuth = c.req.header("userAuth");
@@ -1459,6 +1456,7 @@ interface createCheckoutSessionBody {}
 app.post("/create-checkout-session", async (c) => {
   const db = await getDatabase();
 
+  const fromUrl = c.req.header("fromUrl");
   const userAuth = c.req.header("userAuth");
   const guestUserAuth = c.req.header("guestUserAuth");
 
@@ -1508,14 +1506,11 @@ app.post("/create-checkout-session", async (c) => {
     };
   });
 
-  console.log("lineItemslineItemslineItems", lineItems);
-
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
-
     mode: "payment",
     success_url: `${process.env.FRONTEND_HOST}/`,
-    cancel_url: `${process.env.FRONTEND_HOST}/`,
+    cancel_url: fromUrl,
   });
 
   return c.json({ session });

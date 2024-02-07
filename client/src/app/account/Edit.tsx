@@ -26,8 +26,6 @@ export default function Edit({ initialData }: EditProps) {
     initialData.email !== email ||
     initialData.phoneNumber !== phoneNumber;
 
-  console.log({ firstName, lastName, email, phoneNumber });
-
   const { data } = useQuery({
     queryKey: ["userData", initialData.id],
     queryFn: async () => {

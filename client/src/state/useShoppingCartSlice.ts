@@ -135,12 +135,17 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
       return { isOpen: false };
     }),
 
-  goToCheckout: async () => {
+  goToCheckout: async (fromUrl: string) => {
+    console.log(
+      "window.location.hrefwindow.location.href",
+      window.location.href,
+    );
     const response = await fetch(
       "http://localhost:3002/create-checkout-session",
       {
         method: "post",
         headers: {
+          fromUrl: window.location.href,
           userAuth: getCookie("userAuth")!,
           guestUserAuth: getCookie("guestUserAuth")!,
         },
