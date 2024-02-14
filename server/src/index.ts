@@ -449,6 +449,11 @@ app.get("/article/:articleId", async (c) => {
 
   return c.json({ content: articleSelect });
 });
+
+app.get("/server-health-check", async (c) => {
+  return c.json({});
+});
+
 app.get("/articles", async (c) => {
   const db = await getDatabase();
 
