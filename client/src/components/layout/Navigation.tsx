@@ -11,6 +11,34 @@ import NavigationDropdown from "./NavigationDropdown";
 import CartSheet from "./navigation/cart/CartSheet";
 import LoginButton from "./navigation/login/LoginButton";
 
+const getCategoryAndSales = async () => {
+  const categoriesUrl = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`;
+  const runningSalesUrl = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/running-sales`;
+  let serverError = false;
+
+  try {
+    const [categories, runningSales] = await Promise.all([
+      fetch(categoriesUrl).then((res) => {
+        if (!res.ok) serverError = true;
+        return res.json();
+      }),
+      fetch(runningSalesUrl).then((res) => {
+        if (!res.ok) serverError = true;
+        return res.json();
+      }),
+      ,
+    ]);
+    return {
+      categories: categories.content,
+      runningSales: runningSales.content,
+      serverError,
+    };
+  } catch {
+    serverError = true;
+    return { serverError };
+  }
+};
+
 function Logo() {
   return (
     <div className="flex w-fit cursor-pointer select-none flex-col whitespace-nowrap">
@@ -28,24 +56,13 @@ export default async function Navigation() {
   const cookieStore = cookies();
   const userAuth = cookieStore.get("userAuth");
 
-  const categoriesUrl = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/categories`;
-  const runningSalesUrl = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/running-sales`;
-
   // Start both fetch requests in parallel
-  const [categoryResponse, runningSalesResponse] = await Promise.all([
-    fetch(categoriesUrl),
-    fetch(runningSalesUrl),
-  ]);
 
-  // Once both requests have completed, parse the JSON
-  const [categoriesJson, runningSalesJson] = await Promise.all([
-    categoryResponse.json(),
-    runningSalesResponse.json(),
-  ]);
+  const { categories, runningSales, serverError } = await getCategoryAndSales();
+  console.log("categoriescategories", categories);
+  console.log("runningSalesrunningSales", runningSales);
 
-  // Access the content property from the responses
-  const categories = categoriesJson.content;
-  const runningSales = runningSalesJson.content;
+  if (serverError) return <div>sowwy ;_; server not wowkey wigth now</div>;
 
   return (
     <div className="sticky left-0 top-0 z-50">
