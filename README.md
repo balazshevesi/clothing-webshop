@@ -329,7 +329,6 @@ Detta är också mitt gymnasie arbete
 ## prio 1
 
 - [ ] Streamline input validation and form submission across the app
-- [ ] Fix checkout for guest users
 - [ ] Add success screen after payment, and wipe cart items
 
 ## prio 2
@@ -348,6 +347,7 @@ Detta är också mitt gymnasie arbete
 
 ---
 
+- [x] Fix checkout for guest users
 - [x] Make so that the cancel button on the stripe page brings you back to the prevous page that you were on. pretty much just need to add an argument to the goToCheckout function
 - [x] Integrate stripe
 - [x] fix error on editing listing, dunno why

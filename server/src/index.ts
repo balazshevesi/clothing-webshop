@@ -1457,22 +1457,44 @@ app.post("/create-checkout-session", async (c) => {
   const db = await getDatabase();
 
   const fromUrl = c.req.header("fromUrl");
-  const userAuth = c.req.header("userAuth");
-  const guestUserAuth = c.req.header("guestUserAuth");
 
-  if (!userAuth) {
+  const userAuthCookie = c.req.header("userAuth");
+  const guestUserAuthCookie = c.req.header("guestUserAuth");
+
+  const inputIsIncorrect =
+    (userAuthCookie === "undefined" && guestUserAuthCookie === "undefined") ||
+    (!userAuthCookie && !guestUserAuthCookie);
+  if (inputIsIncorrect) {
+    console.log("aborting...");
     c.status(401);
     return c.json({});
   }
-  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
-  const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(userAuth, encodedKey))
-  );
 
-  const [cart] = await db
-    .select()
-    .from(cartsTbl)
-    .where(eq(cartsTbl.userId, +payload.userId));
+  const userAuth = userAuthCookie !== "undefined" ? userAuthCookie : undefined;
+  const guestUserAuth =
+    guestUserAuthCookie !== "undefined" ? guestUserAuthCookie : undefined;
+
+  const userIsLoggedIn = !!userAuth && !guestUserAuth;
+
+  const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+  const { payload } = userIsLoggedIn
+    ? JSON.parse(
+        JSON.stringify(await jose.jwtVerify(userAuthCookie!, encodedKey))
+      )
+    : JSON.parse(
+        JSON.stringify(await jose.jwtVerify(guestUserAuth!, encodedKey))
+      );
+
+  const [cart] = userIsLoggedIn
+    ? await db
+        .select()
+        .from(cartsTbl)
+        .where(eq(cartsTbl.userId, +payload.userId))
+    : await db
+        .select()
+        .from(cartsTbl)
+        .where(eq(cartsTbl.guestUserId, +payload.guestUserId));
+
   const cartItems = await db.query.cartItems.findMany({
     where: eq(cartItemsTbl.cartId, cart.id),
     with: {
