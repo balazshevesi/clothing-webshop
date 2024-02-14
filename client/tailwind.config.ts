@@ -73,7 +73,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        nice: ['"asap"', "var(--font-playfair_Display)"], // Ensure fonts with spaces have " " surrounding it.
+        nice: ["var(--playfair-font)"], // Ensure fonts with spaces have " " surrounding it.
       },
     },
   },

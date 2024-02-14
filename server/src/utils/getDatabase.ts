@@ -13,7 +13,7 @@ const poolConfig: mysql.PoolOptions = {
   port: Number(process.env.DATABASE_PORT),
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
 };
 
 const pool = mysql.createPool(poolConfig);
@@ -32,8 +32,8 @@ export default async function getDatabase(): Promise<MySql2Database<Schema>> {
 }
 
 // Optional: Handle clean shutdown
-process.on('SIGINT', async () => {
+process.on("SIGINT", async () => {
   await pool.end();
-  console.log('Database pool closed');
+  console.info("Database pool closed");
   process.exit(0);
 });

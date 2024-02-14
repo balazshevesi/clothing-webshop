@@ -15,10 +15,10 @@ import Provider from "./Provider";
 import "./global.css";
 import { GeistSans } from "geist/font/sans";
 
-//* define fonts
-export const playfair_Display = Playfair_Display({
+//* define font
+const playfair_Display = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-playfair_Display",
+  variable: "--playfair-font",
   display: "swap",
 });
 
@@ -62,10 +62,11 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body
-        className={`${GeistSans.className} ${playfair_Display.variable} relative selection:bg-slate-200/50`}
-      >
+    <html
+      lang="en"
+      className={`${GeistSans.className} ${playfair_Display.variable}`}
+    >
+      <body className="relative selection:bg-slate-200/50">
         <ThemeProvider attribute="class" defaultTheme="dark">
           <Provider>
             <InitState>

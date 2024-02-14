@@ -59,8 +59,6 @@ export default async function Navigation() {
   // Start both fetch requests in parallel
 
   const { categories, runningSales, serverError } = await getCategoryAndSales();
-  console.log("categoriescategories", categories);
-  console.log("runningSalesrunningSales", runningSales);
 
   if (serverError) return <div>sowwy ;_; server not wowkey wigth now</div>;
 

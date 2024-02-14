@@ -1470,7 +1470,6 @@ app.post("/create-checkout-session", async (c) => {
     (userAuthCookie === "undefined" && guestUserAuthCookie === "undefined") ||
     (!userAuthCookie && !guestUserAuthCookie);
   if (inputIsIncorrect) {
-    console.log("aborting...");
     c.status(401);
     return c.json({});
   }
