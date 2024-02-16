@@ -1,17 +1,4 @@
 import {
-  articleImages,
-  articleProperties,
-  articles,
-  plannedSales,
-} from "./../drizzle/schema";
-import bcrypt from "bcrypt";
-
-import { Hono } from "hono";
-import { cors } from "hono/cors";
-import * as jose from "jose";
-const stripe = require("stripe")(process.env.STRIPE_TEST_SECRET_API_KEY);
-
-import {
   articleImages as articleImagesTbl,
   articleListingRelations as articleListingRelationsTbl,
   articleProperties as articlePropertiesTbl,
@@ -27,7 +14,18 @@ import {
   plannedSales as plannedSalesTbl,
   articlePlannedSalesRelations as articlePlannedSalesRelationsTbl,
 } from "../drizzle/schema";
-
+import {
+  articleImages,
+  articleProperties,
+  articles,
+  plannedSales,
+} from "./../drizzle/schema";
+import convertToTimestamp from "./utils/convertToTimestamp";
+import getAndValidateGuestUser from "./utils/getAndValidateGuestUser";
+import getAndValidateUser from "./utils/getAndValidateUser";
+import getDatabase from "./utils/getDatabase";
+import getTimeStamp from "./utils/getTimestamp";
+import bcrypt from "bcrypt";
 import {
   and,
   asc,
@@ -41,18 +39,15 @@ import {
   lte,
   or,
 } from "drizzle-orm";
-import getDatabase from "./utils/getDatabase";
-import getTimeStamp from "./utils/getTimestamp";
-import getAndValidateUser from "./utils/getAndValidateUser";
-import getAndValidateGuestUser from "./utils/getAndValidateGuestUser";
-import convertToTimestamp from "./utils/convertToTimestamp";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import * as jose from "jose";
+
+const stripe = require("stripe")(process.env.STRIPE_TEST_SECRET_API_KEY);
 
 const app = new Hono();
 
 app.use("*", cors({ origin: "*" }));
-// app.options("*", (c) => {
-//   return c.text("", 204);
-// });
 
 //~ define routes
 
@@ -67,7 +62,7 @@ adminRoutes.use(async (c, next) => {
 
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(authHeader, encodedKey))
+    JSON.stringify(await jose.jwtVerify(authHeader, encodedKey)),
   );
   const db = await getDatabase();
   const [userInfo] = await db
@@ -442,7 +437,7 @@ app.get("/article/:articleId", async (c) => {
   articleSelect.category = categoryName;
   articleSelect.brand = brandName;
   articleSelect.images = articleSelect.articleImages.map(
-    (image: any) => image.imagePath
+    (image: any) => image.imagePath,
   );
   articleSelect.size = articleSelect.articleProperties[0].size;
   articleSelect.color = articleSelect.articleProperties[0].color;
@@ -466,7 +461,7 @@ app.get("/articles", async (c) => {
   const articleSelectImagesMapped = articlesSelect.map((article: any) => {
     const frozenArticle = { ...article };
     frozenArticle.images = article.articleImages.map(
-      (imageObject: any) => imageObject.imagePath
+      (imageObject: any) => imageObject.imagePath,
     );
     return frozenArticle;
   });
@@ -534,9 +529,9 @@ app.get("/listing/:listingId", async (c) => {
                         where: and(
                           lte(
                             plannedSalesTbl.startTime,
-                            convertToTimestamp(now)
+                            convertToTimestamp(now),
                           ),
-                          gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                          gte(plannedSalesTbl.endTime, convertToTimestamp(now)),
                         ),
                         // where: ((users, { eq }) => eq(users.id, 1)),
                       },
@@ -562,7 +557,7 @@ app.get("/listing/:listingId", async (c) => {
                     //@ts-ignore ts gives error, but it actually works just fine, dunno
                     where: and(
                       lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
-                      gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                      gte(plannedSalesTbl.endTime, convertToTimestamp(now)),
                     ),
                     // where: ((users, { eq }) => eq(users.id, 1)),
                   },
@@ -630,7 +625,7 @@ app.post("/articles/search", async (c) => {
           db
             .select()
             .from(articleListingRelationsTbl)
-            .where(eq(articleListingRelationsTbl.articleId, articlesTbl.id))
+            .where(eq(articleListingRelationsTbl.articleId, articlesTbl.id)),
         ),
         or(
           // searches namn of the article
@@ -638,24 +633,24 @@ app.post("/articles/search", async (c) => {
             ...body.searchWords
               .split(" ")
               .map((searchWord: string) =>
-                like(articlesTbl.name, `%${searchWord}%`)
-              )
+                like(articlesTbl.name, `%${searchWord}%`),
+              ),
           ),
           // searches description of the article
           and(
             ...body.searchWords
               .split(" ")
               .map((searchWord: string) =>
-                like(articlesTbl.description, `%${searchWord}%`)
-              )
+                like(articlesTbl.description, `%${searchWord}%`),
+              ),
           ),
           // searches garment care of the article
           and(
             ...body.searchWords
               .split(" ")
               .map((searchWord: string) =>
-                like(articlesTbl.garmentCare, `%${searchWord}%`)
-              )
+                like(articlesTbl.garmentCare, `%${searchWord}%`),
+              ),
           ),
           // searches brand name of the article
           exists(
@@ -667,10 +662,10 @@ app.post("/articles/search", async (c) => {
                   ...body.searchWords
                     .split(" ")
                     .map((searchWord: string) =>
-                      like(brandsTbl.name, `%${searchWord}%`)
-                    )
-                )
-              )
+                      like(brandsTbl.name, `%${searchWord}%`),
+                    ),
+                ),
+              ),
           ),
           // searches brand description of the article
           exists(
@@ -682,25 +677,25 @@ app.post("/articles/search", async (c) => {
                   ...body.searchWords
                     .split(" ")
                     .map((searchWord: string) =>
-                      like(brandsTbl.description, `%${searchWord}%`)
-                    )
-                )
-              )
-          )
+                      like(brandsTbl.description, `%${searchWord}%`),
+                    ),
+                ),
+              ),
+          ),
         ),
         body.categoryIds
           ? or(
               ...body.categoryIds.map((categoryId) =>
-                eq(articlesTbl.categoryId, +categoryId)
-              )
+                eq(articlesTbl.categoryId, +categoryId),
+              ),
             )
           : undefined,
 
         body.brandIds
           ? or(
               ...body.brandIds.map((brandId) =>
-                eq(articlesTbl.brandId, +brandId)
-              )
+                eq(articlesTbl.brandId, +brandId),
+              ),
             )
           : undefined,
 
@@ -712,24 +707,24 @@ app.post("/articles/search", async (c) => {
                 .where(
                   and(
                     eq(articlePropertiesTbl.id, articlesTbl.id),
-                    eq(articleProperties.color, body.color)
-                  )
-                )
+                    eq(articleProperties.color, body.color),
+                  ),
+                ),
             )
           : undefined,
 
         gte(articlesTbl.price, "" + body.fromPrice),
         body.toPrice ? lte(articlesTbl.price, "" + body.toPrice) : undefined,
-        gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0)
+        gte(articlesTbl.quantityInStock, !!body.showOnlyInStock ? 1 : 0),
       ),
       orderBy:
         body.orderBy === "name"
           ? asc(articlesTbl.name)
           : body.orderBy === "priceLowToHigh"
-          ? asc(articlesTbl.price)
-          : body.orderBy === "priceHighToLow"
-          ? desc(articlesTbl.price)
-          : undefined,
+            ? asc(articlesTbl.price)
+            : body.orderBy === "priceHighToLow"
+              ? desc(articlesTbl.price)
+              : undefined,
       with: {
         articleImages: true,
         articleProperties: true,
@@ -759,14 +754,14 @@ app.post("/articles/search", async (c) => {
           ...body.searchWords
             .split(" ")
             .map((searchWord: string) =>
-              like(listingsTbl.title, `%${searchWord}%`)
+              like(listingsTbl.title, `%${searchWord}%`),
             ),
           ...body.searchWords
             .split(" ")
             .map((searchWord: string) =>
-              like(listingsTbl.description, `%${searchWord}%`)
-            )
-        )
+              like(listingsTbl.description, `%${searchWord}%`),
+            ),
+        ),
       ),
     }));
   const listingSelectFilteredForBrands =
@@ -788,7 +783,7 @@ app.post("/articles/search", async (c) => {
       .filter(
         (listing: any) =>
           +listing.articles!.price >= (body.fromPrice || 0) &&
-          +listing.articles!.price <= (body.toPrice || 99999999)
+          +listing.articles!.price <= (body.toPrice || 99999999),
       )
       //@ts-ignore
       .sort((a, b) => {
@@ -837,7 +832,7 @@ app.get("/listings/most-popular", async (c) => {
                 // @ts-ignore ts gives error, but it actually works just fine, dunno
                 where: and(
                   lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
-                  gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                  gte(plannedSalesTbl.endTime, convertToTimestamp(now)),
                 ),
               },
             },
@@ -882,8 +877,8 @@ app.get("/running-sales", async (c) => {
     .where(
       and(
         lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
-        gte(plannedSalesTbl.endTime, convertToTimestamp(now))
-      )
+        gte(plannedSalesTbl.endTime, convertToTimestamp(now)),
+      ),
     );
   return c.json({ content: runningsSalesSelect });
 });
@@ -897,7 +892,7 @@ app.get("/user/:userId", async (c) => {
 
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(authHeader, encodedKey))
+    JSON.stringify(await jose.jwtVerify(authHeader, encodedKey)),
   );
 
   const [userInfo] = await db
@@ -972,8 +967,8 @@ app.post("/user/:userId/cart/update-count", async (c) => {
         .where(
           and(
             eq(cartItemsTbl.cartId, cart.id),
-            eq(cartItemsTbl.articleId, +body.articleId)
-          )
+            eq(cartItemsTbl.articleId, +body.articleId),
+          ),
         )
     ).length > 0;
   //handle adding new item
@@ -994,8 +989,8 @@ app.post("/user/:userId/cart/update-count", async (c) => {
       .where(
         and(
           eq(cartItemsTbl.cartId, cart.id),
-          eq(cartItemsTbl.articleId, +body.articleId)
-        )
+          eq(cartItemsTbl.articleId, +body.articleId),
+        ),
       );
   }
   //handle delete
@@ -1005,8 +1000,8 @@ app.post("/user/:userId/cart/update-count", async (c) => {
       .where(
         and(
           eq(cartItemsTbl.cartId, cart.id),
-          eq(cartItemsTbl.articleId, +body.articleId)
-        )
+          eq(cartItemsTbl.articleId, +body.articleId),
+        ),
       );
   return c.json({});
 });
@@ -1035,7 +1030,7 @@ app.get("/user/:userId/cart", async (c) => {
                     //@ts-ignore
                     where: and(
                       lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
-                      gte(plannedSalesTbl.endTime, convertToTimestamp(now))
+                      gte(plannedSalesTbl.endTime, convertToTimestamp(now)),
                     ),
                   },
                 },
@@ -1072,8 +1067,8 @@ app.post("/guest-user/:guestUserId/cart/update-count", async (c) => {
         .where(
           and(
             eq(cartItemsTbl.cartId, cart.id),
-            eq(cartItemsTbl.articleId, +body.articleId)
-          )
+            eq(cartItemsTbl.articleId, +body.articleId),
+          ),
         )
     ).length > 0;
   //handle adding new item
@@ -1094,8 +1089,8 @@ app.post("/guest-user/:guestUserId/cart/update-count", async (c) => {
       .where(
         and(
           eq(cartItemsTbl.cartId, cart.id),
-          eq(cartItemsTbl.articleId, +body.articleId)
-        )
+          eq(cartItemsTbl.articleId, +body.articleId),
+        ),
       );
   }
   //handle delete
@@ -1105,8 +1100,8 @@ app.post("/guest-user/:guestUserId/cart/update-count", async (c) => {
       .where(
         and(
           eq(cartItemsTbl.cartId, cart.id),
-          eq(cartItemsTbl.articleId, +body.articleId)
-        )
+          eq(cartItemsTbl.articleId, +body.articleId),
+        ),
       );
   return c.json({});
 });
@@ -1171,8 +1166,8 @@ app.post("/guest-user/:guestUserId/favs", async (c) => {
         .where(
           and(
             eq(favItemsTbl.cartId, cart.id),
-            eq(favItemsTbl.articleId, +body.articleId)
-          )
+            eq(favItemsTbl.articleId, +body.articleId),
+          ),
         )
     ).length > 0;
   if (favAlredyExists) return c.json({});
@@ -1200,8 +1195,8 @@ app.delete("/guest-user/:guestUserId/favs", async (c) => {
     .where(
       and(
         eq(favItemsTbl.cartId, cart.id),
-        eq(favItemsTbl.articleId, +body.articleId)
-      )
+        eq(favItemsTbl.articleId, +body.articleId),
+      ),
     );
   return c.json({});
 });
@@ -1245,8 +1240,8 @@ app.post("/user/:userId/favs", async (c) => {
         .where(
           and(
             eq(favItemsTbl.cartId, cart.id),
-            eq(favItemsTbl.articleId, +body.articleId)
-          )
+            eq(favItemsTbl.articleId, +body.articleId),
+          ),
         )
     ).length > 0;
   if (favAlredyExists) return c.json({});
@@ -1274,8 +1269,8 @@ app.delete("/user/:userId/favs", async (c) => {
     .where(
       and(
         eq(favItemsTbl.cartId, cart.id),
-        eq(favItemsTbl.articleId, +body.articleId)
-      )
+        eq(favItemsTbl.articleId, +body.articleId),
+      ),
     );
   return c.json({});
 });
@@ -1292,7 +1287,7 @@ app.get("/log/guest-user/:guestUserId", async (c) => {
 
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(guestUserAuth, encodedKey))
+    JSON.stringify(await jose.jwtVerify(guestUserAuth, encodedKey)),
   );
   if (+payload.guestUserId !== +guestUserId) {
     c.status(401);
@@ -1314,7 +1309,7 @@ app.get("/log/user/:userId", async (c) => {
   }
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = JSON.parse(
-    JSON.stringify(await jose.jwtVerify(userAuth, encodedKey))
+    JSON.stringify(await jose.jwtVerify(userAuth, encodedKey)),
   );
   if (+payload.userId !== +userId) {
     c.status(401);
@@ -1456,8 +1451,6 @@ app.post("/auth/signup", async (c) => {
   return c.json({ userIdJwt, userInfo });
 });
 
-interface createCheckoutSessionBody {}
-
 app.post("/create-checkout-session", async (c) => {
   const db = await getDatabase();
 
@@ -1483,10 +1476,10 @@ app.post("/create-checkout-session", async (c) => {
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = userIsLoggedIn
     ? JSON.parse(
-        JSON.stringify(await jose.jwtVerify(userAuthCookie!, encodedKey))
+        JSON.stringify(await jose.jwtVerify(userAuthCookie!, encodedKey)),
       )
     : JSON.parse(
-        JSON.stringify(await jose.jwtVerify(guestUserAuth!, encodedKey))
+        JSON.stringify(await jose.jwtVerify(guestUserAuth!, encodedKey)),
       );
 
   const [cart] = userIsLoggedIn

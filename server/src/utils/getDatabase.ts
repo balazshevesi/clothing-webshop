@@ -1,7 +1,7 @@
-import { MySql2Database, drizzle } from "drizzle-orm/mysql2";
-import mysql from "mysql2/promise";
 import * as schema from "../../drizzle/schema";
 import * as schemaRelations from "../../drizzle/schemaRelations";
+import { MySql2Database, drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 
 type Schema = typeof schema & typeof schemaRelations;
 

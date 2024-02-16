@@ -12,7 +12,7 @@ export default function Title2({
   return (
     <h2
       className={twMerge(
-        "mb-8 font-nice text-4xl font-semibold uppercase",
+        "font-nice mb-8 text-4xl font-semibold uppercase",
         className,
       )}
     >

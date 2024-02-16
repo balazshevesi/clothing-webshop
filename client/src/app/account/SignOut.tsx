@@ -17,7 +17,7 @@ export default function SignOut() {
   ) as any;
 
   const fetchAndSetCart = useShoppingCartSlice(
-    (state: any) => state.fetchAndSetCart, 
+    (state: any) => state.fetchAndSetCart,
   ) as any;
 
   const fetchAndSetFavs = useFavsSlice(

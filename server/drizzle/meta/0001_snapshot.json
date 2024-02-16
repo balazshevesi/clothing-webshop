@@ -42,12 +42,8 @@
           "name": "article_images_article_id_articles_id_fk",
           "tableFrom": "article_images",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -55,9 +51,7 @@
       "compositePrimaryKeys": {
         "article_images_id": {
           "name": "article_images_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -93,12 +87,8 @@
           "name": "article_listing_relations_article_id_articles_id_fk",
           "tableFrom": "article_listing_relations",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -106,12 +96,8 @@
           "name": "article_listing_relations_listing_id_listings_id_fk",
           "tableFrom": "article_listing_relations",
           "tableTo": "listings",
-          "columnsFrom": [
-            "listing_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["listing_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -119,18 +105,13 @@
       "compositePrimaryKeys": {
         "article_listing_relations_id": {
           "name": "article_listing_relations_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "article_listing_relations_UN": {
           "name": "article_listing_relations_UN",
-          "columns": [
-            "article_id",
-            "listing_id"
-          ]
+          "columns": ["article_id", "listing_id"]
         }
       }
     },
@@ -165,12 +146,8 @@
           "name": "article_planned_sales_relations_article_id_articles_id_fk",
           "tableFrom": "article_planned_sales_relations",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -178,12 +155,8 @@
           "name": "article_planned_sales_relations_planned_sale_id_planned_sales_id_fk",
           "tableFrom": "article_planned_sales_relations",
           "tableTo": "planned_sales",
-          "columnsFrom": [
-            "planned_sale_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["planned_sale_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -191,18 +164,13 @@
       "compositePrimaryKeys": {
         "article_planned_sales_relations_id": {
           "name": "article_planned_sales_relations_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "article_planned_sales_relation_UN": {
           "name": "article_planned_sales_relation_UN",
-          "columns": [
-            "article_id",
-            "planned_sale_id"
-          ]
+          "columns": ["article_id", "planned_sale_id"]
         }
       }
     },
@@ -244,12 +212,8 @@
           "name": "article_properties_article_id_articles_id_fk",
           "tableFrom": "article_properties",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -257,9 +221,7 @@
       "compositePrimaryKeys": {
         "article_properties_id": {
           "name": "article_properties_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -330,12 +292,8 @@
           "name": "articles_brand_id_brands_id_fk",
           "tableFrom": "articles",
           "tableTo": "brands",
-          "columnsFrom": [
-            "brand_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["brand_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -343,12 +301,8 @@
           "name": "articles_category_id_categories_id_fk",
           "tableFrom": "articles",
           "tableTo": "categories",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["category_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -356,9 +310,7 @@
       "compositePrimaryKeys": {
         "articles_id": {
           "name": "articles_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -400,17 +352,13 @@
       "compositePrimaryKeys": {
         "brands_id": {
           "name": "brands_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "brands_UN": {
           "name": "brands_UN",
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       }
     },
@@ -459,12 +407,8 @@
           "name": "cart_items_cart_id_carts_id_fk",
           "tableFrom": "cart_items",
           "tableTo": "carts",
-          "columnsFrom": [
-            "cart_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cart_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -472,12 +416,8 @@
           "name": "cart_items_article_id_articles_id_fk",
           "tableFrom": "cart_items",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -485,9 +425,7 @@
       "compositePrimaryKeys": {
         "cart_items_id": {
           "name": "cart_items_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -523,12 +461,8 @@
           "name": "carts_user_id_users_id_fk",
           "tableFrom": "carts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         },
@@ -536,12 +470,8 @@
           "name": "carts_guest_user_id_guest_users_id_fk",
           "tableFrom": "carts",
           "tableTo": "guest_users",
-          "columnsFrom": [
-            "guest_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["guest_user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -549,17 +479,13 @@
       "compositePrimaryKeys": {
         "carts_id": {
           "name": "carts_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "carts_UN": {
           "name": "carts_UN",
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         }
       }
     },
@@ -600,17 +526,13 @@
       "compositePrimaryKeys": {
         "categories_id": {
           "name": "categories_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "categories_UN": {
           "name": "categories_UN",
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       }
     },
@@ -644,9 +566,7 @@
       "compositePrimaryKeys": {
         "guest_users_id": {
           "name": "guest_users_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -696,12 +616,8 @@
           "name": "listings_article_id_default_articles_id_fk",
           "tableFrom": "listings",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id_default"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id_default"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -709,9 +625,7 @@
       "compositePrimaryKeys": {
         "listings_id": {
           "name": "listings_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -754,12 +668,8 @@
           "name": "order_items_order_id_orders_id_fk",
           "tableFrom": "order_items",
           "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["order_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -767,12 +677,8 @@
           "name": "order_items_article_id_articles_id_fk",
           "tableFrom": "order_items",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -780,9 +686,7 @@
       "compositePrimaryKeys": {
         "order_items_id": {
           "name": "order_items_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -846,12 +750,8 @@
           "name": "orders_cart_id_carts_id_fk",
           "tableFrom": "orders",
           "tableTo": "carts",
-          "columnsFrom": [
-            "cart_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cart_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "cascade"
         }
@@ -859,9 +759,7 @@
       "compositePrimaryKeys": {
         "orders_id": {
           "name": "orders_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -910,9 +808,7 @@
       "compositePrimaryKeys": {
         "planned_sales_id": {
           "name": "planned_sales_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -989,17 +885,13 @@
       "compositePrimaryKeys": {
         "users_id": {
           "name": "users_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "users_UN": {
           "name": "users_UN",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       }
     }

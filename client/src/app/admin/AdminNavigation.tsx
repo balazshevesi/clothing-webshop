@@ -24,7 +24,7 @@ function AdminNavLink({ section }: { section: string }) {
     >
       <>
         {!!isActive && (
-          <div className=" absolute left-0 top-0 h-full w-1 animate-fade-right bg-white font-semibold duration-100" />
+          <div className=" animate-fade-right absolute left-0 top-0 h-full w-1 bg-white font-semibold duration-100" />
         )}
         {section}
       </>

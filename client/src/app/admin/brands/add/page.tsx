@@ -3,5 +3,5 @@
 import BrandForm from "../BrandForm";
 
 export default function Page() {
-  return <BrandForm/>;
+  return <BrandForm />;
 }

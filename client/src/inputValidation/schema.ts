@@ -30,5 +30,4 @@ export const SizeInputSchema = string("Your input must be an string", [
   minLength(1, "Input needs to be at least two characters"),
 ]);
 
-
 export const GenericNumberInputSchema = number("Your input must be an number");

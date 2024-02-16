@@ -48,7 +48,7 @@ export const articlePropertiesRelations = relations(
       fields: [articleProperties.articleId],
       references: [articles.id],
     }),
-  })
+  }),
 );
 
 export const brandsRelations = relations(brands, ({ many }) => ({
@@ -74,7 +74,7 @@ export const articleListingRelationsRelations = relations(
       fields: [articleListingRelations.listingId],
       references: [listings.id],
     }),
-  })
+  }),
 );
 
 export const cartsRelations = relations(carts, ({ one, many }) => ({
@@ -108,7 +108,7 @@ export const plannedSalesRelationsSchema = relations(
   plannedSales,
   ({ one, many }) => ({
     articlePlannedSalesRelations: many(articlePlannedSalesRelations),
-  })
+  }),
 );
 
 export const plannedSalesRelationsRelations = relations(
@@ -122,5 +122,5 @@ export const plannedSalesRelationsRelations = relations(
       fields: [articlePlannedSalesRelations.articleId],
       references: [articles.id],
     }),
-  })
+  }),
 );
