@@ -1,5 +1,5 @@
 <h1 align="center">
-  Clothing Webbshop 🛍️
+  Clothing Webshop 🛍️
 </h1>
 <h3 align="center">
   Fullstack e-handel hemsida
