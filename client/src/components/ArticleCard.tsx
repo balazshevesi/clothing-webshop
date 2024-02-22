@@ -39,6 +39,7 @@ export default function ArticleCard({
 
   const now = new Date();
   const articleIsOnSale =
+    article.articlePlannedSalesRelations &&
     article.articlePlannedSalesRelations.length > 0 &&
     article.articlePlannedSalesRelations[0].plannedSales &&
     new Date(article.articlePlannedSalesRelations[0].plannedSales.startTime) <

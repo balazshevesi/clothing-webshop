@@ -82,15 +82,27 @@ function CartItem({ item }: { item: any }) {
 
 export default function CartSheet() {
   const cart = useShoppingCartSlice((state: any) => state.items) as any;
+
   const cartWorth = useMemo(() => {
     let worth = 0;
-    cart.forEach((item: any) => {
-      const itemPrice =
-        item.articlePlannedSalesRelations &&
-        item.articlePlannedSalesRelations.length > 0
-          ? item.articlePlannedSalesRelations[0].newPrice
-          : item.price;
-      worth = worth + itemPrice * item.count;
+    cart.forEach((cartItem: any) => {
+      const now = new Date();
+      const articleIsOnSale = !!(
+        cartItem.articlePlannedSalesRelations &&
+        cartItem.articlePlannedSalesRelations.length > 0 &&
+        cartItem.articlePlannedSalesRelations[0].plannedSales &&
+        new Date(
+          cartItem.articlePlannedSalesRelations[0].plannedSales.startTime,
+        ) < now &&
+        now <
+          new Date(
+            cartItem.articlePlannedSalesRelations[0].plannedSales.endTime,
+          )
+      );
+      const itemPrice = articleIsOnSale
+        ? cartItem.articlePlannedSalesRelations[0].newPrice
+        : cartItem.price;
+      worth = worth + itemPrice * cartItem.count;
     });
     return worth;
   }, [cart]);

@@ -1497,15 +1497,29 @@ app.post("/create-checkout-session", async (c) => {
     with: {
       articles: {
         //! potential bug with articlePlannedSalesRelations since later in the code im accessing [0], with could be wrong
-        with: { articleImages: true, articlePlannedSalesRelations: true },
+        with: {
+          articleImages: true,
+          articlePlannedSalesRelations: { with: { plannedSales: true } },
+        },
       },
     },
   });
 
   //docs for: https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items-price_data
   const lineItems = cartItems.map(({ articles, quantity }) => {
-    const hasSale = articles.articlePlannedSalesRelations.length > 0;
-    const price = hasSale
+    const now = new Date();
+    const articleIsOnSale = !!(
+      articles.articlePlannedSalesRelations &&
+      articles.articlePlannedSalesRelations.length > 0 &&
+      articles.articlePlannedSalesRelations[0].plannedSales &&
+      new Date(
+        articles.articlePlannedSalesRelations[0].plannedSales.startTime,
+      ) < now &&
+      now <
+        new Date(articles.articlePlannedSalesRelations[0].plannedSales.endTime)
+    );
+
+    const price = articleIsOnSale
       ? articles.articlePlannedSalesRelations[0].newPrice
       : articles.price;
 

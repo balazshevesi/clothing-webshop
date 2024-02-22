@@ -78,7 +78,13 @@ export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
             toast(`${listing.title} ligger nu i din kundvagn`, {
               description: (
                 <div className=" mt-2 flex gap-2">
-                  <Button>Öppna kundvagn</Button>
+                  <Button
+                    onClick={() => {
+                      open();
+                    }}
+                  >
+                    Öppna kundvagn
+                  </Button>{" "}
                   <Counter article={article} />
                 </div>
               ),
