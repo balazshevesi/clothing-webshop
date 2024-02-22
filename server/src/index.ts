@@ -830,6 +830,7 @@ app.get("/listings/most-popular", async (c) => {
             with: {
               plannedSales: {
                 // @ts-ignore ts gives error, but it actually works just fine, dunno
+                //
                 where: and(
                   lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
                   gte(plannedSalesTbl.endTime, convertToTimestamp(now)),
@@ -1471,7 +1472,7 @@ app.post("/create-checkout-session", async (c) => {
   const guestUserAuth =
     guestUserAuthCookie !== "undefined" ? guestUserAuthCookie : undefined;
 
-  const userIsLoggedIn = !!userAuth && !guestUserAuth;
+  const userIsLoggedIn = !!userAuth;
 
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
   const { payload } = userIsLoggedIn

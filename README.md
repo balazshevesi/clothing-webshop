@@ -328,6 +328,7 @@ Detta är också mitt gymnasie arbete
 
 ## prio 1
 
+- [ ] fix wierd discount bugg
 - [ ] Streamline input validation and form submission across the app
 - [ ] Add success screen after payment, and wipe cart items
 
