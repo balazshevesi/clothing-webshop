@@ -1,5 +1,6 @@
 import getCookie from "@/utils/getCookie";
 
+import { toast } from "sonner";
 import { create } from "zustand";
 
 interface UseShoppingCart {
@@ -128,6 +129,7 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
 
   open: () =>
     set((state: any) => {
+      toast.dismiss();
       return { isOpen: true };
     }),
   close: () =>

@@ -829,8 +829,7 @@ app.get("/listings/most-popular", async (c) => {
           articlePlannedSalesRelations: {
             with: {
               plannedSales: {
-                // @ts-ignore ts gives error, but it actually works just fine, dunno
-                //
+                //@ts-ignore
                 where: and(
                   lte(plannedSalesTbl.startTime, convertToTimestamp(now)),
                   gte(plannedSalesTbl.endTime, convertToTimestamp(now)),

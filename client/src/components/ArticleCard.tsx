@@ -37,7 +37,14 @@ export default function ArticleCard({
     ? items.filter((cartItem) => cartItem.id === +article.id)[0]
     : 0;
 
-  const articleIsOnSale = article.articlePlannedSalesRelations.length > 0;
+  const now = new Date();
+  const articleIsOnSale =
+    article.articlePlannedSalesRelations.length > 0 &&
+    article.articlePlannedSalesRelations[0].plannedSales &&
+    new Date(article.articlePlannedSalesRelations[0].plannedSales.startTime) <
+      now &&
+    now <
+      new Date(article.articlePlannedSalesRelations[0].plannedSales.endTime);
 
   return (
     <div className="relative min-w-56 max-w-xs overflow-hidden whitespace-nowrap rounded">
@@ -113,7 +120,13 @@ export default function ArticleCard({
                 toast(`${title} ligger nu i din kundvagn`, {
                   description: (
                     <div className=" mt-2 flex gap-2">
-                      <Button>Öppna kundvagn</Button>{" "}
+                      <Button
+                        onClick={() => {
+                          open();
+                        }}
+                      >
+                        Öppna kundvagn
+                      </Button>{" "}
                       <Counter article={article} />
                     </div>
                   ),

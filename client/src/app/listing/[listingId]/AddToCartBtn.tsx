@@ -58,7 +58,7 @@ export default function AddToCartBtn({ article, listing }: AddToCartBtn) {
           </Button>
           <Button
             className="grow select-none"
-            onClick={() => open(article)}
+            onClick={() => open()}
             variant="outline"
           >
             View Cart
