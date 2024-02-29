@@ -407,6 +407,9 @@ adminRoutes.get("/", (c) => c.json({}));
 
 app.route("/admin", adminRoutes);
 
+app.get("/", (c) => c.json({}));
+
+
 //articles
 app.get("/article/:articleId", async (c) => {
   const db = await getDatabase();
