@@ -139,7 +139,7 @@ export const useShoppingCartSlice = create<UseShoppingCart>()((set) => ({
 
   goToCheckout: async (fromUrl: string) => {
     const response = await fetch(
-      "http://localhost:3002/create-checkout-session",
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST}/create-checkout-session`,
       {
         method: "post",
         headers: {
