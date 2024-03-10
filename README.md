@@ -81,7 +81,7 @@ Detta repot innehåller källkoden.
 
 - [Hosting och deployment](#hosting-och-deployment)
 
-- [Namngivningskonvention](#namngivningskonvention)
+- [Namngivningskonventioner](#namngivningskonventioner)
 
 - [Problem, problemlösning och lärdomar](#problem-problemlösning-och-lärdomar)
 
@@ -216,7 +216,7 @@ Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation 
 
   Här använder jag [🚝 Railway](https://railway.app/) igen
 
-# Namngivningskonvention
+# Namngivningskonventioner
 
 - **Databas**: snake_case
 
