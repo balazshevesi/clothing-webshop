@@ -81,7 +81,7 @@ Detta repot innehåller källkoden.
 
 - [Hosting och deployment](#hosting-och-deployment)
 
-- [Namn conventioner](#namn-conventioner)
+- [Namngivningskonvention](#namngivningskonvention)
 
 - [Problem, problemlösning och lärdomar](#problem-problemlösning-och-lärdomar)
 
@@ -216,7 +216,7 @@ Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation 
 
   Här använder jag [🚝 Railway](https://railway.app/) igen
 
-# Namn conventioner
+# Namngivningskonvention
 
 - **Databas**: snake_case
 
@@ -228,7 +228,7 @@ Jag valde att bygga ut hela "produkt" grejen med att tänka på varje variation 
 
 - **Types och Schema validering**: PascalCase
 
-- **Enviorment variabel**: SCREAMING_SNAKE_CASE
+- **Environment variabel**: SCREAMING_SNAKE_CASE
 
 - **Extra**: Databas tabeller ska ha Tbl som suffix
 
