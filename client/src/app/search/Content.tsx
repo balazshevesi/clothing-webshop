@@ -192,7 +192,7 @@ export default function Content({
               return (
                 <ArticleCard
                   key={listing.id}
-                  title={listing.name}
+                  title={listing.title}
                   price={listing.articles.price}
                   image={listing.imagePath}
                   href={`/listing/${listing.id}?article=${listing.articleIdDefault}`}
