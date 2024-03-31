@@ -85,7 +85,7 @@ Detta repot innehåller källkoden.
 
 - [Problem, problemlösning och lärdomar](#problem-problemlösning-och-lärdomar)
 
-- [Gymnasie arbete](#gymnasie-arbete)
+- [Gymnasiearbete](#gymnasiearbete)
 
 - [Galleri](#galleri)
 
@@ -322,9 +322,9 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
   </details>
 
-# Gymnasie arbete
+# Gymnasiearbete
 
-Detta är också mitt gymnasie arbete
+Detta är också mitt Gymnasiearbete
 
 # Galleri
 
