@@ -87,6 +87,8 @@ Detta repot innehåller källkoden.
 
 - [Gymnasie arbete](#gymnasie-arbete)
 
+- [Galleri](#galleri)
+
 # Tech stack och dependencies
 
 - ## [⚛️ React](https://react.dev/)
@@ -323,6 +325,46 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 # Gymnasie arbete
 
 Detta är också mitt gymnasie arbete
+
+# Galleri
+
+# Galleri
+
+| ![Butikens header](/readme-assets/gallery/pic_shop_header.png) | ![Butikens mest populära](/readme-assets/gallery/pic_shop_most_popular.png) |
+| :------------------------------------------------------------: | :-------------------------------------------------------------------------: |
+|                     Header för butikssidan                     |                           Mest populära produkter                           |
+
+| ![Produktsida](/readme-assets/gallery/pic_shop_product_page.png) | ![Sök efter varumärke](/readme-assets/gallery/pic_shop_search_by_brand.png) |
+| :--------------------------------------------------------------: | :-------------------------------------------------------------------------: |
+|                           Produktsida                            |                             Sök efter varumärke                             |
+
+| ![Sökfilter](/readme-assets/gallery/pic_shop_search_filters.png) | ![Kundvagn](/readme-assets/gallery/pic_shop_cart.png) |
+| :--------------------------------------------------------------: | :---------------------------------------------------: |
+|                            Sökfilter                             |                      Kundvagnen                       |
+
+| ![Kassan](/readme-assets/gallery/pic_shop_checkout.png) | ![Admin - Startsida](/readme-assets/gallery/pic_admin_home.png) |
+| :-----------------------------------------------------: | :-------------------------------------------------------------: |
+|                         Kassan                          |                        Admin - Startsida                        |
+
+| ![Admin - Artiklar](/readme-assets/gallery/pic_admin_articles.png) | ![Admin - Redigera artiklar](/readme-assets/gallery/pic_admin_articles_edit.png) |
+| :----------------------------------------------------------------: | :------------------------------------------------------------------------------: |
+|                          Admin - Artiklar                          |                            Admin - Redigera artiklar                             |
+
+| ![Admin - Varumärken](/readme-assets/gallery/pic_admin_brands.png) | ![Admin - Redigera varumärken](/readme-assets/gallery/pic_admin_brands_edit.png) |
+| :----------------------------------------------------------------: | :------------------------------------------------------------------------------: |
+|                         Admin - Varumärken                         |                           Admin - Redigera varumärken                            |
+
+| ![Admin - Kategorier](/readme-assets/gallery/pic_admin_categories.png) | ![Admin - Redigera kategorier](/readme-assets/gallery/pic_admin_categories_edit.png) |
+| :--------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
+|                           Admin - Kategorier                           |                             Admin - Redigera kategorier                              |
+
+| ![Admin - Listor](/readme-assets/gallery/pic_admin_listings.png) | ![Admin - Redigera listor](/readme-assets/gallery/pic_admin_listings_edit.png) |
+| :--------------------------------------------------------------: | :----------------------------------------------------------------------------: |
+|                          Admin - Listor                          |                            Admin - Redigera listor                             |
+
+| ![Admin - Planerade reor](/readme-assets/gallery/pic_admin_planned_sales.png) | ![Admin - Redigera planerade reor](/readme-assets/gallery/pic_admin_planned_sales_edit.png) |
+| :---------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+|                            Admin - Planerade reor                             |                               Admin - Redigera planerade reor                               |
 
 # TODO
 
