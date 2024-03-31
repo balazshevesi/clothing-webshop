@@ -328,8 +328,6 @@ Detta är också mitt gymnasie arbete
 
 # Galleri
 
-# Galleri
-
 | ![Butikens header](/readme-assets/gallery/pic_shop_header.png) | ![Butikens mest populära](/readme-assets/gallery/pic_shop_most_popular.png) |
 | :------------------------------------------------------------: | :-------------------------------------------------------------------------: |
 |                     Header för butikssidan                     |                           Mest populära produkter                           |
