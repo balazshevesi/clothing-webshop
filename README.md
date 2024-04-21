@@ -69,7 +69,7 @@
 
 ---
 
-(Read [English translation](README-en.md) 🇬🇧)
+(Read the [English translation](README-en.md) 🇬🇧)
 
 > [!WARNING]
 > Detta repo innehåller källkoden till projekt-delen av mitt [gymnasiearbete](#gymnasiearbete), i och med att det nu är godkänt så känner jag att den har uppfyllt sitt syfte, därmed har jag arkiverat den
