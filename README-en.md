@@ -1,7 +1,3 @@
-Here is the translated version of the README:
-
----
-
 <h1 align="center">
   Clothing Webshop 🛍️
 </h1>
@@ -73,9 +69,9 @@ Here is the translated version of the README:
 
 ---
 
-(Read the [Swedish version 🇸🇪](README.md))
+(Read the [Swedish version](README.md) 🇸🇪)
 
-> [!NOTE]
+> [!WARNING]
 > This repository contains the source code for the project part of my high school project. Now that it is approved, I feel that it has fulfilled its purpose, therefore, I have archived this repo.
 
 # Contents
