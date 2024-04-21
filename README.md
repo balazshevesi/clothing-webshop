@@ -69,9 +69,10 @@
 
 ---
 
-En fullstack e-handel hemsida som är byggd som del av mitt [gymnasiearbete](#gymnasiearbete).
+(Read [English translation 🇬🇧](README-en.md) )
 
-Detta repot innehåller källkoden.
+> [!NOTE]
+> Detta repo innehåller källkoden till projekt-delen av mitt [gymnasiearbete](#gymnasiearbete), i och med att det nu är godkänt så känner jag att den har uppfyllt sitt syfte, därmed har jag arkiverat detta repo
 
 # Innehåll
 
@@ -328,9 +329,9 @@ Detta projekt är en del av mitt godkända Gymnasiearbete på Haganässkolan, Ä
 
 Rapporten finns tillgänglig som [PDF-fil](/readme-assets/balazs-hevesi-gymnasiearbete-rapport.pdf) i detta repo, men det är enklast att öppna den med [nbviewer](https://nbviewer.org/github/balazshevesi/clothing-webshop/blob/main/readme-assets/balazs-hevesi-gymnasiearbete-rapport.pdf).
 
-## Sammanfattning
+## Sammanfattning (kopierad ifrån rapporten)
 
-I detta gymnasiearbete presenteras processen för att skapa en e-handelssida, där jag har utforskat och använt mig av moderna webbteknologier inom både front-end-end och back- end utveckling. Arbetet inkluderar en översikt över relevanta JavaScript-ramverk, databasval mellan SQL och NoSQL, samt en diskussion kring de tekniska beslut som fattats under projektets gång. Slutresultatet är en fungerande webbshop, med insikter och reflektioner kring de utmaningar och lärdomar projektet medfört.
+> I detta gymnasiearbete presenteras processen för att skapa en e-handelssida, där jag har utforskat och använt mig av moderna webbteknologier inom både front-end-end och back- end utveckling. Arbetet inkluderar en översikt över relevanta JavaScript-ramverk, databasval mellan SQL och NoSQL, samt en diskussion kring de tekniska beslut som fattats under projektets gång. Slutresultatet är en fungerande webbshop, med insikter och reflektioner kring de utmaningar och lärdomar projektet medfört.
 
 # Galleri
 
