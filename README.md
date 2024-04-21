@@ -324,7 +324,13 @@ Detta projekt vart fullt av lärdomar för mig. Jag stötte på alla sorters pro
 
 # Gymnasiearbete
 
-Detta är också mitt Gymnasiearbete
+Detta projekt är en del av mitt godkända Gymnasiearbete på Haganässkolan, Älmhult (Teknikprogrammet).
+
+Rapporten finns tillgänglig som [PDF-fil](/readme-assets/balazs-hevesi-gymnasiearbete-rapport.pdf) i detta repo, men det är enklast att öppna den med Google Docs Viewer.
+
+## Sammanfattning
+
+I detta gymnasiearbete presenteras processen för att skapa en e-handelssida, där jag har utforskat och använt mig av moderna webbteknologier inom både front-end-end och back- end utveckling. Arbetet inkluderar en översikt över relevanta JavaScript-ramverk, databasval mellan SQL och NoSQL, samt en diskussion kring de tekniska beslut som fattats under projektets gång. Slutresultatet är en fungerande webbshop, med insikter och reflektioner kring de utmaningar och lärdomar projektet medfört.
 
 # Galleri
 
